@@ -1,6 +1,6 @@
 ---
 title: 'IO Assignment #3'
-author: "Vladimir Smiljanic"
+author: "Vladimir Smiljanic & David Rios"
 date: '2017-03-19'
 output: html_document
 ---

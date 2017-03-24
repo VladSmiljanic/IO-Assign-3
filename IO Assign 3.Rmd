@@ -1,6 +1,6 @@
 ---
 title: 'IO Assignment #3'
-author: "Vladimir Smiljanic & David Rios"
+author: "Vladimir Smiljanic & Juan David Rios"
 date: '2017-03-19'
 output: html_document
 ---
@@ -31,5 +31,66 @@ Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. Can interpret $I$
 
 As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good. 
 
+```{}
+#This code will not execute, have to copy and paste into a do-file and run in stata
+cd "/Users/David/GitHub/IO/ps2/IO-Assign-3" //  WD
+use "/Users/David/Downloads/HW3/cars1.dta"
+//Below is copied from example.do but I think generates variables needed
 
+
+	// summarize the data
+summarize year country co segment domestic firm qu price horsepower fuel width height pop ngdp
+
+	// define panel to Stata
+egen yearcountry=group(year country), label
+xtset co yearcountry
+
+	// define outside good
+gen MSIZE=pop/4
+
+
+#delimit ;
+local characteristics "horsepower fuel width height domestic";
+
+* Sum of the characteristics of all competing products and competing products produced by other firms;
+
+* Per year and market;
+
+*** 	i_hp= sum(hp)-hp 					sum of the characteristics of all competing products
+	if_hp= sum(hp of firm j) - hp  		sum of the characteristics of all other makes of firm j
+	CFi_hp= sum(hp)- sum(hp of firm j)		sum of the characteristics of all other non-firm j makes;
+
+
+foreach inst in `characteristics'{;
+qui{;
+	egen i_`inst'=sum(`inst'), by (year country);
+	egen if_`inst'=sum(`inst'), by (year country firm);
+	gen CFi_`inst'=i_`inst'-if_`inst';
+	replace i_`inst'=i_`inst'-`inst';
+	replace if_`inst'=if_`inst'-`inst';
+};
+};
+
+qui egen tot_sales=sum(qu), by(year country);
+qui egen i_num=count(qu), by(year country);
+
+qui egen firm_sales=sum(qu), by(year country firm);
+qui egen if_num=count(qu), by(year country firm);
+
+qui gen CFi_num=i_num-if_num;
+
+replace i_num=i_num-1;
+gen lni_num=ln(i_num);
+
+replace if_num=if_num-1;
+gen lnif_num=ln(if_num);
+
+
+
+```
+
+```{r}
+library(foreign)
+mydata <- read.dta("/Users/David/Downloads/HW3/cars1.dta")
+```
 

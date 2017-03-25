@@ -1,6 +1,6 @@
 ---
 title: 'IO Assignment #3'
-author: "Vladimir Smiljanic"
+author: "Vladimir Smiljanic & Juan David Rios"
 date: '2017-03-19'
 output: html_document
 ---
@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Question 1
+
+1. *From the utility specification, derive the Berry logit model, namely the specification you bring to your data. Explain the assumptions on the distribution of the error term $\epsilon_{itj}$.* 
 
 We can define our mean utility for the model to be :
 
@@ -31,5 +33,108 @@ Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. Can interpret $I$
 
 As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good. 
 
+Specification we put to the data by integrating out logit error. 
+\begin{align*}
+s_{jt} &= \frac{\exp{\delta_{jt}}}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
+\ln{\widehat{s_{jt}}} - \ln{\widehat{s_{0t}}}  &=   x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt} 
+\end{align*}
 
+2. *Discuss the endogeneity problem and how you are going to treat it. You can use the observed nonprice attributes as instruments under the assumption that they are exogeneous as in BLP(1995). You can use the sums and the count of characteristics by country and year , and by country year and firm.*
+
+3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*
+
+For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})$
+
+Crossprice Elasticity:
+
+\begin{align*}
+s_{jt} &= \frac{\exp(\delta_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
+s_{jt} &= \frac{M_j}{1 + \sum^{J}_{k=1} M_k} \\
+\frac{\partial M_j}{\partial p_{kt}} &= 0\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{\frac{\partial M_j}{\partial p_{kt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_k}{\partial p_{kt}} \\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{0}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times (-\alpha M_k)\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha \times \frac{M_j}{1 +\sum^{J}_{k=1} M_k} \times \frac{M_k}{1 + \sum^{J}_{k=1} M_k}\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha s_{jt}s_{kt}\\
+\end{align*}
+
+for own price elasticity and k = j : 
+\begin{align*}
+\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{\frac{\partial M_j}{\partial p_{jt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 + \sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_j}{\partial p_{jt}} \\
+\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{-\alpha M_j}{1 + \sum^{J}_{k=1} M_j} + \frac{-M_j}{( 1 + \sum^{J}_{k=1} M_k)^2} \times (-\alpha M_j)\\
+\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}  + \alpha s^2_{jt}\\
+\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}(1 - s_{jt})\\
+\end{align*}
+
+NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'
+
+
+4. *Estimate the logit using OLS and 2SLS with car model fixed effects, using the instruments discussed above. Report the coefficients and the standard errors for the product characteristics and price. How does the coefficient of price change when you use instruments?*. 
+
+5. *Calculate the elasticities and report summary statistics*.
+
+```{}
+#This code will not execute, have to copy and paste into a do-file and run in stata
+cd "/Users/David/GitHub/IO/ps2/IO-Assign-3" //  WD
+use "/Users/David/Downloads/HW3/cars1.dta"
+//Below is copied from example.do but I think generates variables needed
+
+
+	// summarize the data
+summarize year country co segment domestic firm qu price horsepower fuel width height pop ngdp
+
+	// define panel to Stata, This is creating panle data we are going to used 
+	// for fixed effects 
+egen yearcountry=group(year country), label
+xtset co yearcountry
+
+	// define outside good
+gen MSIZE=pop/4
+
+#delimit ;
+local characteristics "horsepower fuel width height domestic";
+
+* Sum of the characteristics of all competing products and competing products produced by other firms;
+
+// I think all these should be commented out
+* Per year and market; 
+
+*** 	i_hp= sum(hp)-hp 					sum of the characteristics of all competing products
+***	if_hp= sum(hp of firm j) - hp  		sum of the characteristics of all other makes of firm j
+***	CFi_hp= sum(hp)- sum(hp of firm j)		sum of the characteristics of all other non-firm j makes;
+
+// This is generating the IV's
+// i_horse power  sum of horespower of comepteting cars 
+// if <- sum of characterisstics of all makes of firm j 
+// CFi <- sum of characteristics of all other non-firm j makes 
+
+foreach inst in `characteristics'{;
+qui{;
+	egen i_`inst'=sum(`inst'), by (year country);
+	egen if_`inst'=sum(`inst'), by (year country firm);
+	gen CFi_`inst'=i_`inst'-if_`inst';
+	replace i_`inst'=i_`inst'-`inst';
+	replace if_`inst'=if_`inst'-`inst';
+};
+};
+
+qui egen tot_sales=sum(qu), by(year country);
+qui egen i_num=count(qu), by(year country);
+
+qui egen firm_sales=sum(qu), by(year country firm);
+qui egen if_num=count(qu), by(year country firm);
+
+qui gen CFi_num=i_num-if_num;
+
+replace i_num=i_num-1;
+gen lni_num=ln(i_num);
+
+replace if_num=if_num-1;
+gen lnif_num=ln(if_num);
+
+```
+
+```{r}
+library(foreign)
+mydata <- read.dta("/Users/David/Downloads/HW3/cars1.dta")
+```
 

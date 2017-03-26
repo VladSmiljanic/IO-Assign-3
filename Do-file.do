@@ -95,4 +95,22 @@ mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(
 xtreg M_ls price 			horsepower fuel width height domestic year country2-country5, fe;
 
 
+summarize M_ls
+
+// not sure this is correct IV's 
+***This uses i_horsepower, i_fuel , i_width i_height i_domestic
+							if_horsepower if_fuel if_width if_height if_domestic
+							is_horsepower is_fuel is_width is_height is_domestic
+							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic;
+							
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
+							if_horsepower if_fuel if_width if_height if_domestic
+							is_horsepower is_fuel is_width is_height is_domestic
+							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+							horsepower fuel width height domestic year country2-country5, fe;
+
+
+
+
+
 

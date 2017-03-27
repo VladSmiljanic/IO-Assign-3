@@ -194,26 +194,3 @@ xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
 library(foreign)
 mydata <- read.dta("/Users/David/Downloads/HW3/cars1.dta")
 ```
-For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})$
-
-Crossprice Elasticity:
-
-\begin{align*}
-s_{jt} &= \frac{\exp(\delta_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
-s_{jt} &= \frac{M_j}{1 + \sum^{J}_{k=1} M_k} \\
-\frac{\partial M_j}{\partial p_{kt}} &= 0\\
-\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{\frac{\partial M_j}{\partial p_{kt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_k}{\partial p_{kt}} \\
-\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{0}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times (-\alpha M_k)\\
-\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha \times \frac{M_j}{1 +\sum^{J}_{k=1} M_k} \times \frac{M_k}{1 + \sum^{J}_{k=1} M_k}\\
-\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha s_{jt}s_{kt}\\
-\end{align*}
-
-for own price elasticity and k = j : 
-\begin{align*}
-\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{\frac{\partial M_j}{\partial p_{jt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 + \sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_j}{\partial p_{jt}} \\
-\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{-\alpha M_j}{1 + \sum^{J}_{k=1} M_j} + \frac{-M_j}{( 1 + \sum^{J}_{k=1} M_k)^2} \times (-\alpha M_j)\\
-\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}  + \alpha s^2_{jt}\\
-\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}(1 - s_{jt})\\
-\end{align*}
-
-NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'

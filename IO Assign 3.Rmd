@@ -132,7 +132,7 @@ mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(
 // THIS DOES the first regression without instruments,
 // MERGER SIM creates M_ls which is ln(st) - ln(s0) can gen on my own
 
-xtreg M_ls price 			horsepower fuel width height domestic year country2-country5, fe;
+xtreg M_ls price horsepower fuel width height domestic year country2-country5, fe;
 
 summarize M_ls
 

@@ -31,36 +31,41 @@ Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. Can interpret $I$
 
 As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good. 
 
+Specification we put to the data by integrating out logit error. 
+\begin{align*}
+s_{jt} &= \frac{\exp{\delta_{jt}}}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
+\ln{\widehat{s_{jt}}} - \ln{\widehat{s_{0t}}}  &=   x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt} 
+\end{align*}
+
 ```{}
-#This code will not execute, have to copy and paste into a do-file and run in stata
+clear all
+capture log close
+
 cd "/Users/David/GitHub/IO/ps2/IO-Assign-3" //  WD
 use "/Users/David/Downloads/HW3/cars1.dta"
-//Below is copied from example.do but I think generates variables needed
 
-
-	// summarize the data
 summarize year country co segment domestic firm qu price horsepower fuel width height pop ngdp
 
-	// define panel to Stata
+// Define panel 
+
 egen yearcountry=group(year country), label
 xtset co yearcountry
 
-	// define outside good
+// Defining outside good as MSIZE
+
 gen MSIZE=pop/4
 
-
 #delimit ;
+
 local characteristics "horsepower fuel width height domestic";
 
 * Sum of the characteristics of all competing products and competing products produced by other firms;
 
-* Per year and market;
 
 *** 	i_hp= sum(hp)-hp 					sum of the characteristics of all competing products
-	if_hp= sum(hp of firm j) - hp  		sum of the characteristics of all other makes of firm j
+	if_hp= sum(hp of firm j) - hp  			sum of the characteristics of all other makes of firm j
 	CFi_hp= sum(hp)- sum(hp of firm j)		sum of the characteristics of all other non-firm j makes;
-
-
+	
 foreach inst in `characteristics'{;
 qui{;
 	egen i_`inst'=sum(`inst'), by (year country);
@@ -71,11 +76,14 @@ qui{;
 };
 };
 
+
+
 qui egen tot_sales=sum(qu), by(year country);
 qui egen i_num=count(qu), by(year country);
 
 qui egen firm_sales=sum(qu), by(year country firm);
 qui egen if_num=count(qu), by(year country firm);
+
 
 qui gen CFi_num=i_num-if_num;
 
@@ -86,6 +94,63 @@ replace if_num=if_num-1;
 gen lnif_num=ln(if_num);
 
 
+* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
+
+
+* Per year market firm and segment;
+
+*** 	is_hp= sum(hp in segment k)-hp 							sum of the characteristics of all competing products in segment k
+	ifs_hp= sum(hp of firm j in segment k) - hp  					sum of the characteristics of all other makes of firm j in segment k
+	CFis_hp= sum(hp in segment k)- sum(hp of firm j in segment k)		sum of the characteristics of all other non-firm j makes in segment k;
+
+
+foreach inst in `characteristics'{;
+qui{;
+	egen is_`inst'=sum(`inst'),  by (year country segment);
+	egen ifs_`inst'=sum(`inst'), by (year country segment firm);
+	gen CFis_`inst'=is_`inst'-ifs_`inst';
+	replace is_`inst'=is_`inst'-`inst';
+	replace ifs_`inst'=ifs_`inst'-`inst';
+};
+};
+
+egen seg_sales=sum(qu), by(year country segment);
+egen is_num=count(qu), by(year country segment);
+
+egen fs_sales=sum(qu), by(year country segment firm);
+egen ifs_num=count (qu), by(year country segment firm);
+
+qui gen CFis_num=is_num-ifs_num;
+
+replace is_num=is_num-1;
+gen lnis_num=ln(is_num);
+replace ifs_num=ifs_num-1;
+gen lnifs_num=ln(ifs_num);
+
+mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+// THIS DOES the first regression without instruments,
+// MERGER SIM creates M_ls which is ln(st) - ln(s0) can gen on my own
+
+xtreg M_ls price 			horsepower fuel width height domestic year country2-country5, fe;
+
+summarize M_ls
+
+// not sure this is correct IV's might be using NESTED LOGIT INSTRUMENTS
+***This uses i_horsepower, i_fuel , i_width i_height i_domestic
+							if_horsepower if_fuel if_width if_height if_domestic
+							is_horsepower is_fuel is_width is_height is_domestic
+							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic;
+							
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
+							if_horsepower if_fuel if_width if_height if_domestic
+							is_horsepower is_fuel is_width is_height is_domestic
+							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+							horsepower fuel width height domestic year country2-country5, fe;
+
+
+
+
 
 ```
 
@@ -93,4 +158,26 @@ gen lnif_num=ln(if_num);
 library(foreign)
 mydata <- read.dta("/Users/David/Downloads/HW3/cars1.dta")
 ```
+For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})$
 
+Crossprice Elasticity:
+
+\begin{align*}
+s_{jt} &= \frac{\exp(\delta_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
+s_{jt} &= \frac{M_j}{1 + \sum^{J}_{k=1} M_k} \\
+\frac{\partial M_j}{\partial p_{kt}} &= 0\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{\frac{\partial M_j}{\partial p_{kt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_k}{\partial p_{kt}} \\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \frac{0}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 +\sum^{J}_{k=1} M_k)^2} \times (-\alpha M_k)\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha \times \frac{M_j}{1 +\sum^{J}_{k=1} M_k} \times \frac{M_k}{1 + \sum^{J}_{k=1} M_k}\\
+\frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha s_{jt}s_{kt}\\
+\end{align*}
+
+for own price elasticity and k = j : 
+\begin{align*}
+\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{\frac{\partial M_j}{\partial p_{jt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 + \sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_j}{\partial p_{jt}} \\
+\frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{-\alpha M_j}{1 + \sum^{J}_{k=1} M_j} + \frac{-M_j}{( 1 + \sum^{J}_{k=1} M_k)^2} \times (-\alpha M_j)\\
+\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}  + \alpha s^2_{jt}\\
+\frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}(1 - s_{jt})\\
+\end{align*}
+
+NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'

@@ -172,7 +172,7 @@ xtreg M_ls price horsepower fuel width height domestic year country2-country5, f
 
 // USING IV's of sum of characteristic of all competing products group by year and country
 
-xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic)
+xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic)
 				horsepower fuel width height domestic year country2-country5, fe;
 
 

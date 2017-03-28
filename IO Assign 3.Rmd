@@ -183,3 +183,49 @@ gen M = ln(qu) - ln(outsidegood2)
 library(foreign)
 mydata <- read.dta("/Users/David/Downloads/HW3/cars1.dta")
 ```
+4.1 Logit Estimation 
+
+Model:
+
+\begin{align*}
+u_{ijt} = \beta_0 + \beta^f f_{jt} + \beta^d d_{jt} + \alpha p_{jt} + \xi_{jt} + \epsilon_{ijt}
+\end{align*}
+
+constant: vector of ones,
+f: amount of caffeine 
+d: degrees of roasting
+Zopt : Instrument Matrix 
+shares: Market Share 
+
+Estimating model using ols in MATLAB, must have data.mat in memory. I don't include constant in 1 since Lfit already includes constant. 
+
+```{}
+X = [p,f,d]
+mdl = fitlm(X,shares)
+mdl.Coefficients
+
+ans =
+                    Estimate        SE         tStat        pValue  
+                   __________    _________    ________    __________
+
+    (Intercept)       0.07879     0.018098      4.3535    1.9667e-05
+    x1             -0.0097574    0.0011657     -8.3702    4.3709e-15
+    x2               0.010181    0.0078221      1.3016       0.19429
+    x3              -0.001388    0.0080409    -0.17262       0.86309
+```
+Using 2SLS. Couldn't find iv in matlab 
+```{}
+X = [constant,p,f,d]
+Z = instrument
+
+inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*shares
+
+ans =
+
+    0.0823
+   -0.0103
+    0.0106
+   -0.0011
+```
+
+There must be a better way to do Varinace. 

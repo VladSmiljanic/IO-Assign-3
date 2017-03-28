@@ -48,7 +48,10 @@ This is the specification that will be taken to the data using OLS and 2SLS.
 
 2. *Discuss the endogeneity problem and how you are going to treat it. You can use the observed nonprice attributes as instruments under the assumption that they are exogeneous as in BLP(1995). You can use the sums and the count of characteristics by country and year , and by country year and firm.*
 
-The endogeneity problem in this presentation is obvious. 
+The endogeneity problem exists in that there is strong argument to be made that $\xi$ the econometric error term that contains all unobserved characteristics for product j is correlated with price. Thus $E[\xi | X]= 0$. For example one could assume an unobserved characteristic could be the prestige associated with a brand. It would be reasonable to assume that a consumer would get more utility and be willing to pay more for a high prestige brand such as ferrari in comparison to a less prestigious car even holding observed characteristics constant.
+
+The OLS estimation uses observed nonprice attributes of all products in a given year. 
+TALK ABOUT HOW THESE ARE UNCORRELATED WITH THE PRICE?..
 
 
 3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*

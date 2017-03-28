@@ -255,3 +255,5 @@ SE =
 ```
 
 There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity 
+
+Compare standard errors and coefficients.

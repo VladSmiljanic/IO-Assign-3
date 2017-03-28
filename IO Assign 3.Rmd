@@ -213,19 +213,43 @@ ans =
     x2               0.010181    0.0078221      1.3016       0.19429
     x3              -0.001388    0.0080409    -0.17262       0.86309
 ```
-Using 2SLS. Couldn't find iv in matlab 
+Using Matrix notation found in Cameron Trivendi because I couldn't find 2SLS function. 
+
 ```{}
 X = [constant,p,f,d]
 Z = instrument
 
-inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*shares
+B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*shares
 
-ans =
+B2SLS =
 
     0.0823
    -0.0103
     0.0106
    -0.0011
+
+ u = minus(shares,X*B2SLS)
+ s2 = ((250-3)^-1)*u.'*u
+ VB2ls = s2*inv(X.'*Z*inv(Z.'*Z)*Z.'X)
+
+VB2ls =
+
+   1.0e-03 *
+
+    0.3526   -0.0129   -0.0769   -0.0830
+   -0.0129    0.0020   -0.0013   -0.0011
+   -0.0769   -0.0013    0.0613   -0.0027
+   -0.0830   -0.0011   -0.0027    0.0646
+
+SE = diag(sqrt(VB2ls))
+
+SE =
+
+    0.0188
+    0.0014
+    0.0078
+    0.0080
+
 ```
 
-There must be a better way to do Varinace. 
+There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity 

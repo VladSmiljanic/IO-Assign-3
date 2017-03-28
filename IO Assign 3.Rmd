@@ -197,23 +197,23 @@ d: degrees of roasting
 Zopt : Instrument Matrix 
 shares: Market Share 
 
-Estimating model using ols in MATLAB, must have data.mat in memory. I don't include constant in 1 since Lfit already includes constant. 
-Might actually need to do  log(shares) in that case uncomment out log shares and  replace shares with lnshares in the rest of the code. 
+Estimating model using ols in MATLAB, must have data.mat in memory. I don't include constant in 1 since Lfit already includes constant.  
 
 ```{}
-%lnshares = log(shares)
-X = [p,f,d]
-mdl = fitlm(X,shares)
+lnshares = log(shares)
+X = [constant,p,f,d]
+mdl = fitlm(X,lnshares)
 mdl.Coefficients
 
-ans =
-                    Estimate        SE         tStat        pValue  
-                   __________    _________    ________    __________
+ans = 
+                   Estimate       SE        tStat       pValue   
+                   ________    ________    _______    ___________
 
-    (Intercept)       0.07879     0.018098      4.3535    1.9667e-05
-    x1             -0.0097574    0.0011657     -8.3702    4.3709e-15
-    x2               0.010181    0.0078221      1.3016       0.19429
-    x3              -0.001388    0.0080409    -0.17262       0.86309
+    (Intercept)          0            0        NaN            NaN
+    x1             0.39685      0.50184    0.79079        0.42983
+    x2             -1.7528     0.032324    -54.225    1.8198e-138
+    x3              2.9999       0.2169     13.831     1.5287e-32
+    x4             0.82219      0.22297     3.6875     0.00027893
 ```
 Using Matrix notation found in Cameron Trivendi because I couldn't find 2SLS function. 
 
@@ -221,37 +221,36 @@ Using Matrix notation found in Cameron Trivendi because I couldn't find 2SLS fun
 X = [constant,p,f,d]
 Z = instrument
 
-B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*shares
+B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*lnshares
+
+ans = 
 
 B2SLS =
 
-    0.0823
-   -0.0103
-    0.0106
-   -0.0011
+    1.7079
+   -1.9519
+    3.1361
+    0.9306
 
- u = minus(shares,X*B2SLS)
+ u = minus(lnshares,X*B2SLS)
  s2 = ((250-3)^-1)*u.'*u
  VB2ls = s2*inv(X.'*Z*inv(Z.'*Z)*Z.'*X)
 
 VB2ls =
 
-   1.0e-03 *
-
-    0.3526   -0.0129   -0.0769   -0.0830
-   -0.0129    0.0020   -0.0013   -0.0011
-   -0.0769   -0.0013    0.0613   -0.0027
-   -0.0830   -0.0011   -0.0027    0.0646
+    0.3126   -0.0114   -0.0682   -0.0736
+   -0.0114    0.0017   -0.0012   -0.0009
+   -0.0682   -0.0012    0.0543   -0.0024
+   -0.0736   -0.0009   -0.0024    0.0573
 
 SE = diag(sqrt(VB2ls))
 
 SE =
 
-    0.0188
-    0.0014
-    0.0078
-    0.0080
-
+    0.5591
+    0.0416
+    0.2331
+    0.2394
 ```
 
 There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity 

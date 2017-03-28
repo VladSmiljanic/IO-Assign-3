@@ -182,6 +182,10 @@ xtreg M_ls price horsepower fuel width height domestic year country2-country5, f
 xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic 
 		if_horsepower if_fuel if_width if_height if_domestic)
 	horsepower fuel width height domestic year country2-country5, fe;
+	
+xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic)
+	horsepower fuel width height domestic year country2-country5, fe;
+	
 gen outsidegood2 = MSIZE - tot_sales
 gen M = ln(qu) - ln(outsidegood2)
 // this term is the same as M_ls

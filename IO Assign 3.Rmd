@@ -255,4 +255,47 @@ SE =
 
 There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity 
 
-Compare standard errors and coefficients.
+Compare standard errors and coefficients. This model is correct cause of part 2. 
+
+# 4.2 Random Coefficients Logit (BLP)
+
+1. 
+
+2. 
+
+Results with 10 draws 
+
+```{}
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6810]    [  0.6540]    [  4.0992]
+    'price'         [-1.9808]    [  0.0466]    [-42.5372]
+    'char1'         [ 1.9077]    [  0.4342]    [  4.3936]
+    'char2'         [ 0.9549]    [  0.2648]    [  3.6067]
+    'sigmachar1'    [ 1.3902]    [  0.2849]    [  4.8790]
+```
+
+Results with 50 draws 
+
+```{}
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6029]    [  0.5835]    [  4.4607]
+    'price'         [-1.9815]    [  0.0408]    [-48.5259]
+    'char1'         [ 2.3482]    [  0.3197]    [  7.3458]
+    'char2'         [ 0.8895]    [  0.2338]    [  3.8048]
+    'sigmachar1'    [ 0.9038]    [  0.1400]    [  6.4537]
+```
+
+Results with 100 draws
+
+```{}
+
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6263]    [  0.5650]    [  4.6486]
+    'price'         [-1.9774]    [  0.0401]    [-49.3514]
+    'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
+    'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
+    'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
+```

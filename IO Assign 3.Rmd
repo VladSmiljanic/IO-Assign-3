@@ -11,31 +11,40 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Question 1
 
-We can define our mean utility for the model to be :
-
+We can define the mean utility for product j at time t that all consumers receive:
 \begin{align*}
-
 \delta_{jt} = x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}
 \end{align*}
-
 Where $u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j, c_t,\xi;\beta,\alpha) + \epsilon_{ijt}$.
 
-
-(From Berry 1994 paper page 6) Variation in consumer tastes only enters through the error term $\epsilon_{ijt}$ which is assumed to be iid extreme value or logit distribution across all consumers and choices. 
-
+From Berry (1994) we know that the variation in consumer tastes only enters through the error term $\epsilon_{ijt}$ which is assumed to be iid extreme value or logit distribution across all consumers and choices. 
 \begin{align*}
 F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\\
 \end{align*}
-
 Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. Can interpret $I$ as the expected value of the maximum over all utilities.
 
-As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good. 
+As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.
 
-Specification we put to the data by integrating out logit error. 
+Individuals choose the product out of the total products available plus the outside good. The probability that individual i chooses product j takes the following form:
 \begin{align*}
-s_{jt} &= \frac{\exp{\delta_{jt}}}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})} \\
-\ln{\widehat{s_{jt}}} - \ln{\widehat{s_{0t}}}  &=   x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt} 
+s_{jt} &= \frac{\exp(\delta_{j})}{\exp{I}}\\
+s_{jt} &= \frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}\\
 \end{align*}
+We also know the probability that an individual chooses the outside good which is given by. This is due to the fact that we normalize the mean utility that any idividual gets from the outside good to be equal to 0. 
+\begin{align*}
+s_{0t} &= \frac{\exp(\delta_0)}{\exp(I)}\\ 
+s_{0t} &= \frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}
+\end{align*}
+After defining $s_{0t}$ and $s_{jt}$ we can now perform a Berry inversion as seen in Berry (1994). 
+
+\begin{align*}
+\frac{s_{jt}}{s_{0t}} &=  \frac{\frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}{\frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}  \\
+\frac{s_{jt}}{s_{0t}} &= \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})\\
+\ln(\frac{s_{jt}}{s_{0t}}) &= ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}))\\
+\ln(\frac{s_{jt}}{s_{0t}}) &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}
+\end{align*}
+
+This is the specification that will be taken to the data using OLS and 2SLS.
 
 2. *Discuss the endogeneity problem and how you are going to treat it. You can use the observed nonprice attributes as instruments under the assumption that they are exogeneous as in BLP(1995). You can use the sums and the count of characteristics by country and year , and by country year and firm.*
 

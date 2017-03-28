@@ -83,7 +83,7 @@ NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 
 
 4. *Estimate the logit using OLS and 2SLS with car model fixed effects, using the instruments discussed above. Report the coefficients and the standard errors for the product characteristics and price. How does the coefficient of price change when you use instruments?*. 
 
-5. *Calculate the elasticities and report summary statistics*.
+Estimating logit using OLS and 2SLS with car model fixed effects as well as instruments. 
 
 ```{}
 clear all
@@ -124,14 +124,11 @@ qui{;
 };
 };
 
-
-
 qui egen tot_sales=sum(qu), by(year country);
 qui egen i_num=count(qu), by(year country);
 
 qui egen firm_sales=sum(qu), by(year country firm);
 qui egen if_num=count(qu), by(year country firm);
-
 
 qui gen CFi_num=i_num-if_num;
 
@@ -141,55 +138,57 @@ gen lni_num=ln(i_num);
 replace if_num=if_num-1;
 gen lnif_num=ln(if_num);
 
-
-* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-
-
-* Per year market firm and segment;
-
-*** 	is_hp= sum(hp in segment k)-hp 							sum of the characteristics of all competing products in segment k
-	ifs_hp= sum(hp of firm j in segment k) - hp  					sum of the characteristics of all other makes of firm j in segment k
-	CFis_hp= sum(hp in segment k)- sum(hp of firm j in segment k)		sum of the characteristics of all other non-firm j makes in segment k;
-
-
-foreach inst in `characteristics'{;
-qui{;
-	egen is_`inst'=sum(`inst'),  by (year country segment);
-	egen ifs_`inst'=sum(`inst'), by (year country segment firm);
-	gen CFis_`inst'=is_`inst'-ifs_`inst';
-	replace is_`inst'=is_`inst'-`inst';
-	replace ifs_`inst'=ifs_`inst'-`inst';
-};
-};
-
-egen seg_sales=sum(qu), by(year country segment);
-egen is_num=count(qu), by(year country segment);
-
-egen fs_sales=sum(qu), by(year country segment firm);
-egen ifs_num=count (qu), by(year country segment firm);
-
-qui gen CFis_num=is_num-ifs_num;
-
-replace is_num=is_num-1;
-gen lnis_num=ln(is_num);
-replace ifs_num=ifs_num-1;
-gen lnifs_num=ln(ifs_num);
-
 mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
 
 xtreg M_ls price horsepower fuel width height domestic year country2-country5, fe;
-
-xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic 
-		if_horsepower if_fuel if_width if_height if_domestic)
-	horsepower fuel width height domestic year country2-country5, fe;
 	
 xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic)
 	horsepower fuel width height domestic year country2-country5, fe;
-	
-gen outsidegood2 = MSIZE - tot_sales
-gen M = ln(qu) - ln(outsidegood2)
-// this term is the same as M_ls
 ```
+Coefficients and standard errors for product charactersitics and price. Confirming  
+
+```{}
+
+xtreg M_ls price horsepower fuel width height domestic year country2-country5, fe;
+
+   M_ls |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       price |   -.050574   .0029855   -16.94   0.000    -.0564261   -.0447218
+  horsepower |  -.0105318   .0013525    -7.79   0.000     -.013183   -.0078807
+        fuel |  -.0555518   .0104271    -5.33   0.000    -.0759907   -.0351128
+       width |   .0618035   .0038153    16.20   0.000     .0543248    .0692822
+      height |   .0301939   .0050837     5.94   0.000     .0202289    .0401588
+    domestic |   1.852258   .0225663    82.08   0.000     1.808024    1.896492
+        year |  -.0448788   .0027147   -16.53   0.000    -.0502001   -.0395575
+    country2 |  -.9618966   .0250186   -38.45   0.000    -1.010937   -.9128558
+    country3 |  -.8360231   .0250937   -33.32   0.000    -.8852112    -.786835
+    country4 |  -.7841082   .0268119   -29.24   0.000    -.8366642   -.7315522
+    country5 |  -.5148567   .0337275   -15.27   0.000    -.5809687   -.4487448
+       _cons |    69.6166   5.087516    13.68   0.000     59.64416    79.58903
+
+
+xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic) horsepower fuel width height domestic year country2-country5, fe
+
+  M_ls |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       price |  -.1445286   .0197076    -7.33   0.000    -.1831548   -.1059023
+  horsepower |   .0045026   .0034189     1.32   0.188    -.0021983    .0112035
+        fuel |  -.0631069   .0109934    -5.74   0.000    -.0846535   -.0415602
+       width |   .0690599   .0042558    16.23   0.000     .0607187     .077401
+      height |   .0332539    .005343     6.22   0.000     .0227819    .0437259
+    domestic |   1.818139   .0245872    73.95   0.000     1.769949    1.866329
+        year |  -.0636334   .0048078   -13.24   0.000    -.0730566   -.0542103
+    country2 |   -.897844    .029286   -30.66   0.000    -.9552436   -.8404444
+    country3 |   -.933153   .0330225   -28.26   0.000    -.9978759   -.8684302
+    country4 |  -.5688543   .0526361   -10.81   0.000    -.6720192   -.4656895
+    country5 |   .2022872   .1526476     1.33   0.185    -.0968965    .5014709
+       _cons |   105.9896    9.21641    11.50   0.000     87.92579    124.0535
+
+```
+
+We can see that the coefficient on price decreases as we include instruments. 
+
+5. *Calculate the elasticities and report summary statistics*.
 
 ```{r}
 library(foreign)
@@ -310,4 +309,9 @@ Result of Random Coefficient Logit
     'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
     'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
+```
+```{}
+gen outsidegood2 = MSIZE - tot_sales
+gen M = ln(qu) - ln(outsidegood2)
+// this term is the same as M_ls
 ```

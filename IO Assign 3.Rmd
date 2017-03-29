@@ -13,9 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We can define the mean utility for product j at time t that all consumers receive:
 \begin{align*}
-\delta_{jt} = x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}
+\delta_{jt} = x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}
 \end{align*}
-Where $u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j, c_t,\xi;\beta,\alpha) + \epsilon_{ijt}$.
+Where $u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}$.
 
 From Berry (1994) we know that the variation in consumer tastes only enters through the error term $\epsilon_{ijt}$ which is assumed to be iid extreme value or logit distribution across all consumers and choices. 
 \begin{align*}
@@ -28,7 +28,7 @@ As a result, all properties of market demand are determined by $\delta_{jt}$, wh
 Individuals choose the product out of the total products available plus the outside good. The probability that individual i chooses product j takes the following form:
 \begin{align*}
 s_{jt} &= \frac{\exp(\delta_{j})}{\exp{I}}\\
-s_{jt} &= \frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}\\
+s_{jt} &= \frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}\\
 \end{align*}
 We also know the probability that an individual chooses the outside good which is given by. This is due to the fact that we normalize the mean utility that any idividual gets from the outside good to be equal to 0. 
 \begin{align*}
@@ -38,10 +38,10 @@ s_{0t} &= \frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}
 After defining $s_{0t}$ and $s_{jt}$ we can now perform a Berry inversion as seen in Berry (1994). 
 
 \begin{align*}
-\frac{s_{jt}}{s_{0t}} &=  \frac{\frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}{\frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}  \\
-\frac{s_{jt}}{s_{0t}} &= \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})\\
-\ln(\frac{s_{jt}}{s_{0t}}) &= ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}))\\
-\ln(\frac{s_{jt}}{s_{0t}}) &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt}
+\frac{s_{jt}}{s_{0t}} &=  \frac{\frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}{\frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}  \\
+\frac{s_{jt}}{s_{0t}} &= \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})\\
+\ln(\frac{s_{jt}}{s_{0t}}) &= ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}))\\
+\ln(\frac{s_{jt}}{s_{0t}}) &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}
 \end{align*}
 
 This is the specification that will be taken to the data using OLS and 2SLS.
@@ -56,7 +56,7 @@ TALK ABOUT HOW THESE ARE UNCORRELATED WITH THE PRICE?..
 
 3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*
 
-For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \lambda c_t + \xi_{jt})$
+For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})$
 
 Crossprice Elasticity:
 

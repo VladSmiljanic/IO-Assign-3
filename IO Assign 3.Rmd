@@ -138,20 +138,37 @@ gen lni_num=ln(i_num);
 replace if_num=if_num-1;
 gen lnif_num=ln(if_num);
 
-mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+*Code from page 55 of her session 3 notes. We solve for the dependent variables values using this method. This one is using characertistics by country and year. The ivreg uses characteristics for country, year and country, year and firm.
 
-xtreg M_ls price horsepower fuel width height domestic year country2-country5, fe;
+gen rewr=ln(qu/(MSIZE-tot_sales));
+
+xtreg rewr price horsepower fuel width height domestic year country2-country5, fe;
+
+xtivreg rewr (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num
+							if_horsepower if_fuel if_width if_height if_domestic i_num)
+							horsepower fuel width height domestic year country2-country5, fe;
+
+
 	
-xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic)
-	horsepower fuel width height domestic year country2-country5, fe;
 ```
 Coefficients and standard errors for product charactersitics and price. Confirming  
 
 ```{}
 
-xtreg M_ls price horsepower fuel width height domestic year country2-country5, fe;
+xtreg rewr price horsepower fuel width height domestic year country2-country5, fe;
 
-   M_ls |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+Fixed-effects (within) regression               Number of obs      =     11483
+Group variable: co                              Number of groups   =       351
+
+R-sq:  within  = 0.4439                         Obs per group: min =         1
+       between = 0.1552                                        avg =      32.7
+       overall = 0.3471                                        max =       146
+
+                                                F(11,11121)        =    807.15
+corr(u_i, Xb)  = -0.0355                        Prob > F           =    0.0000
+
+------------------------------------------------------------------------------
+        rewr |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
        price |   -.050574   .0029855   -16.94   0.000    -.0564261   -.0447218
   horsepower |  -.0105318   .0013525    -7.79   0.000     -.013183   -.0078807
@@ -165,24 +182,58 @@ xtreg M_ls price horsepower fuel width height domestic year country2-country5, f
     country4 |  -.7841082   .0268119   -29.24   0.000    -.8366642   -.7315522
     country5 |  -.5148567   .0337275   -15.27   0.000    -.5809687   -.4487448
        _cons |    69.6166   5.087516    13.68   0.000     59.64416    79.58903
-
-
-xtivreg M_ls (price = i_horsepower i_fuel i_width i_height i_domestic) horsepower fuel width height domestic year country2-country5, fe
-
-  M_ls |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-       price |  -.1445286   .0197076    -7.33   0.000    -.1831548   -.1059023
-  horsepower |   .0045026   .0034189     1.32   0.188    -.0021983    .0112035
-        fuel |  -.0631069   .0109934    -5.74   0.000    -.0846535   -.0415602
-       width |   .0690599   .0042558    16.23   0.000     .0607187     .077401
-      height |   .0332539    .005343     6.22   0.000     .0227819    .0437259
-    domestic |   1.818139   .0245872    73.95   0.000     1.769949    1.866329
-        year |  -.0636334   .0048078   -13.24   0.000    -.0730566   -.0542103
-    country2 |   -.897844    .029286   -30.66   0.000    -.9552436   -.8404444
-    country3 |   -.933153   .0330225   -28.26   0.000    -.9978759   -.8684302
-    country4 |  -.5688543   .0526361   -10.81   0.000    -.6720192   -.4656895
-    country5 |   .2022872   .1526476     1.33   0.185    -.0968965    .5014709
-       _cons |   105.9896    9.21641    11.50   0.000     87.92579    124.0535
+     sigma_u |  1.0115597
+     sigma_e |  .83600972
+         rho |  .59416655   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0:     F(350, 11121) =    28.23          Prob > F = 0.0000
+
+. xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
+>                                                         if_horsepower if_fuel if_width if_height if_domesti
+> c i_num)
+>                                                         horsepower fuel width height domestic year country2
+> -country5, fe;
+note: i_num omitted because of collinearity
+
+Fixed-effects (within) IV regression         Number of obs      =        11483
+Group variable: co                           Number of groups   =          351
+
+R-sq:  within  = 0.4299                      Obs per group: min =            1
+       between = 0.1897                                     avg =         32.7
+       overall = 0.3501                                     max =          146
+
+                                             Wald chi2(11)      =    848625.94
+corr(u_i, Xb)  = -0.0999                     Prob > chi2        =       0.0000
+
+------------------------------------------------------------------------------
+        rewr |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       price |  -.1005664   .0177525    -5.66   0.000    -.1353608   -.0657721
+  horsepower |  -.0025321   .0031163    -0.81   0.416    -.0086399    .0035757
+        fuel |  -.0595718    .010651    -5.59   0.000    -.0804474   -.0386962
+       width |   .0656646   .0040925    16.04   0.000     .0576433    .0736858
+      height |   .0318221   .0051788     6.14   0.000     .0216718    .0419724
+    domestic |   1.834104   .0237157    77.34   0.000     1.787622    1.880586
+        year |   -.054858    .004444   -12.34   0.000     -.063568    -.046148
+    country2 |  -.9278147   .0279989   -33.14   0.000    -.9826915   -.8729379
+    country3 |  -.8877051   .0311868   -28.46   0.000    -.9488302     -.82658
+    country4 |  -.6695734   .0484069   -13.83   0.000    -.7644492   -.5746975
+    country5 |  -.1332703   .1378219    -0.97   0.334    -.4033964    .1368557
+       _cons |   88.97039   8.508741    10.46   0.000     72.29356    105.6472
+-------------+----------------------------------------------------------------
+     sigma_u |  1.0364758
+     sigma_e |  .84648344
+         rho |  .59988403   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F  test that all u_i=0:     F(350,11121) =    26.70       Prob > F    = 0.0000
+------------------------------------------------------------------------------
+Instrumented:   price
+Instruments:    horsepower fuel width height domestic year country2 country3
+                country4 country5 i_horsepower i_fuel i_width i_height
+                i_domestic i_num if_horsepower if_fuel if_width if_height
+                if_domestic
+------------------------------------------------------------------------------
 
 ```
 

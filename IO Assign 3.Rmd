@@ -70,6 +70,15 @@ s_{jt} &= \frac{M_j}{1 + \sum^{J}_{k=1} M_k} \\
 \frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha s_{jt}s_{kt}\\
 \end{align*}
 
+We can now use this to find our crossprice elasticity:
+\begin{align*}
+\frac{\partial q_k}{\partial p_j}\frac{p_j}{q_k} &= \frac{L\partial s_k}{\partial p_j}\frac{p_j}{q_k}\\
+&= L (\alpha s_{j}s_{k})\frac{p_j}{q_k}\\
+&= L (\alpha s_{j}\frac{q_k}{L})\frac{p_j}{q_k}\\
+&= \alpha s_j p_j\\
+\end{align*}
+
+
 for own price elasticity and k = j : 
 \begin{align*}
 \frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{\frac{\partial M_j}{\partial p_{jt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 + \sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_j}{\partial p_{jt}} \\
@@ -78,6 +87,14 @@ for own price elasticity and k = j :
 \frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}(1 - s_{jt})\\
 \end{align*}
 
+We can use similar procedure to solve for own price elasticity:
+
+\begin{align*}
+\frac{\partial q_j}{\partial p_j}\frac{p_j}{q_k} &= \frac{L\partial s_j}{\partial p_j}\frac{p_j}{q_j}\\
+&= L (- \alpha s_{j}(1 - s_{j})\frac{p_j}{q_j}\\
+&= L (-\alpha s_{j}\frac{q_j}{L})(1 - s_{j})\frac{p_j}{q_j}\\
+&= -\alpha p_j(1-s_j)\\
+\end{align*}
 NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'
 
 
@@ -241,8 +258,25 @@ We can see that the coefficient on price decreases as we include instruments.
 
 5. *Calculate the elasticities and report summary statistics*.
 
+
+
 #Question 2
 
+1. Deriving Berry-one-level nested logit begining from the utility following utility specification. 
+
+\begin{align*}
+u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
+\end{align*}
+
+We than divide the products into mutually exclusive nests which we note by $g = 0 \dots G$ where $g=0$ is the nest that only contains the outside good. 
+
+In the nested logiot the individual error term $\epsilon_{ijt}$ is composed of two parts
+\begin{align*}
+\epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
+\end{align*}
+
+The first term $\epsilon{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one i.i.d  extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
+ 
 2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
 
 3.

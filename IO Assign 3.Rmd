@@ -394,6 +394,17 @@ To find the own price elasticities, we will take the derivative of our product s
 &=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
 
 &=-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})\\
+\end{align*}
+
+From this we can calculate our own price elasticities:
+
+\begin{align*}
+\frac{\partial q_j}{\partial p_j} \frac{p_j}{q_j}&= L\frac{\partial s_j}{\partial p_j} \frac{p_j}{q_j}\\
+&= L(-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
+
+&= L(-\frac{\alpha}{(1-\sigma_g)}\frac{q_j}{L}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
+
+&=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}))p_j\\
 
 \end{align*}
 
@@ -560,6 +571,7 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------
 ```
 
+The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .2110286. We can input these values with the known values for shares to find our own- and cross-price elasticities.
 
 # 4.1 Logit Estimation 
 

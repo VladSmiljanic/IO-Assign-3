@@ -319,6 +319,10 @@ There must be a better way to do Varinace. Here i get the projection matrix , ge
 
 Compare standard errors and coefficients. This model is correct cause of part 2. 
 
+#Question 2
+
+2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
+
 # 4.2 Random Coefficients Logit (BLP)
 
 1. 

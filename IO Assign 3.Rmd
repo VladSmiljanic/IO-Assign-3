@@ -168,7 +168,8 @@ xtivreg rewr (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num
 
 	
 ```
-Coefficients and standard errors for product charactersitics and price. Confirming  
+
+*Coefficients and standard errors for product charactersitics and price*
 
 ```{}
 
@@ -254,11 +255,42 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 
 ```
 
+
 We can see that the coefficient on price decreases as we include instruments. 
 
 5. *Calculate the elasticities and report summary statistics*.
 
+From our summary table for coefficients and standards errors, we seee that our coefficient on prices for logit model with instrumental variables is -0.1005664. We can input that value into our price elasticity equation and summarize the results.
 
+*Own price elasticities*
+```{}
+
+. gen alp = -.1005664;
+
+.  gen sj = qu/MSIZE;
+
+. gen oel=(alp)*price*(1-sj);
+
+. sum oel;
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+         oel |     11483   -1.857588    .8975175  -15.11824  -.5274911
+
+```
+
+*Cross-price elasticities*
+```{}
+. gen cel = -(alp)*price*(sj);
+
+. sum cel;
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+         cel |     11483    .0025719    .0038055   .0000141    .035288
+
+
+```
 
 #Question 2
 

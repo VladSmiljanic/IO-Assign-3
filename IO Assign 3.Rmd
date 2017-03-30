@@ -329,6 +329,68 @@ Compare standard errors and coefficients. This model is correct cause of part 2.
 
 2. 
 
+3.
+
+---
+title: "Untitled"
+author: "Vladimir Smiljanic"
+date: '2017-03-30'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Crossprice Elasticity:
+
+\begin{align*}
+s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)} \\
+I&=\ln(\sum^G_{g=0}\exp(I_g))\\  
+I_g&=(1-\sigma_g)\ln(\sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+\end{align*}
+
+Using notation from Barry's paper, we can simplify summations by:
+
+\begin{align*}
+D_g &= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+I_g&=(1-\sigma_g)\ln(D_g)\\
+I&=\ln(\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\  
+\end{align*}
+
+As a result, we can simplify our product shares formula:
+
+\begin{align*}
+s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp((1-\sigma_g)\ln(D_g))}{(D_g)(\sum^G_{g=0}D^{(1-\sigma_g)}_g)} \\
+s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))}{D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g} \\
+\end{align*}
+
+We can also lay out the equation for shares of outside good:
+
+\begin{align*}
+s_{0} &= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g} \\
+\end{align*}
+
+We determine our price elasticities, we need to know the probability of choosing one of the group g products:
+
+\begin{align*}
+s_g&=\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}\\
+s_{j|g} &= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
+\end{align*}
+
+To find the own price elasticities, we will take the derivative of our product shares w.r.t. the products price. We can use the quotient rule to calculate the derivative:
+
+\begin{align*}
+\frac{\partial s_{j}}{\partial p_{j}} &= \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+&\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^2\\
+&=-\alpha\exp(\frac{\delta_j}{(1-\sigma_g)})\frac{1}{(1-\sigma_g)}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
+&\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\
+
+&=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
+
+&=-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})\\
+
+\end{align*}
 Results with 10 draws 
 
 ```{}

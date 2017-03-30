@@ -308,6 +308,42 @@ In the nested logiot the individual error term $\epsilon_{ijt}$ is composed of t
 \end{align*}
 
 The first term $\epsilon{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one i.i.d  extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
+
+Since \epsilon_{ijt} is extreme value distributed $F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))$. 
+\begin{align*}
+I&=\ln(\sum^G_{g=0}\exp(I_g))\\  
+I_g&=(1-\sigma_g)\ln(\sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+s_{jt} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}\\
+s_{0t} &= \frac{1}{\exp(I)}\\
+\ln(s_{jt}) &= \ln( \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}) \\
+\ln(s_{jt}) &= \frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I\\
+\ln(s_{0t}) &= \ln(\frac{1}{\exp(I)}) \\ 
+\ln(s_{0t}) &= -I\\ 
+\ln(\frac{s_{jt}}{s_{0t}}) &=\frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I + I \\
+\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} + \frac{I_g - I_g\sigma_g - I_g}{1-\sigma_g} \\ 
+\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
+\textrm{Using Berry's notation for } &D_g &= \\
+&= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+\textrm{and } I_g&=(1-\sigma_g)\ln(D_g)\\
+\end{align*}
+By the fact that we can express a segments portion of market share:
+\begin{align*}
+\bar{s_g} &= \frac{D_g^{(1-\sigma)}}{\sum_g D_g^{(1-\sigma)}}\\
+\ln(\bar{s_g}) &= (1-\sigma) \ln(D_g) - \ln(s_0) \\
+\ln(D_g) &= \frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\
+\end{align*}
+Pluggin this expression into $I_g$
+\begin{align*}
+I_g &= (1-\sigma_g)\ln(D_g)\\ 
+I_g &= (1-\sigma_g)\frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\ 
+I_g &= \ln(\bar{s_g}) - \ln(s_0) \\
+\end{align*}
+Plugging this in back to our expression for $\ln(s_{jt}) - \ln(s_{0t})$
+\begin{align*}
+\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
+\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{\ln(\bar{s_g}) - \ln(s_0)\sigma_g}{1-\sigma_g} \\
+\end{align*}
+
  
 2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
 

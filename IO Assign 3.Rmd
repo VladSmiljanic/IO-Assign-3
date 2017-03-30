@@ -349,8 +349,6 @@ Plugging this in back to our expression for $\ln(s_{jt}) - \ln(s_{0t})$
 
 3.
 
-Crossprice Elasticity:
-
 \begin{align*}
 s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)} \\
 I&=\ln(\sum^G_{g=0}\exp(I_g))\\  
@@ -398,6 +396,169 @@ To find the own price elasticities, we will take the derivative of our product s
 &=-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})\\
 
 \end{align*}
+
+4.
+
+```{}
+* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
+.                 foreach inst in `characteristics'{;
+  2.         qui{;
+  3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
+  4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
+  5.                 gen CFis_`inst'=is_`inst'-ifs_`inst';
+  6.                 replace is_`inst'=is_`inst'-`inst';
+  7.                 replace ifs_`inst'=ifs_`inst'-`inst';
+  8.         };
+  9. };
+
+. egen seg_sales=sum(qu), by(year country segment);
+
+. egen is_num=count(qu), by(year country segment);
+
+. egen fs_sales=sum(qu), by(year country segment firm);
+
+. egen ifs_num=count (qu), by(year country segment firm);
+
+. qui gen CFis_num=is_num-ifs_num;
+
+. replace is_num=is_num-1;
+(11483 real changes made)
+
+. gen lnis_num=ln(is_num);
+(3 missing values generated)
+
+. replace ifs_num=ifs_num-1;
+(11483 real changes made)
+
+. gen lnifs_num=ln(ifs_num);
+(4662 missing values generated)
+
+. gen sigma=ln(qu/seg_sales);
+
+* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
+.                 foreach inst in `characteristics'{;
+  2.         qui{;
+  3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
+  4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
+  5.                 gen CFis_`inst'=is_`inst'-ifs_`inst';
+  6.                 replace is_`inst'=is_`inst'-`inst';
+  7.                 replace ifs_`inst'=ifs_`inst'-`inst';
+  8.         };
+  9. };
+
+. egen seg_sales=sum(qu), by(year country segment);
+
+. egen is_num=count(qu), by(year country segment);
+
+. egen fs_sales=sum(qu), by(year country segment firm);
+
+. egen ifs_num=count (qu), by(year country segment firm);
+
+. qui gen CFis_num=is_num-ifs_num;
+
+. replace is_num=is_num-1;
+(11483 real changes made)
+
+. gen lnis_num=ln(is_num);
+(3 missing values generated)
+
+. replace ifs_num=ifs_num-1;
+(11483 real changes made)
+
+. gen lnifs_num=ln(ifs_num);
+(4662 missing values generated)
+
+. gen sigma=ln(qu/seg_sales);
+```
+
+```{}
+. xtreg rewr price sigma horsepower fuel width height domestic year country2-country5, fe;
+
+Fixed-effects (within) regression               Number of obs      =     11483
+Group variable: co                              Number of groups   =       351
+
+R-sq:  within  = 0.8796                         Obs per group: min =         1
+       between = 0.7876                                        avg =      32.7
+       overall = 0.8453                                        max =       146
+
+                                                F(12,11120)        =   6767.52
+corr(u_i, Xb)  = 0.0199                         Prob > F           =    0.0000
+
+------------------------------------------------------------------------------
+        rewr |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       price |  -.0491036   .0013895   -35.34   0.000    -.0518273   -.0463799
+       sigma |   .8677908    .004327   200.55   0.000     .8593091    .8762725
+  horsepower |   .0031765   .0006332     5.02   0.000     .0019354    .0044176
+        fuel |  -.0255906   .0048552    -5.27   0.000    -.0351077   -.0160735
+       width |   .0112444   .0017935     6.27   0.000     .0077288      .01476
+      height |   .0012653   .0023704     0.53   0.593    -.0033811    .0059118
+    domestic |   .3883771   .0127901    30.37   0.000     .3633063    .4134479
+        year |  -.0025221    .001281    -1.97   0.049    -.0050331   -.0000111
+    country2 |  -.3304413   .0120622   -27.39   0.000    -.3540853   -.3067972
+    country3 |  -.2093509   .0120898   -17.32   0.000    -.2330489   -.1856528
+    country4 |  -.4288399   .0126037   -34.02   0.000    -.4535454   -.4041344
+    country5 |   -.104273   .0158302    -6.59   0.000     -.135303    -.073243
+       _cons |  -.0712408   2.393163    -0.03   0.976    -4.762264    4.619783
+-------------+----------------------------------------------------------------
+     sigma_u |  .48769407
+     sigma_e |  .38909072
+         rho |   .6110556   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0:     F(350, 11120) =    19.01          Prob > F = 0.0000
+
+. xtivreg rewr (price sigma= i_horsepower i_fuel i_width i_height i_domestic
+>                                                         if_horsepower if_fuel if_width if_height if_domesti
+> c
+>                                                         is_horsepower is_fuel is_width is_height is_domesti
+> c
+>                                                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_do
+> mestic)
+>                                                         horsepower fuel width height domestic year country2
+> -country5, fe;
+
+Fixed-effects (within) IV regression         Number of obs      =        11483
+Group variable: co                           Number of groups   =          351
+
+R-sq:  within  = 0.6001                      Obs per group: min =            1
+       between = 0.3725                                     avg =         32.7
+       overall = 0.5520                                     max =          146
+
+                                             Wald chi2(12)      =     1.21e+06
+corr(u_i, Xb)  = 0.0068                      Prob > chi2        =       0.0000
+
+------------------------------------------------------------------------------
+        rewr |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       price |  -.1232378   .0109746   -11.23   0.000    -.1447476    -.101728
+       sigma |   .2110286   .0293953     7.18   0.000     .1534147    .2686424
+  horsepower |   .0044865    .002236     2.01   0.045     .0001041    .0088689
+        fuel |  -.0541376   .0089089    -6.08   0.000    -.0715987   -.0366766
+       width |   .0551482   .0036227    15.22   0.000     .0480478    .0622486
+      height |   .0255373   .0044086     5.79   0.000     .0168965    .0341781
+    domestic |   1.469756   .0545059    26.97   0.000     1.362926    1.576585
+        year |  -.0491546   .0031366   -15.67   0.000    -.0553022   -.0430071
+    country2 |  -.7585582   .0326599   -23.23   0.000    -.8225704   -.6945461
+    country3 |  -.7591188   .0294356   -25.79   0.000    -.8168116    -.701426
+    country4 |  -.5304193   .0382404   -13.87   0.000    -.6053692   -.4554694
+    country5 |    .142352   .0919044     1.55   0.121    -.0377774    .3224814
+       _cons |   80.93904   5.890503    13.74   0.000     69.39387    92.48422
+-------------+----------------------------------------------------------------
+     sigma_u |  .88552239
+     sigma_e |  .70896758
+         rho |  .60938692   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F  test that all u_i=0:     F(350,11120) =     7.38       Prob > F    = 0.0000
+------------------------------------------------------------------------------
+Instrumented:   price sigma
+Instruments:    horsepower fuel width height domestic year country2 country3
+                country4 country5 i_horsepower i_fuel i_width i_height
+                i_domestic if_horsepower if_fuel if_width if_height
+                if_domestic is_horsepower is_fuel is_width is_height
+                is_domestic ifs_horsepower ifs_fuel ifs_width ifs_height
+                ifs_domestic
+------------------------------------------------------------------------------
+```
 
 
 # 4.1 Logit Estimation 

@@ -70,6 +70,15 @@ s_{jt} &= \frac{M_j}{1 + \sum^{J}_{k=1} M_k} \\
 \frac{\partial s_{jt}}{\partial p_{kt}} &= \alpha s_{jt}s_{kt}\\
 \end{align*}
 
+We can now use this to find our crossprice elasticity:
+\begin{align*}
+\frac{\partial q_k}{\partial p_j}\frac{p_j}{q_k} &= \frac{L\partial s_k}{\partial p_j}\frac{p_j}{q_k}\\
+&= L (\alpha s_{j}s_{k})\frac{p_j}{q_k}\\
+&= L (\alpha s_{j}\frac{q_k}{L})\frac{p_j}{q_k}\\
+&= \alpha s_j p_j\\
+\end{align*}
+
+
 for own price elasticity and k = j : 
 \begin{align*}
 \frac{\partial s_{jt}}{\partial p_{jt}} &= \frac{\frac{\partial M_j}{\partial p_{jt}}}{1 + \sum^{J}_{k=1} M_k} + \frac{-M_j}{(1 + \sum^{J}_{k=1} M_k)^2} \times \frac{\partial M_j}{\partial p_{jt}} \\
@@ -78,6 +87,14 @@ for own price elasticity and k = j :
 \frac{\partial s_{jt}}{\partial p_{jt}} &=  - \alpha s_{jt}(1 - s_{jt})\\
 \end{align*}
 
+We can use similar procedure to solve for own price elasticity:
+
+\begin{align*}
+\frac{\partial q_j}{\partial p_j}\frac{p_j}{q_k} &= \frac{L\partial s_j}{\partial p_j}\frac{p_j}{q_j}\\
+&= L (- \alpha s_{j}(1 - s_{j})\frac{p_j}{q_j}\\
+&= L (-\alpha s_{j}\frac{q_j}{L})(1 - s_{j})\frac{p_j}{q_j}\\
+&= -\alpha p_j(1-s_j)\\
+\end{align*}
 NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'
 
 
@@ -240,6 +257,8 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 We can see that the coefficient on price decreases as we include instruments. 
 
 5. *Calculate the elasticities and report summary statistics*.
+
+
 
 #Question 2
 

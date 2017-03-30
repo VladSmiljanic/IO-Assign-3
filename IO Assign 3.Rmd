@@ -365,8 +365,4 @@ Result of Random Coefficient Logit
     'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
 ```
-```{}
-gen outsidegood2 = MSIZE - tot_sales
-gen M = ln(qu) - ln(outsidegood2)
-// this term is the same as M_ls
-```
+As we can 

@@ -21,7 +21,7 @@ From Berry (1994) we know that the variation in consumer tastes only enters thro
 \begin{align*}
 F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\\
 \end{align*}
-Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. Can interpret $I$ as the expected value of the maximum over all utilities.
+Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. We can interpret $I$ as the expected value of the maximum over all utilities.
 
 As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.
 
@@ -40,7 +40,7 @@ After defining $s_{0t}$ and $s_{jt}$ we can now perform a Berry inversion as see
 \begin{align*}
 \frac{s_{jt}}{s_{0t}} &=  \frac{\frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}{\frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}  \\
 \frac{s_{jt}}{s_{0t}} &= \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})\\
-\ln(\frac{s_{jt}}{s_{0t}}) &= ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}))\\
+\ln(\frac{s_{jt}}{s_{0t}}) &= \ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}))\\
 \ln(\frac{s_{jt}}{s_{0t}}) &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}
 \end{align*}
 
@@ -50,9 +50,7 @@ This is the specification that will be taken to the data using OLS and 2SLS.
 
 The endogeneity problem exists in that there is strong argument to be made that $\xi$ the econometric error term that contains all unobserved characteristics for product j is correlated with price. Thus $E[\xi | X]= 0$. For example one could assume an unobserved characteristic could be the prestige associated with a brand. It would be reasonable to assume that a consumer would get more utility and be willing to pay more for a high prestige brand such as ferrari in comparison to a less prestigious car even holding observed characteristics constant.
 
-The OLS estimation uses observed nonprice attributes of all products in a given year. 
-TALK ABOUT HOW THESE ARE UNCORRELATED WITH THE PRICE?..
-
+To combat this resulting bias we will be using the sum of the characteristics of the all the cars made by firms other that the firm that produces the good, as well as the sum of characteristics of all other makes of the firm that produces the car. The reasoning brovide by Berry (1995) is that since the utility one gets from purchasing a car is uncorrelated with the characteristics of non-purchased cars but competitors must price based on their competition the sum of the characteristics of all other cars follows these properties $E[P|Z] \ne 0$ and $E[\xi|z]= 0$. Thus the sum of other car characteristics are valid instruments if the previous assumptions hold. 
 
 3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*
 
@@ -95,8 +93,6 @@ We can use similar procedure to solve for own price elasticity:
 &= L (-\alpha s_{j}\frac{q_j}{L})(1 - s_{j})\frac{p_j}{q_j}\\
 &= -\alpha p_j(1-s_j)\\
 \end{align*}
-NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07'
-
 
 4. *Estimate the logit using OLS and 2SLS with car model fixed effects, using the instruments discussed above. Report the coefficients and the standard errors for the product characteristics and price. How does the coefficient of price change when you use instruments?*. 
 
@@ -256,7 +252,8 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ```
 
 
-We can see that the coefficient on price decreases as we include instruments. 
+We can see that the coefficient on price decreases as we include instruments. The Instrumented coefficient on price  -.1005664 is larger in absolute value to the  
+coefficient calculated with out instruments -.050574. This confirms the suspicion that the non-instrumented results were biased downwards and it was nessecary to use the following instruments.  
 
 5. *Calculate the elasticities and report summary statistics*.
 
@@ -291,6 +288,7 @@ From our summary table for coefficients and standards errors, we seee that our c
 
 
 ```
+
 
 #Question 2
 

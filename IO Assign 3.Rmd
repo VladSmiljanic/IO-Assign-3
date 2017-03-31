@@ -257,18 +257,15 @@ coefficient calculated with out instruments -.050574. This confirms the suspicio
 
 5. *Calculate the elasticities and report summary statistics*.
 
-From our summary table for coefficients and standards errors, we seee that our coefficient on prices for logit model with instrumental variables is -0.1005664. We can input that value into our price elasticity equation and summarize the results.
+From our summary table for coefficients and standards errors, we see that our coefficient on prices for logit model with instrumental variables is $\alpha=0.1005664$. The regression notes that this coefficient is negative but our model setup the regression to have a negative sign in front of $\alpha$. Hence $\alpha$ itself is positive. We can input that value into our price elasticity equation and summarize the results.
 
 *Own price elasticities*
 ```{}
+gen alp = 0.1005664;
+gen sj = qu/MSIZE;
+gen oel=1alp*price*(1-sj);
 
-. gen alp = -.1005664;
-
-.  gen sj = qu/MSIZE;
-
-. gen oel=(alp)*price*(1-sj);
-
-. sum oel;
+sum oel;
 
     Variable |       Obs        Mean    Std. Dev.       Min        Max
 -------------+--------------------------------------------------------
@@ -278,14 +275,13 @@ From our summary table for coefficients and standards errors, we seee that our c
 
 *Cross-price elasticities*
 ```{}
-. gen cel = -(alp)*price*(sj);
+gen cel = alp*price*sj;
 
-. sum cel;
+sum cel;
 
     Variable |       Obs        Mean    Std. Dev.       Min        Max
 -------------+--------------------------------------------------------
          cel |     11483    .0025719    .0038055   .0000141    .035288
-
 
 ```
 
@@ -578,33 +574,71 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------
 ```
 
-The coefficent on prices is now $\alpha=-.1232378$ and we have estimated $\sigma_g = .2110286$ (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
+The coefficent on prices is now $\alpha=.1232378$ and we have estimated $\sigma_g = .2110286$ (conditional market conditions). Note that the coefficient alpha is negative but our regression assumes there is a negative in front of alpha. Hence alpha itself will be positive according to our formulas. We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
 
 5.
 
 For own-price elasticities, we need to calculate $s_g$ to find share of each segment by country and year. We then input our estimated values of $\alpha$ and $\sigma_g$. 
 
 ```{}
-gen alp = -.1005664 
+gen alp = 0.1232378 
 gen sigma = 0.2110286
 gen sj = qu/MSIZE
-
 egen ig=sum(qu), by(year country segment)
-
 gen sg = ig/MSIZE
 gen sjg= sj/sg
-gen op = -(alp/(1-sigma))*(1-(1-sigma)*sj-sigma*sjg)*price
+
+gen op = (-alp)/(1-sigma)*(1-(1-sigma)*sj-sigma*sjg)*price
 
 sum op
 
     Variable |       Obs        Mean    Std. Dev.       Min        Max
 -------------+--------------------------------------------------------
-          op |     11483     2.31896    1.112648   .6536606   19.08734
+          op |     11483   -2.841739    1.363481  -23.39034    -.80102
+
 ```
 
-For cross-price elasticities where product k is within the segment, we need to sum the products in the segment and remove product j from that sum. 
+For cross-price elasticities where product k is within the segment:
+
+```{}
+gen alp = 0.1232378 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+
+egen ig=sum(qu), by(year country segment)
+gen sk=(ig-qu)/MSIZE
+
+gen sg = ig/MSIZE
+gen skg= sk/sg
+
+gen op = ((alp)/(1-sigma))*((1-sigma)*sk+sigma*skg)*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483    .6190204    .2726837          0   4.891339
+
+```
+
+For cross-price elasticities where product k is outside of the segment:
+
+```{}
+gen alp = 0.1232378 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+gen op = alp*sj*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483    .0031517    .0046634   .0000172   .0432432
 
 
+```
+
+We can see that the price elasticity within a segement is much higher then outside of the segment. Intuitively this makes sense as sales will be more sensitive to price changes to similar segment of cars instead of prices changes to other segments.
 
 ## 3 Merger Simulation 
 

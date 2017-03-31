@@ -501,41 +501,6 @@ From this we can calculate our cross price elasticities for products that are ou
 (4662 missing values generated)
 
 . gen sigma=ln(qu/seg_sales);
-
-* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-.                 foreach inst in `characteristics'{;
-  2.         qui{;
-  3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
-  4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
-  5.                 gen CFis_`inst'=is_`inst'-ifs_`inst';
-  6.                 replace is_`inst'=is_`inst'-`inst';
-  7.                 replace ifs_`inst'=ifs_`inst'-`inst';
-  8.         };
-  9. };
-
-. egen seg_sales=sum(qu), by(year country segment);
-
-. egen is_num=count(qu), by(year country segment);
-
-. egen fs_sales=sum(qu), by(year country segment firm);
-
-. egen ifs_num=count (qu), by(year country segment firm);
-
-. qui gen CFis_num=is_num-ifs_num;
-
-. replace is_num=is_num-1;
-(11483 real changes made)
-
-. gen lnis_num=ln(is_num);
-(3 missing values generated)
-
-. replace ifs_num=ifs_num-1;
-(11483 real changes made)
-
-. gen lnifs_num=ln(ifs_num);
-(4662 missing values generated)
-
-. gen sigma=ln(qu/seg_sales);
 ```
 
 ```{}
@@ -628,6 +593,10 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ```
 
 The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .2110286. We can input these values with the known values for shares to find our own- and cross-price elasticities.
+
+# 3 Merger Simulation 
+
+
 
 # 4.1 Logit Estimation 
 

@@ -489,13 +489,13 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 <span class="math display">\[\begin{align*}
 \frac{\partial s_{k}}{\partial p_{j}} &amp;= - \exp(\frac{\delta_k}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2}\dots\\
 &amp;\dots\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-&amp;=\frac{\alpha}{1-\sigma_g} s_k(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((1-\sigma_g)D_g^\sigma\sum^G_{g=0}(D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-\frac{\partial s_{k}}{\partial p_{j}}&amp;=\frac{\alpha}{1-\sigma_g} s_k((1-\sigma_g)s_k+\sigma s_{k|g})\\
+&amp;=\frac{\alpha s_k}{1-\sigma_g} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((1-\sigma_g)D_g^\sigma\sum^G_{g=0}(D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+\frac{\partial s_{k}}{\partial p_{j}}&amp;=\frac{\alpha s_k}{1-\sigma_g} ((1-\sigma_g)s_k+\sigma s_{k|g})\\
 \end{align*}\]</span>
-<p>rom this we can calculate our cross price elasticities for products that are in the same segement:</p>
+<p>From this we can calculate our cross price elasticities for products that are in the same segement:</p>
 <span class="math display">\[\begin{align*}
 \frac{\partial q_k}{\partial p_j} \frac{p_j}{q_k}&amp;= L\frac{\partial s_k}{\partial p_j} \frac{p_j}{q_k}\\
-&amp;= L(\frac{\alpha}{1-\sigma_g} s_k((1-\sigma_g)s_k+\sigma_g s_{k|g}) ) \frac{p_j}{q_k}\\
+&amp;= L(\frac{\alpha s_k}{1-\sigma_g} ((1-\sigma_g)s_k+\sigma_g s_{k|g}) ) \frac{p_j}{q_k}\\
 &amp;= (\frac{\alpha}{1-\sigma_g}((1-\sigma_g)s_k+\sigma_g s_{k|g}))p_j\\
 \end{align*}\]</span>
 <p>If product k falls outside the segment is in j, then we can calculate <span class="math inline">\(\frac{\partial s_k}{\partial p_j}\)</span> as:</p>
@@ -634,10 +634,13 @@ Instruments:    horsepower fuel width height domestic year country2 country3
                 is_domestic ifs_horsepower ifs_fuel ifs_width ifs_height
                 ifs_domestic
 ------------------------------------------------------------------------------</code></pre>
-<p>The coefficent on prices is now -.1232378 and we have estimated <span class="math inline">\(\sigma_g\)</span> = .2110286. We can input these values with the known values for shares to find our own- and cross-price elasticities.</p>
+<p>The coefficent on prices is now -.1232378 and we have estimated <span class="math inline">\(\sigma_g\)</span> = .2110286 (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our <span class="math inline">\(\sigma_g\)</span> falls signfificantly. Without instruments, the model is approaching a logit model as <span class="math inline">\(\sigma_g\)</span> is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.</p>
+<ol start="5" style="list-style-type: decimal">
+<li></li>
+</ol>
 </div>
 <div id="merger-simulation" class="section level1">
-<h1>3 Merger Simulation</h1>
+<h1>3) Merger Simulation</h1>
 <p>Estimating a merger between Volkswagen (VW) and Ford in Germany 1998</p>
 <p>Logit Specification w/ endogeneity taken into account. Note that firm varialbe = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit.</p>
 <p>Logit Specification:</p>
@@ -1080,7 +1083,7 @@ Result of Random Coefficient Logit
 <p>The log Coeffiecnets are as follows 0.96557601 0.68178285 0.79109025 -0.01116206 -0.08773891</p>
 <p>The standard erros 0.5650, 0.0401, 0.3225, 0.2285, 0.1311</p>
 <p>mean = exp(logcoef + s/2) 3.4836340 2.0174470 2.5917680 1.1085889 0.9780554</p>
-<p>Variance = exp(2m + s) [exp(s) − 1]. 9.2164351 0.1665273 2.5564209 0.3154930 0.1340012</p>
+<p>Variance = exp(2m + s) [exp(s) â 1]. 9.2164351 0.1665273 2.5564209 0.3154930 0.1340012</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Start by drawing 10 invdividuals, than 50 and than 100.</li>
 </ol>
@@ -1120,7 +1123,38 @@ Result of Random Coefficient Logit
 <ol start="3" style="list-style-type: decimal">
 <li>Revisit the logit above and formally show that there is an analytical solution for $_{jt}. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.</li>
 </ol>
-<p>The reason we do not have an analytical solution is that in the Random Coefficient logit we do not solve for market shares as a function of parameters through a berry inversion as we woul do in a logit. Rather instead we approximate market shares through monte-carlo simulation.</p>
+<p>Finding an analytical solution for <span class="math inline">\(\delta_{jt}\)</span></p>
+<p>From previously since the error is type 1 extreme value that market shares for product j and the outside good are defined as</p>
+<span class="math display">\[\begin{align*}
+s_{j} &amp;= \frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)}\\
+s_{0} &amp;= \frac{1}{1 + \sum^j_k \exp(\delta_k)}
+\end{align*}\]</span>
+Taking the logs of both of these equations
+<span class="math display">\[\begin{align*}
+\ln(s_{j}) &amp;= \ln(\frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)})\\
+\ln(s_{j}) &amp;=  \delta_j  - \sum^j_k \delta_k\\
+\ln(s_{0}) &amp;= \ln(\frac{1}{1 + \sum^j_k \exp(\delta_k)}) \\
+\ln(s_{0}) &amp;= - \sum^j_k \delta_k \\
+\end{align*}\]</span>
+Subtracting <span class="math inline">\(\ln(s_j) - \ln(s_0)\)</span>
+<span class="math display">\[\begin{align*}
+\ln(s_{j}) -  \ln(s_{0}) &amp; =  \delta_j  - \sum^j_k \delta_k +  \sum^j_k \delta_k \\
+\ln(\frac{s_{j}}{s_{0}}  &amp; =  \delta_j  \\
+\end{align*}\]</span>
+<p>Therefore we have an analytic solution for <span class="math inline">\(\delta_j\)</span>.</p>
+<p>It is not possible to attain this in the random coeffecients logit because we approximate market shares through a monte carlo simulation. Since the equation for marketshares is given by:</p>
+<p><span class="math inline">\(s_{jt} =\int \frac{\exp(\delta_{jt} + \mu_{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}dP_v(v)\)</span></p>
+<p>This integral grows in complexity the number of random coefficients to not having a closed form analytical solution and instead we approximate through simulation.</p>
+<p>Contraction Mapping: The approximated market share is given by this equation:</p>
+<p><span class="math inline">\(s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) }\)</span></p>
+<p>At this point both <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\delta_j\)</span> are unknown. We than for a given <span class="math inline">\(\sigma\)</span> begin with <span class="math inline">\(\delta_j^0\)</span> and solve the marketshare function producing <span class="math inline">\(s_t(\delta_j^0)\)</span>. We than compare this value to our observed marketshare to come up with a new value for <span class="math inline">\(\delta_j\)</span> through contract mapping in each market.</p>
+<p><span class="math inline">\(\delta^1_j = \delta^0_j + \ln(s_t) - \ln(s_t(\delta_j^0))\)</span></p>
+<p>We than get $^1_j $ recompute the market shares using this value to get <span class="math inline">\(s_t(\delta_j^1)\)</span> and revisit contract mapping to get <span class="math inline">\(\delta^2_j = \delta^1_j + \ln(s_t) - \ln(s_t(\delta_j^1))\)</span>. This iteration continous until the difference between $(s_t) - (s_t(_j)) $ is significantly small with a minimum tolerance of <span class="math inline">\(10^{-12}\)</span>.</p>
+<p>Once we have the delta produced by a certain <span class="math inline">\(\sigma\)</span> we use the matrix equation for 2SLS using W as the GMM weight matrix to solve for parameters. <span class="math inline">\(\hat\theta =[\beta , \alpha]\)</span></p>
+<p><span class="math inline">\(\hat \theta = (X'ZWZ'X)^{-1}X'ZWZ'\delta(\sigma)\)</span></p>
+<p>Using <span class="math inline">\(\hat \theta\)</span> we than can recover the econometric error term <span class="math inline">\(\xi\)</span>. Using the instruments we than find the that minimizes this expression.</p>
+<p><span class="math inline">\(\min_{\sigma} \xi' ZWZ'\xi\)</span></p>
+<p>If the <span class="math inline">\(\sigma\)</span> that minimizes this expression is the same one we originally guessed in our contract mapping we are finished if not we than use this new estimate of sigma to restart our contract mapping until the <span class="math inline">\(\sigma\)</span> that minimizes the error term interacted with the instruments is the one that we used to generate our estimate of <span class="math inline">\(\delta_j\)</span>.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Derive the own price and cross price elasticities in the random coefficient logit model.</li>
 </ol>

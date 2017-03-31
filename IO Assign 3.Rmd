@@ -345,7 +345,7 @@ The market share of a certain segment g, $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_
 \ln(D_g) &= \frac{\ln(s_g) - \ln(s_0)}{1-\sigma}
 \end{align*}
 
-Defining $s_{j|g} = \frac{s_j}{s_k}$ and subsituting expression for $\ln(D_g)$ into $\ln(\frac{s_{j}}{s_0})$
+Defining $s_{j|g} = \frac{s_j}{s_g}$ and subsituting expression for $\ln(D_g)$ into $\ln(\frac{s_{j}}{s_0})$
 
 \begin{align*}
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
@@ -420,7 +420,7 @@ From this we can calculate our own price elasticities:
 
 &= L(-\frac{\alpha}{(1-\sigma_g)}\frac{q_j}{L}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
 
-&=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}))p_j\\
+&=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})p_j\\
 
 \end{align*}
 

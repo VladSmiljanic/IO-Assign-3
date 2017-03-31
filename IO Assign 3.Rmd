@@ -422,7 +422,7 @@ rom this we can calculate our cross price elasticities for products that are in 
 \begin{align*}
 \frac{\partial q_k}{\partial p_j} \frac{p_j}{q_k}&= L\frac{\partial s_k}{\partial p_j} \frac{p_j}{q_k}\\
 &= L(\frac{\alpha}{1-\sigma_g} s_k((1-\sigma_g)s_k+\sigma_g s_{k|g}) ) \frac{p_j}{q_k}\\
-&= (\frac{\alpha}{1-\sigma_g}((1-\sigma_g)s_k+\sigma_g s_{k|g}))\\
+&= (\frac{\alpha}{1-\sigma_g}((1-\sigma_g)s_k+\sigma_g s_{k|g}))p_j\\
 \end{align*}
 
 If product k falls outside the segment is in j, then we can calculate $\frac{\partial s_k}{\partial p_j}$ as:
@@ -431,9 +431,16 @@ If product k falls outside the segment is in j, then we can calculate $\frac{\pa
 \frac{\partial s_{k}}{\partial p_{j}} &= 
 - \exp(\frac{\delta_k}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2}\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))\bigg)\\
 &= \alpha s_k s_j\\
+
 \end{align*}
 
+From this we can calculate our cross price elasticities for products that are outside of segments:
 
+\begin{align*}
+\frac{\partial q_k}{\partial p_j} \frac{p_j}{q_k}&= L\frac{\partial s_k}{\partial p_j} \frac{p_j}{q_k}\\
+&= L(\alpha s_k s_j) \frac{p_j}{q_k}\\
+&= \alpha s_j p_j\\
+\end{align*}
 
 4.
 

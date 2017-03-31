@@ -1012,145 +1012,104 @@ towards zero.  The constant similarly increases in 2SLS, as well as the  coeffic
 
 # 4.2 Random Coefficients Logit (BLP)
 
-1. 
-
-2. 
-
-<<<<<<< HEAD
-```{}
-	* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-	
-	
-foreach inst in `characteristics'{;
-	qui{;
-		egen is_`inst'=sum(`inst'),  by (year country segment);
-		egen ifs_`inst'=sum(`inst'), by (year country segment firm);
-		gen CFis_`inst'=is_`inst'-ifs_`inst';
-		replace is_`inst'=is_`inst'-`inst';
-		replace ifs_`inst'=ifs_`inst'-`inst';
-	};
-};
-
-egen seg_sales=sum(qu), by(year country segment);
-egen is_num=count(qu), by(year country segment);
-
-egen fs_sales=sum(qu), by(year country segment firm);
-egen ifs_num=count (qu), by(year country segment firm);
-
-qui gen CFis_num=is_num-ifs_num;
-
-replace is_num=is_num-1;
-gen lnis_num=ln(is_num);
-replace ifs_num=ifs_num-1;
-gen lnifs_num=ln(ifs_num);
-
-gen rewr2=ln(qu/seg_sales);
-xtreg rewr price rewr2 horsepower fuel width height domestic year country2-country5, fe;
-
-xtivreg rewr (price rewr2= i_horsepower i_fuel i_width i_height i_domestic
-							if_horsepower if_fuel if_width if_height if_domestic
-							is_horsepower is_fuel is_width is_height is_domestic
-							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
-							horsepower fuel width height domestic year country2-country5, fe;
-```
+1. Estimate using Zopt and interpret the ration between the mean and the standard deviation paramters obtained in estimation. Compare with Logit estimates.
 
 ```{}
-. xtreg rewr price rewr2 horsepower fuel width height domestic year country2-country5, fe;
+%% Random Coefficients Logit
 
-Fixed-effects (within) regression               Number of obs      =     11483
-Group variable: co                              Number of groups   =       351
+%Starting Values
+rc_sigma0 = 0;      % Gives initial guess for sigma's  
+deltastart = ones(n,1);   % Gives initial guess for delta
 
-R-sq:  within  = 0.8796                         Obs per group: min =         1
-       between = 0.7876                                        avg =      32.7
-       overall = 0.8453                                        max =       146
+% rc_sigma0   = 0;                        % Gives initial guess for sigma's  
+% deltastart  = y;                        % Gives initial guess for delta from Logit
+oldsigma    = zeros(size(rc_sigma0));   % Zero out old theta2
+save mvalold deltastart oldsigma        % saves deltastart and oldsigma in mvalold
+clear deltastart oldsigma
 
-                                                F(12,11120)        =   6767.52
-corr(u_i, Xb)  = 0.0199                         Prob > F           =    0.0000
+%OPTIMIZATION
+% First define options for optimization
+options = optimset('Display','iter-detailed','TolX',1e-6,'TolFun',1e-6);
+tic;  %Starts a timer
+[rc_sigma,fval,exitflag,output]=fminsearch(@objective,rc_sigma0,options);
+timetorun=toc/60;     %Stops the timer and gives minutes to compute
 
-------------------------------------------------------------------------------
-        rewr |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       price |  -.0491036   .0013895   -35.34   0.000    -.0518273   -.0463799
-       rewr2 |   .8677908    .004327   200.55   0.000     .8593091    .8762725
-  horsepower |   .0031765   .0006332     5.02   0.000     .0019354    .0044176
-        fuel |  -.0255906   .0048552    -5.27   0.000    -.0351077   -.0160735
-       width |   .0112444   .0017935     6.27   0.000     .0077288      .01476
-      height |   .0012653   .0023704     0.53   0.593    -.0033811    .0059118
-    domestic |   .3883771   .0127901    30.37   0.000     .3633063    .4134479
-        year |  -.0025221    .001281    -1.97   0.049    -.0050331   -.0000111
-    country2 |  -.3304413   .0120622   -27.39   0.000    -.3540853   -.3067972
-    country3 |  -.2093509   .0120898   -17.32   0.000    -.2330489   -.1856528
-    country4 |  -.4288399   .0126037   -34.02   0.000    -.4535454   -.4041344
-    country5 |   -.104273   .0158302    -6.59   0.000     -.135303    -.073243
-       _cons |  -.0712408   2.393163    -0.03   0.976    -4.762264    4.619783
--------------+----------------------------------------------------------------
-     sigma_u |  .48769407
-     sigma_e |  .38909072
-         rho |   .6110556   (fraction of variance due to u_i)
-------------------------------------------------------------------------------
-F test that all u_i=0:     F(350, 11120) =    19.01          Prob > F = 0.0000
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 4. Standard Errors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Computing the Standard Errors
+load mvalold                            % get estimated delta and sigma
+beth   = [bet;rc_sigma];                % vector of all parameters
+load xi                                 % get the residuals obtained in function objective
+derdel  = numgrad('delta',rc_sigma);    % Computes the derivative of delta wrt sigma
+a       = [-x1 derdel]'*Z;
+dgf     = (size(X,1)-size(X,2));
+varcov  = (xi'*xi/dgf)*inv(a*W*a');
+stheta  = sqrt(diag(varcov));
+ttheta  = beth./stheta;
 
-. xtivreg rewr (price rewr2= i_horsepower i_fuel i_width i_height i_domestic
->                                                         if_horsepower if_fuel if_width if_height if_domesti
-> c
->                                                         is_horsepower is_fuel is_width is_height is_domesti
-> c
->                                                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_do
-> mestic)
->                                                         horsepower fuel width height domestic year country2
-> -country5, fe;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 5. Reporting Results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+vars = {'constant', 'price', 'char1', 'char2','sigmachar1'};
+title={'var','coef','std.err.','tvalue'};
+results=[beth stheta ttheta];
+disp('Result of Random Coefficient Logit')
+disp([title;vars.',num2cell(results)])
 
-Fixed-effects (within) IV regression         Number of obs      =        11483
-Group variable: co                           Number of groups   =          351
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-06 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-06 
 
-R-sq:  within  = 0.6001                      Obs per group: min =            1
-       between = 0.3725                                     avg =         32.7
-       overall = 0.5520                                     max =          146
-
-                                             Wald chi2(12)      =     1.21e+06
-corr(u_i, Xb)  = 0.0068                      Prob > chi2        =       0.0000
-
-------------------------------------------------------------------------------
-        rewr |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       price |  -.1232378   .0109746   -11.23   0.000    -.1447476    -.101728
-       rewr2 |   .2110286   .0293953     7.18   0.000     .1534147    .2686424
-  horsepower |   .0044865    .002236     2.01   0.045     .0001041    .0088689
-        fuel |  -.0541376   .0089089    -6.08   0.000    -.0715987   -.0366766
-       width |   .0551482   .0036227    15.22   0.000     .0480478    .0622486
-      height |   .0255373   .0044086     5.79   0.000     .0168965    .0341781
-    domestic |   1.469756   .0545059    26.97   0.000     1.362926    1.576585
-        year |  -.0491546   .0031366   -15.67   0.000    -.0553022   -.0430071
-    country2 |  -.7585582   .0326599   -23.23   0.000    -.8225704   -.6945461
-    country3 |  -.7591188   .0294356   -25.79   0.000    -.8168116    -.701426
-    country4 |  -.5304193   .0382404   -13.87   0.000    -.6053692   -.4554694
-    country5 |    .142352   .0919044     1.55   0.121    -.0377774    .3224814
-       _cons |   80.93904   5.890503    13.74   0.000     69.39387    92.48422
--------------+----------------------------------------------------------------
-     sigma_u |  .88552239
-     sigma_e |  .70896758
-         rho |  .60938692   (fraction of variance due to u_i)
-------------------------------------------------------------------------------
-F  test that all u_i=0:     F(350,11120) =     7.38       Prob > F    = 0.0000
-------------------------------------------------------------------------------
-Instrumented:   price rewr2
-Instruments:    horsepower fuel width height domestic year country2 country3
-                country4 country5 i_horsepower i_fuel i_width i_height
-                i_domestic if_horsepower if_fuel if_width if_height
-                if_domestic is_horsepower is_fuel is_width is_height
-                is_domestic ifs_horsepower ifs_fuel ifs_width ifs_height
-                ifs_domestic
-------------------------------------------------------------------------------
-
-. 
-
+# of iterations for delta convergence:  1
+# of iterations for delta convergence:  15
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6263]    [  0.5650]    [  4.6486]
+    'price'         [-1.9774]    [  0.0401]    [-49.3514]
+    'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
+    'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
+    'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
 ```
-=======
->>>>>>> origin/master
+
+Interpretting the ratio between the mean and the standard deviation parameters. Since all the coefficients in the model are lognormal distributed than the log of the coefficient are normally distributed. Following the procedure in Train's Discrete Choice Methods with Simulation we can derive estimates of mean, median and variance of the log coefficients. 
+
+The log Coeffiecnets are as follows 
+0.96557601
+0.68178285
+0.79109025
+-0.01116206 
+-0.08773891
+
+The standard erros 
+0.5650, 
+0.0401,
+0.3225,
+0.2285, 
+0.1311
+
+mean = exp(logcoef + s/2)
+3.4836340
+2.0174470 
+2.5917680
+1.1085889 
+0.9780554
+
+Variance = exp(2m + s) [exp(s) − 1].
+9.2164351 
+0.1665273 
+2.5564209 
+0.3154930
+0.1340012
+
+2. Start by drawing 10 invdividuals, than 50 and than 100.
+
 
 Results with 10 draws 
 
 ```{}
+# of iterations for delta convergence:  1
+# of iterations for delta convergence:  18
 Result of Random Coefficient Logit
     'var'           'coef'       'std.err.'    'tvalue'  
     'constant'      [ 2.6810]    [  0.6540]    [  4.0992]
@@ -1163,9 +1122,12 @@ Result of Random Coefficient Logit
 Results with 50 draws 
 
 ```{}
+# of iterations for delta convergence:  1
+# of iterations for delta convergence:  12
 Result of Random Coefficient Logit
     'var'           'coef'       'std.err.'    'tvalue'  
     'constant'      [ 2.6029]    [  0.5835]    [  4.4607]
+    3.
     'price'         [-1.9815]    [  0.0408]    [-48.5259]
     'char1'         [ 2.3482]    [  0.3197]    [  7.3458]
     'char2'         [ 0.8895]    [  0.2338]    [  3.8048]
@@ -1175,7 +1137,8 @@ Result of Random Coefficient Logit
 Results with 100 draws
 
 ```{}
-
+# of iterations for delta convergence:  1
+# of iterations for delta convergence:  15
 Result of Random Coefficient Logit
     'var'           'coef'       'std.err.'    'tvalue'  
     'constant'      [ 2.6263]    [  0.5650]    [  4.6486]
@@ -1183,5 +1146,27 @@ Result of Random Coefficient Logit
     'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
     'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
+
 ```
-As we can 
+
+As we can see the coefficient on price when we increase the simulation number of draws from 10,50,100 does not changed drastically hovering around -1.98. The values of sigmachar1 do vary ranging from -0.91 - 1.3902. The coefficient on constant remain similar through all 3 simulations andd the two charactersitics variables vary slightly across the three simulations. The most obvious change between 10 and 100 simulaitons is the value of sigmachar1. 
+
+
+3. Revisit the logit above and formally show that there is an analytical solution for $\delta_{jt}. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.
+
+The reason we do not have an analytical solution is that in the Random Coefficient logit we do not solve for market shares as a function of parameters through a berry inversion as we woul do in a logit. Rather instead we approximate market shares through monte-carlo simulation.
+
+4. Derive the own price and cross price elasticities in the random coefficient logit model.
+
+Estimating cross-price elasticities = $\frac{\partial s_j}{\partial p_k}$
+
+$s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}$
+
+But since we can only approximate market shares through Monte Carlo simulation  x_{kt}\sigma _{\beta}v_{it})
+
+$s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) }$
+
+
+\begin{align*}
+frac{\partial s_j}{\partial p_k}  = 
+\end{align*}

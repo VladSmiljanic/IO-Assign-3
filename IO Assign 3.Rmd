@@ -1195,7 +1195,7 @@ Estimating cross-price elasticities = $\frac{\partial s_j}{\partial p_k}$
 
 $s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}$
 
-But since we can only approximate market shares through Monte Carlo simulation  x_{kt}\sigma _{\beta}v_{it})
+But since we can only approximate market shares through Monte Carlo simulation 
 
 $s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) }$
 

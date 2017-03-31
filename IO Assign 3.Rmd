@@ -345,7 +345,7 @@ The market share of a certain segment g, $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_
 \ln(D_g) &= \frac{\ln(s_g) - \ln(s_0)}{1-\sigma}
 \end{align*}
 
-Defining $s_{j|g} = \frac{s_j}{s_g}$ and subsituting expression for $\ln(D_g)$ into $\ln(\frac{s_{j}}{s_0})$
+Defining $s_{j|g} = \frac{s_j}{s_k}$ and subsituting expression for $\ln(D_g)$ into $\ln(\frac{s_{j}}{s_0})$
 
 \begin{align*}
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
@@ -359,11 +359,10 @@ Defining $s_{j|g} = \frac{s_j}{s_g}$ and subsituting expression for $\ln(D_g)$ i
 
 This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS. 
  
-2. 
+2. Discuss Endogeneity problem and how you will treat it. 
 
-We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
+We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics contained in the econometric error similar to Q1.2  In addition the term $\ln(s_{j|g})$ creates additional endogeneity problems. It tends to reason that some of the unobserved characteristics will lead to a higher share within the segment. One such example is if a compact car has a reputation for being reliable, we do not have a varaible to identify this but it stands to reason that this product would capture a larger share of the compact car segment. For this reason we need two instruments one for price and one for  $\ln(s_{j|g})$. Once again we will relly on whithin firm other product characteristics as well as outside of firm other product characteristics and additionally within segment other product characteristics. 
 
-Optimal pricing of firms will imply a correlation between prices and unobserved product characteristics as in the regular logit but we will require two instruments since changes in unobserved characteristics will also effect the relative marketshare within a segment $\ln(s_{j|g})$. Once again we relly on within firm  characteristics, the sum of within segment product characteristics and all other firm product characteristics.  
 
 3.
 
@@ -420,7 +419,7 @@ From this we can calculate our own price elasticities:
 
 &= L(-\frac{\alpha}{(1-\sigma_g)}\frac{q_j}{L}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
 
-&=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})p_j\\
+&=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}))p_j\\
 
 \end{align*}
 

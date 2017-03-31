@@ -585,9 +585,32 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------
 ```
 
-The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .2110286 (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
+The coefficent on prices is now $\alpha=-.1232378$ and we have estimated $\sigma_g = .2110286$ (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
 
 5.
+
+For own-price elasticities, we need to calculate $s_g$ to find share of each segment by country and year. We then input our estimated values of $\alpha$ and $\sigma_g$. 
+
+```{}
+gen alp = -.1005664 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+
+egen ig=sum(qu), by(year country segment)
+
+gen sg = ig/MSIZE
+gen sjg= sj/sg
+gen op = -(alp/(1-sigma))*(1-(1-sigma)*sj-sigma*sjg)*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483     2.31896    1.112648   .6536606   19.08734
+```
+
+For cross-price elasticities where product k is within the segment, we need to sum the products in the segment and remove product j from that sum. 
+
 
 
 # 3) Merger Simulation 

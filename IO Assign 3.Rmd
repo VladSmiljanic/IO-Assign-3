@@ -99,16 +99,6 @@ We can use similar procedure to solve for own price elasticity:
 Estimating logit using OLS and 2SLS with car model fixed effects as well as instruments. 
 
 ```{}
-clear all
-capture log close
-
-cd "/Users/David/GitHub/IO/ps2/IO-Assign-3" //  WD
-use "/Users/David/Downloads/HW3/cars1.dta"
-
-summarize year country co segment domestic firm qu price horsepower fuel width height pop ngdp
-
-// Define panel 
-
 egen yearcountry=group(year country), label
 xtset co yearcountry
 
@@ -122,11 +112,6 @@ local characteristics "horsepower fuel width height domestic";
 
 * Sum of the characteristics of all competing products and competing products produced by other firms;
 
-
-*** 	i_hp= sum(hp)-hp 					sum of the characteristics of all competing products
-	if_hp= sum(hp of firm j) - hp  			sum of the characteristics of all other makes of firm j
-	CFi_hp= sum(hp)- sum(hp of firm j)		sum of the characteristics of all other non-firm j makes;
-	
 foreach inst in `characteristics'{;
 qui{;
 	egen i_`inst'=sum(`inst'), by (year country);
@@ -151,8 +136,6 @@ gen lni_num=ln(i_num);
 replace if_num=if_num-1;
 gen lnif_num=ln(if_num);
 
-*Code from page 55 of her session 3 notes. We solve for the dependent variables values using this method. This one is using characertistics by country and year. The ivreg uses characteristics for country, year and country, year and firm.
-
 gen rewr=ln(qu/(MSIZE-tot_sales));
 
 xtreg rewr price horsepower fuel width height domestic year country2-country5, fe;
@@ -160,8 +143,6 @@ xtreg rewr price horsepower fuel width height domestic year country2-country5, f
 xtivreg rewr (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num
 							if_horsepower if_fuel if_width if_height if_domestic i_num)
 							horsepower fuel width height domestic year country2-country5, fe;
-
-
 	
 ```
 
@@ -203,11 +184,10 @@ corr(u_i, Xb)  = -0.0355                        Prob > F           =    0.0000
 ------------------------------------------------------------------------------
 F test that all u_i=0:     F(350, 11121) =    28.23          Prob > F = 0.0000
 
-. xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
->                                                         if_horsepower if_fuel if_width if_height if_domesti
-> c i_num)
->                                                         horsepower fuel width height domestic year country2
-> -country5, fe;
+xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
+>                       if_horsepower if_fuel if_width if_height if_domestic i_num)
+>                       horsepower fuel width height domestic year country2-country5, fe;
+
 note: i_num omitted because of collinearity
 
 Fixed-effects (within) IV regression         Number of obs      =        11483
@@ -449,8 +429,7 @@ From this we can calculate our cross price elasticities for products that are ou
 4. Estimate the logit model using OLS and 2SLS 
 
 ```{}
-* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-.                 foreach inst in `characteristics'{;
+foreach inst in `characteristics'{;
   2.         qui{;
   3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
   4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
@@ -460,33 +439,20 @@ From this we can calculate our cross price elasticities for products that are ou
   8.         };
   9. };
 
-. egen seg_sales=sum(qu), by(year country segment);
-
-. egen is_num=count(qu), by(year country segment);
-
-. egen fs_sales=sum(qu), by(year country segment firm);
-
-. egen ifs_num=count (qu), by(year country segment firm);
-
-. qui gen CFis_num=is_num-ifs_num;
-
-. replace is_num=is_num-1;
-(11483 real changes made)
-
-. gen lnis_num=ln(is_num);
-(3 missing values generated)
-
-. replace ifs_num=ifs_num-1;
-(11483 real changes made)
-
-. gen lnifs_num=ln(ifs_num);
-(4662 missing values generated)
-
-. gen sigma=ln(qu/seg_sales);
+egen seg_sales=sum(qu), by(year country segment);
+egen is_num=count(qu), by(year country segment);
+egen fs_sales=sum(qu), by(year country segment firm);
+egen ifs_num=count (qu), by(year country segment firm);
+qui gen CFis_num=is_num-ifs_num;
+replace is_num=is_num-1;
+gen lnis_num=ln(is_num);
+replace ifs_num=ifs_num-1;
+gen lnifs_num=ln(ifs_num);
+gen sigma=ln(qu/seg_sales);
 ```
 
 ```{}
-. xtreg rewr price sigma horsepower fuel width height domestic year country2-country5, fe;
+xtreg rewr price sigma horsepower fuel width height domestic year country2-country5, fe;
 
 Fixed-effects (within) regression               Number of obs      =     11483
 Group variable: co                              Number of groups   =       351
@@ -521,15 +487,11 @@ corr(u_i, Xb)  = 0.0199                         Prob > F           =    0.0000
 ------------------------------------------------------------------------------
 F test that all u_i=0:     F(350, 11120) =    19.01          Prob > F = 0.0000
 
-. xtivreg rewr (price sigma= i_horsepower i_fuel i_width i_height i_domestic
->                                                         if_horsepower if_fuel if_width if_height if_domesti
-> c
->                                                         is_horsepower is_fuel is_width is_height is_domesti
-> c
->                                                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_do
-> mestic)
->                                                         horsepower fuel width height domestic year country2
-> -country5, fe;
+xtivreg rewr (price sigma= i_horsepower i_fuel i_width i_height i_domestic
+>                          if_horsepower if_fuel if_width if_height if_domestic
+>                          is_horsepower is_fuel is_width is_height is_domestic
+>                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+>                         horsepower fuel width height domestic year country2-country5, fe;
 
 Fixed-effects (within) IV regression         Number of obs      =        11483
 Group variable: co                           Number of groups   =          351
@@ -651,7 +613,6 @@ Logit Specification:
 ```{}
 
 quietly mergersim init,  price(price) quantity(qu) marketsize(MSIZE) firm(firm);
-
 
 quietly xtivreg M_ls (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_height if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe;
 
@@ -787,9 +748,9 @@ Consumer surplus:              -277,498
 Producer surplus:                30,470
 ----------------------------------------
 
-
 ```
-Nested Logit Specification 
+
+*Nested Logit Specification *
 
 ```{}
 #delimit ;
@@ -807,11 +768,7 @@ Supply: Bertrand competition
 Demand: Unit demand one-level nested logit
 --------------------------------------------------------------------------------
 Demand estimate
-xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                         
->                 if_horsepower if_fuel if_width if_height if_domestic                                              
->            is_horsepower is_fuel is_width is_height is_domestic                                                   
->       ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                                  
->        horsepower fuel width height domestic year country2-country5, fe
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                                      if_horsepower if_fuel if_width if_height if_domestic                                                 is_horsepower is_fuel is_width is_height is_domestic                                                ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                          horsepower fuel width height domestic year country2-country5, fe
 Dependent variable: M_ls
 --------------------------------------------------------------------------------
 

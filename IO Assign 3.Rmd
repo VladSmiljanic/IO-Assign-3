@@ -1064,38 +1064,23 @@ Result of Random Coefficient Logit
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
 ```
 
-Interpretting the ratio between the mean and the standard deviation parameters. Since all the coefficients in the model are lognormal distributed than the log of the coefficient are normally distributed. Following the procedure in Train's Discrete Choice Methods with Simulation we can derive estimates of mean, median and variance of the log coefficients. 
+Comparing Coefficient between Random Coefficient Logit, OLS , and 2SLS
 
-The log Coeffiecnets are as follows 
-0.96557601
-0.68178285
-0.79109025
--0.01116206 
--0.08773891
+```{}
+    'var'         'OLS'        '2SLS'       'Random Coefficients Logit '
+    'constant'    [ 0.4593]    [ 1.7797]    [ 2.6263] 
+    'price'       [-1.7586]    [-1.9592]    [-1.9774]
+    'char1'       [ 3.0454]    [ 3.1826]    [ 2.2058]
+    'char2'       [ 0.8432]    [ 0.9524]    [ 0.9889]
 
-The standard erros 
-0.5650, 
-0.0401,
-0.3225,
-0.2285, 
-0.1311
+```
+It is easy to see that the coefficient on the constant term is significantly larger in the Random Coefficients logit than in the other models. The coefficient on price in the Random Coefficients logit resembles the 2SLS value and is significantly larger in absolute value than the OLS coefficients reaffirming that the OLS regression is biased upwards towards 0.  The coefficient on Char1, amount of caffeine, is larger in the OLS and 2SLS model than the Random Coefficients Logit. The estimation for Char2, degree of roasting of the beans is larger in the Random Coefficients Logit but not signifcantly so. 
 
-mean = exp(logcoef + s/2)
-3.4836340
-2.0174470 
-2.5917680
-1.1085889 
-0.9780554
+Since in the random coefficients model the $\beta$ are lognormally distributed we can transform the estiamtes by taking the logs of them to get $\ln(\beta))$ that are normal distributed. We can than use the transformed variable to generate the mean and variance of $\beta$ where mean $= \exp(logcoef + s/2)$ and Variance $= \exp(2logcoeff + s) [\exp(s) − 1]$. 
 
-Variance = exp(2m + s) [exp(s) − 1].
-9.2164351 
-0.1665273 
-2.5564209 
-0.3154930
-0.1340012
+The ratio between an consumers Char1 mean coefficient and the mean price coefficient is the measure of how much a consumer would be willing to pay to increase the caffeine content of a coffee brand. Similarly The ratio  between consumers Char2 coefficient and the price coefficient is a measure of how much a consumer would be willing to pay to increase the degree of roasting of a coffee brand. 
 
 2. Start by drawing 10 invdividuals, than 50 and than 100.
-
 
 Results with 10 draws 
 

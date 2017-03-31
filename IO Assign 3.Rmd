@@ -1190,16 +1190,24 @@ $\min_{\sigma} \xi' ZWZ'\xi$
 If the $\sigma$ that minimizes this expression is the same one we originally guessed in our contract mapping we are finished if not we than use this new estimate of sigma to restart our contract mapping until the $\sigma$ that minimizes the error term interacted with the instruments is the one that we used to generate our estimate of $\delta_j$. 
 
 4. Derive the own price and cross price elasticities in the random coefficient logit model.
-
 Estimating cross-price elasticities = $\frac{\partial s_j}{\partial p_k}$
 
 $s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}$
 
 But since we can only approximate market shares through Monte Carlo simulation 
 
-$s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) }$
-
 
 \begin{align*}
-frac{\partial s_j}{\partial p_k}  = 
+s_{jt} &= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) } \\
+\frac{\partial s_j}{\partial p_k}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta _jt +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}))^2 } \\
+\frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j \frac{(\exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})) }\\
+\frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
 \end{align*}
+
+For elasticity multiply by $\frac{p_k}{s_j}$
+
+\begin{align*}
+\frac{\partial s_j}{\partial p_k} \frac{p_k}{s_j} &= \frac{p_k}{s_j} (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
+\end{align*}
+
+Since this is using the approximation to the market shares this is approximately the cross price elasticity

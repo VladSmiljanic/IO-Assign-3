@@ -598,25 +598,240 @@ The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .21
 
 Estimating a merger between Volkswagen (VW) and Ford in Germany 1998
 
-Logit Specification  w/ endogeneity taken into account and Nested Logit specification w/ endogeneity taken into account
+Logit Specification  w/ endogeneity taken into account.  Note that firm varialbe = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit. 
 
-Note that Ford = 5 ,VW = 26 and Germany = 3 and we are running this code after Q2 so already have generated instruments for logit and nested logit.
+Logit Specification:
 
 ```{}
-#delimit ;
+
+quietly mergersim init,  price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+
+quietly xtivreg M_ls (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_height if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe;
+
+ mergersim market if year == 1998;
+---------------------------------------------------------------------------------
+Supply: Bertrand competition
+Demand: Unit demand unnested logit
+--------------------------------------------------------------------------------
+Demand estimate
+xtivreg M_ls (price =   i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_heig
+> ht if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe
+Dependent variable: M_ls
+--------------------------------------------------------------------------------
+
+Parameters
+
+alpha = -0.101
+----------------------------------------------------------------
+Own- and Cross-Price Elasticities:  unweighted market averages
+
+    variable |      mean        sd       min       max
+-------------+----------------------------------------
+       M_ejj |    -1.686     0.836    -6.328    -0.629
+       M_ejk |     0.002     0.003     0.000     0.023
+------------------------------------------------------
+Observations: 449
+----------------------------------------------------------------
+
+Pre-merger Market Conditions 
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |              price      Marginal costs   Pre-merger Lerner
+---------------------+-----------------------------------------------------------
+                 BMW |             20.194              10.166               0.573
+                Fiat |             15.277               5.136               0.804
+                Ford |             14.557               4.462               0.789
+               Honda |             20.094              10.132               0.595
+             Hyundai |             12.915               2.959               0.862
+                 Kia |             10.814               0.867               1.010
+               Mazda |             14.651               4.687               0.746
+            Mercedes |             25.598              15.587               0.462
+          Mitsubishi |             15.955               5.993               0.679
+              Nissan |             15.438               5.452               0.737
+                  GM |             21.054              10.939               0.561
+                 PSA |             16.243               6.117               0.725
+             Renault |             15.518               5.404               0.753
+              Suzuki |              9.289              -0.662               1.128
+              Toyota |             14.560               4.571               0.808
+                  VW |             18.990               8.791               0.705
+               Volvo |             23.167              13.202               0.441
+              Daewoo |             13.871               3.912               0.814
+---------------------------------------------------------------------------------
+Variables generated: M_costs M_delta 
+---------------------------------------------------------------------------------
+
+. mergersim simulate if year == 1998 & country == 3, seller(5) buyer(26) detail;
+
+---------------------------------------------------------------------------------
+Merger Simulation
+
+                                            Simulation method: Newton
+                        Buyer     Seller    Periods/markets: 1
+Firm                    26        5         Number of iterations: 4
+Marginal cost savings                       Max price change in last it: .000044  
+---------------------------------------------------------------------------------
+
+Prices
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger     Relative change
+---------------------+-----------------------------------------------------------
+                 BMW |             17.946              17.946               0.000
+                Fiat |             15.338              15.338               0.000
+                Ford |             13.093              13.571               0.040
+               Honda |             15.778              15.778               0.000
+             Hyundai |             12.912              12.912               0.000
+                 Kia |             11.276              11.276               0.000
+               Mazda |             14.229              14.229               0.000
+            Mercedes |             20.114              20.115               0.000
+          Mitsubishi |             15.832              15.832               0.000
+              Nissan |             15.101              15.101               0.000
+                  GM |             19.921              19.921               0.000
+                 PSA |             16.397              16.397               0.000
+             Renault |             15.292              15.292               0.000
+              Suzuki |              9.225               9.225               0.000
+              Toyota |             13.019              13.019               0.000
+                  VW |             17.182              17.329               0.011
+               Volvo |             22.149              22.149               0.000
+              Daewoo |             13.483              13.483               0.000
+---------------------------------------------------------------------------------
+Variables generated: M_price2 M_quantity2 M_price_ch (Other M_ variables dropped)
+---------------------------------------------------------------------------------
+
+Market shares by quantity
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger          Difference
+---------------------+-----------------------------------------------------------
+                 BMW |              0.074               0.075               0.001
+                Fiat |              0.043               0.043               0.000
+                Ford |              0.095               0.092              -0.004
+               Honda |              0.012               0.012               0.000
+             Hyundai |              0.006               0.006               0.000
+                 Kia |              0.003               0.003               0.000
+               Mazda |              0.025               0.025               0.000
+            Mercedes |              0.100               0.100               0.001
+          Mitsubishi |              0.015               0.015               0.000
+              Nissan |              0.025               0.026               0.000
+                  GM |              0.166               0.168               0.001
+                 PSA |              0.034               0.035               0.000
+             Renault |              0.051               0.051               0.000
+              Suzuki |              0.006               0.006               0.000
+              Toyota |              0.027               0.027               0.000
+                  VW |              0.300               0.298              -0.002
+               Volvo |              0.012               0.012               0.000
+              Daewoo |              0.006               0.006               0.000
+---------------------------------------------------------------------------------
+
+--------------------------------------------------
+                        Pre-merger     Post-merger
+--------------------------------------------------
+HHS:                     1501           2038
+C4:                     66.07          73.22
+C8:                     86.21          88.79
+--------------------------------------------------
+----------------------------------------
+                                 Change
+----------------------------------------
+Consumer surplus:              -277,498
+Producer surplus:                30,470
+----------------------------------------
+
+
+```
+Nested Logit Specification 
+
+```{}
 mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
 
-xtivreg M_ls (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num
-			if_horsepower if_fuel if_width if_height if_domestic i_num)
-			horsepower fuel width height domestic year country2-country5, fe;
-
 xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
+							if_horsepower if_fuel if_width if_height if_domestic
+							is_horsepower is_fuel is_width is_height is_domestic
+							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+							horsepower fuel width height domestic year country2-country5, fe;
+
+							
+mergersim market if year == 1998; 
+
+mergersim simulate if year == 1998 & country == 3, seller(5) buyer(26) detail;
+
+```
+
+
+Nested Logit Specification:
+```{}
+#delimit ;
+quietly mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+quietly xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
 			if_horsepower if_fuel if_width if_height if_domestic
 			is_horsepower is_fuel is_width is_height is_domestic
 			ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
 			horsepower fuel width height domestic year country2-country5, fe;
 			
-> mergersim simulate if year == 1998 & country == 3, seller(5) buyer(26) detail;
+  mergersim market if year == 1998;
+---------------------------------------------------------------------------------
+Supply: Bertrand competition
+Demand: Unit demand one-level nested logit
+--------------------------------------------------------------------------------
+Demand estimate
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                         
+>                 if_horsepower if_fuel if_width if_height if_domestic                                              
+>            is_horsepower is_fuel is_width is_height is_domestic                                                   
+>       ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                                  
+>        horsepower fuel width height domestic year country2-country5, fe
+Dependent variable: M_ls
+--------------------------------------------------------------------------------
+
+Parameters
+
+alpha = -0.123
+sigma1 = 0.211 
+----------------------------------------------------------------
+Own- and Cross-Price Elasticities:  unweighted market averages
+
+    variable |      mean        sd       min       max
+-------------+----------------------------------------
+       M_ejj |    -2.584     1.272    -9.798    -0.975
+       M_ejk |     0.039     0.066     0.000     0.417
+       M_ejl |     0.003     0.004     0.000     0.028
+------------------------------------------------------
+Observations: 449
+----------------------------------------------------------------
+
+Pre-merger Market Conditions 
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |              price      Marginal costs   Pre-merger Lerner
+---------------------+-----------------------------------------------------------
+                 BMW |             20.194              13.474               0.381
+                Fiat |             15.277               8.562               0.534
+                Ford |             14.557               7.910               0.520
+               Honda |             20.094              13.638               0.385
+             Hyundai |             12.915               6.492               0.556
+                 Kia |             10.814               4.407               0.650
+               Mazda |             14.651               8.217               0.481
+            Mercedes |             25.598              18.497               0.320
+          Mitsubishi |             15.955               9.503               0.439
+              Nissan |             15.438               8.972               0.477
+                  GM |             21.054              14.413               0.368
+                 PSA |             16.243               9.528               0.481
+             Renault |             15.518               8.839               0.499
+              Suzuki |              9.289               2.870               0.728
+              Toyota |             14.560               8.093               0.523
+                  VW |             18.990              12.197               0.470
+               Volvo |             23.167              16.676               0.287
+              Daewoo |             13.871               7.440               0.526
+---------------------------------------------------------------------------------
+Variables generated: M_costs M_delta 
+---------------------------------------------------------------------------------
+
+.  mergersim simulate if year == 1998 & country == 3, seller(5) buyer(26) detail;
 
 ---------------------------------------------------------------------------------
 Merger Simulation
@@ -696,7 +911,32 @@ Producer surplus:               102,669
 ----------------------------------------
 ```
 
+2. Report the effect of the merger on prices and consumer welfare in each demand model. 
 
+Merger effect on prices: 
+
+	Logit: Ford: 4% increase , VW: 1.1% increase 
+	Nested Logit: Ford: 5.8% increase , VW: 2% increase
+
+Merger effect on consumer welfare:
+	
+	Logit: decrease of 277,498$
+	Nested Logit: decrease of 430,685$
+
+3. Comment on the differences between the results delivered under each demand model. 
+
+As we can see the logit produces smaller estimates for price changes than the nested logit which inturn results in a smaller reduction 
+in consumer surplus incomparison to the nested logit. 
+
+The reason driving this change is the substitution effects of the logit the nested logit. By imposing independence of 
+$\epsilon_{ijt}$ across all produces it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error 
+term is imposed within a segment it allows for correlation in tastes within a segment. In this merger example this means that the 
+increase in price of products of a firm within a segment would be recaptured by the other products that the firm has in that segment. 
+
+For example in Germany 1988 volkswagen golf and the ford escort were both compact cars. The nested logit takes in to account the 
+fact that some of the reduced quantity of sales as a result of a VW Golf price increase would be recaptured by the sales in ford
+escort. This would result in the firms being more willing to raise prices and thus result in a reduction in Consumer surplus. This 
+dynamic of within segment substitution is not captured by the standard logit. 
 
 # 4.1 Logit Estimation 
 

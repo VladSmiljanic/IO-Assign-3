@@ -1,7 +1,7 @@
 ---
 title: 'IO Assignment #3'
 author: "Vladimir Smiljanic & Juan David Rios"
-date: '2017-03-19'
+date: '2017-03-31'
 output:
   pdf_document: default
   html_document: default
@@ -1141,13 +1141,13 @@ Finding an analytical solution for $\delta_{jt}$
 From previously since the error is type 1 extreme value that market shares for product j and the outside good are defined as 
 
 \begin{align*}
-s_{j} &= \frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)}\\
+s_{j} &= \frac{\exp(\delta_j)}{1 + \sum^j_k \exp(\delta_k)}\\
 s_{0} &= \frac{1}{1 + \sum^j_k \exp(\delta_k)}
 \end{align*}
 
 Taking the logs of both of these equations
 \begin{align*}
-\ln(s_{j}) &= \ln(\frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)})\\
+\ln(s_{j}) &= \ln(\frac{\exp(\delta_j)}{1 + \sum^j_k \exp(\delta_k)})\\
 \ln(s_{j}) &=  \delta_j  - \ln(\exp(\sum^j_k \delta_k))\\
 \ln(s_{0}) &= \ln(\frac{1}{1 + \sum^j_k \exp(\delta_k)}) \\
 \ln(s_{0}) &= - \ln(\exp(\sum^j_k \delta_k)) \\
@@ -1197,17 +1197,37 @@ $s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{
 But since we can only approximate market shares through Monte Carlo simulation 
 
 
+
 \begin{align*}
-s_{jt} &= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) } \\
-\frac{\partial s_j}{\partial p_k}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta _jt +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}))^2 } \\
-\frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j \frac{(\exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it})) }\\
+s_{jt} &= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) } \\
+\frac{\partial s_j}{\partial p_k}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}))^2 } \\
+\frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j \frac{(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it})) }\\
 \frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
 \end{align*}
 
 For elasticity multiply by $\frac{p_k}{s_j}$
 
 \begin{align*}
-\frac{\partial s_j}{\partial p_k} \frac{p_k}{s_j} &= \frac{p_k}{s_j} (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
+\frac{\partial s_j}{\partial p_k} \frac{p_k}{s_j} &= \frac{p_k}{s_j} (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k \\
+&=\frac{p_k}{s_j}(-\alpha) s_j s_k (ND)^{-1}\sum^{ND}_i \\
+&=\frac{p_k}{s_j}(-\alpha) s_j s_k (ND)^{-1}ND \\
+&=-\alpha s_k p_k\\
 \end{align*}
 
-Since this is using the approximation to the market shares this is approximately the cross price elasticity
+This ends up becoming the the logit cross-price elasticity.
+
+\newpage
+
+For own price elasticity:
+\begin{align*}
+\frac{\partial s_j}{\partial p_j}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))} \\
+\frac{\partial s_j}{\partial p_j} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j\\
+\frac{\partial s_j}{\partial p_j} &= - \alpha s_j\\
+\end{align*}
+
+For elasticity multiply by $\frac{p_k}{s_j}$:
+
+\begin{align*}
+\frac{\partial s_j}{\partial p_j} \frac{p_j}{s_j} &= - \alpha s_j \frac{p_j}{s_j} \\
+&=-\alpha p_j\\
+\end{align*}

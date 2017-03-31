@@ -19,13 +19,13 @@ We can define the mean utility for product j at time t that all consumers receiv
 \end{align*}
 Where $u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}$.
 
-From Berry (1994) we know that the variation in consumer tastes only enters through the error term $\epsilon_{ijt}$ which is assumed to be iid extreme value or logit distribution across all consumers and choices. 
+From Berry (1994) we know that the variation in consumer tastes only enters through the error term $\epsilon_{ijt}$ which is assumed to be i.i.d extreme value or logit distribution across all consumers and choices. 
 \begin{align*}
 F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\\
 \end{align*}
 Where $I$ is inclusive value $\ln \sum^J_{k=0}\exp(\delta_k)$. We can interpret $I$ as the expected value of the maximum over all utilities.
 
-As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.
+As a result, all properties of market demand are determined by $\delta_{jt}$, which includes market shares and elasticities. As a result, cross-price elasticities only depend on $\delta_{jt}$ with no additional effect from product characteristics  and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.
 
 Individuals choose the product out of the total products available plus the outside good. The probability that individual i chooses product j takes the following form:
 \begin{align*}
@@ -52,7 +52,7 @@ This is the specification that will be taken to the data using OLS and 2SLS.
 
 The endogeneity problem exists in that there is strong argument to be made that $\xi$ the econometric error term that contains all unobserved characteristics for product j is correlated with price. Thus $E[\xi | X]= 0$. For example one could assume an unobserved characteristic could be the prestige associated with a brand. It would be reasonable to assume that a consumer would get more utility and be willing to pay more for a high prestige brand such as ferrari in comparison to a less prestigious car even holding observed characteristics constant.
 
-To combat this resulting bias we will be using the sum of the characteristics of the all the cars made by firms other that the firm that produces the good, as well as the sum of characteristics of all other makes of the firm that produces the car. The reasoning brovide by Berry (1995) is that since the utility one gets from purchasing a car is uncorrelated with the characteristics of non-purchased cars but competitors must price based on their competition the sum of the characteristics of all other cars follows these properties $E[P|Z] \ne 0$ and $E[\xi|z]= 0$. Thus the sum of other car characteristics are valid instruments if the previous assumptions hold. 
+To address the endogeneity issue we will be using instruments for product j that are the sum of all other characteristics of products made by firms other than the one that produces product j as well as the sum of the characteristics of the other products made by firm j. The reasoning provided by Berry (1995) is that since the utility one gets from purchasing a car is uncorrelated with the characteristics of non-purchased cars but competitors must price based on their competition the sum of the characteristics of all other cars follows these properties $E[P|Z] \ne 0$ and $E[\xi|z]= 0$. Thus the sum of other car characteristics are valid instruments if the previous assumptions hold. 
 
 3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*
 

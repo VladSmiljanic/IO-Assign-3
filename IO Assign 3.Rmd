@@ -54,6 +54,7 @@ The endogeneity problem exists in that there is strong argument to be made that 
 
 To address the endogeneity issue we will be using instruments for product j that are the sum of all other characteristics of products made by firms other than the one that produces product j as well as the sum of the characteristics of the other products made by firm j. The reasoning provided by Berry (1995) is that since the utility one gets from purchasing a car is uncorrelated with the characteristics of non-purchased cars but competitors must price based on their competition the sum of the characteristics of all other cars follows these properties $E[P|Z] \ne 0$ and $E[\xi|z]= 0$. Thus the sum of other car characteristics are valid instruments if the previous assumptions hold. 
 
+\newpage 
 3. *Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)*
 
 For ease of computation define $M_j \equiv \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})$
@@ -234,8 +235,9 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ```
 
 
-We can see that the coefficient on price decreases as we include instruments. The Instrumented coefficient on price  -.1005664 is larger in absolute value to the  
-coefficient calculated with out instruments -.050574. This confirms the suspicion that the non-instrumented results were biased downwards and it was nessecary to use the following instruments.  
+We can see that the coefficient on price decreases as we include instruments. The Instrumented coefficient on price  -.1005664 is larger in absolute value to the  coefficient calculated with out instruments -.050574. 
+
+This confirms the suspicion that the non-instrumented results were biased downwards and it was  necessary  to use the following instruments.  
 
 5. *Calculate the elasticities and report summary statistics*.
 

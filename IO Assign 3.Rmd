@@ -113,8 +113,6 @@ gen MSIZE=pop/4
 
 local characteristics "horsepower fuel width height domestic";
 
-* Sum of the characteristics of all competing products and competing products produced by other firms;
-
 foreach inst in `characteristics'{;
 qui{;
 	egen i_`inst'=sum(`inst'), by (year country);
@@ -144,8 +142,8 @@ gen rewr=ln(qu/(MSIZE-tot_sales));
 xtreg rewr price horsepower fuel width height domestic year country2-country5, fe;
 
 xtivreg rewr (price = 	i_horsepower i_fuel i_width i_height i_domestic i_num
-							if_horsepower if_fuel if_width if_height if_domestic i_num)
-							horsepower fuel width height domestic year country2-country5, fe;
+				if_horsepower if_fuel if_width if_height if_domestic i_num)
+				horsepower fuel width height domestic year country2-country5, fe;
 	
 ```
 
@@ -277,14 +275,14 @@ sum cel;
 u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
 \end{align*}
 
-We than divide the products into mutually exclusive nests which we note by $g = 0 \dots G$ where $g=0$ is the nest that only contains the outside good. In this case the products will be divided based on market segment, such as (compact, luxury , intermediate ... and a nest for the outside good). 
+We than divide the products into mutually exclusive nests which we note by $g = 0 \dots G$ where $g=0$ is the nest that only contains the outside good. In this case the products will be divided based on market segment, such as (compact, luxury , intermediate, ... ect).
 
 In the nested logiot the individual error term $\epsilon_{ijt}$ is composed of two parts
 \begin{align*}
-\epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
+\epsilon_{ijt} = (1-\sigma_g)\epsilon_{igt} + \epsilon_{ijt}^1
 \end{align*}
 
-The first term $\epsilon_{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
+The first term $\epsilon_{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock is in comparison to the extreme value shock.  $\epsilon_{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
 
 Since $\epsilon_{ijt}$ is extreme value distributed $F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))$. 
 
@@ -341,7 +339,9 @@ This is the specification for a Berry-one-level nested logit which we will estim
  
 2. Discuss Endogeneity problem and how you will treat it. 
 
-We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics contained in the econometric error similar to Q1.2  In addition the term $\ln(s_{j|g})$ creates additional endogeneity problems. It tends to reason that some of the unobserved characteristics will lead to a higher share within the segment. One such example is if a compact car has a reputation for being reliable, we do not have a varaible to identify this but it stands to reason that this product would capture a larger share of the compact car segment. For this reason we need two instruments one for price and one for  $\ln(s_{j|g})$. Once again we will relly on whithin firm other product characteristics as well as outside of firm other product characteristics and additionally within segment other product characteristics. 
+We continue to have an endogeneity  problem with prices being correlated with our unobserved characteristics contained in the econometric error similar to Q1.2  In addition the term $\ln(s_{j|g})$ creates additional endogeneity issues. It is reasonable to assume that some of the unobserved characteristics of a car will lead to a higher share within the cars segment. One such example is if a compact car has a reputation for being reliable, we can not observed that trait but it stands to reason that this product would capture a larger share of the compact car segment. For this reason we need two instruments one for price and one for  $\ln(s_{j|g})$.
+
+We will relly once again on the sum of product charactersitic of other products within firm, within market segment and within market to address the endogeneity problem presented by poth price and  $\ln(s_{j|g})$. 
 
 
 3.
@@ -383,7 +383,8 @@ To find the own price elasticities, we will take the derivative of our product s
 
 \begin{align*}
 \frac{\partial s_{j}}{\partial p_{j}} &= (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2} \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\
-\dots &-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+\dots &-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\dots \\
+\dots &+ \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
 &=-\frac{\alpha s_j}{(1-\sigma_g)} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) \dots \\ \dots& -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
 &=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
 &=-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})\\
@@ -540,7 +541,7 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------
 ```
 
-The coefficent on prices is now $\alpha=.1232378$ and we have estimated $\sigma_g = .2110286$ (conditional market conditions). Note that the coefficient alpha is negative but our regression assumes there is a negative in front of alpha. Hence alpha itself will be positive according to our formulas. We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
+The coefficent on prices is now $\alpha=.1232378$ and we have estimated $\sigma_g = .2110286$ (conditional market conditions). Note that the coefficient alpha is negative but our regression assumes there is a negative in front of alpha. Hence alpha itself will be positive according to our formulas. We can see that when instruments are used, our coefficients decrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls significantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
 
 5.
 

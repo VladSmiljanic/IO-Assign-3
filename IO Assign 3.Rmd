@@ -952,65 +952,63 @@ d: degrees of roasting
 Zopt : Instrument Matrix 
 shares: Market Share 
 
-Estimating model using ols in MATLAB, must have data.mat in memory. I don't include constant in 1 since Lfit already includes constant.  
+Estimating OLS and 2SLS model in MATlab 
 
 ```{}
-lnshares = log(shares)
-X = [constant,p,f,d]
-mdl = fitlm(X,lnshares)
-mdl.Coefficients
 
-ans = 
-                   Estimate       SE        tStat       pValue   
-                   ________    ________    _______    ___________
+%BLP ESTIMATOR WITH SIMULATED DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 1. Give the Structure of the Data 
+%SET GLOBALs
+clear;
+clear global all;
+global ns n cdid cdindex v x2 sj bet W Z x1 nmkt nbrn
 
-    (Intercept)          0            0        NaN            NaN
-    x1             0.39685      0.50184    0.79079        0.42983
-    x2             -1.7528     0.032324    -54.225    1.8198e-138
-    x3              2.9999       0.2169     13.831     1.5287e-32
-    x4             0.82219      0.22297     3.6875     0.00027893
+% INITIAL SETTING COFFEE DATA
+load data
+ns          = 100;                          % number of simulated "indviduals" per market 
+nmkt        = 25;                           % number of markets = (# of cities)*(# of quarters)  
+nbrn        = 10;                           % number of brands per market
+n=nmkt*nbrn;  % number of observations    
+cdid        = kron((1:nmkt)',ones(nbrn,1)); % vector with marketnumber for each obs
+cdindex     = (nbrn:nbrn:nbrn*nmkt)';       % vector with last obs per market 4-8-12
+dummarket   = dummyvar(cdid);               % dummies for each market
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 2. Define Matrix Structures for the Estimation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Definitions of matrices%
+x1 = [constant p f d];    % x1 matrix for the linear part
+x2 = [f];                   % x2 matrix for the nonlinear part  
+X = x1;
+
+% Shares
+sj      = shares;
+sumsj   = dummarket'* sj;               %outside good
+sumsj   = sumsj(cdid,:);
+s0      = 1 - sumsj;
+y       =  log(sj) - log(s0);
+
+Z= instrument
+
+BOLS = inv(X.'*X)*X.'*y
+B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*y
+ u         = y-X*B2SLS;
+dgf         = (250-4);
+ser         = (u'*u)./dgf;
+sst         = (X'*X)\eye(size(X,2));
+sterrLogit  = sqrt(ser*diag(sst));
+
+Results of Logit
+    'var'         'OLS'        '2SLS'       'st.err.'
+    'constant'    [ 0.4593]    [ 1.7797]    [ 0.5191]
+    'price'       [-1.7586]    [-1.9592]    [ 0.0334]
+    'char1'       [ 3.0454]    [ 3.1826]    [ 0.2244]
+    'char2'       [ 0.8432]    [ 0.9524]    [ 0.2306]
 ```
-Using Matrix notation found in Cameron Trivendi because I couldn't find 2SLS function. 
 
-```{}
-X = [constant,p,f,d]
-Z = instrument
-
-B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*lnshares
-
-ans = 
-
-B2SLS =
-
-    1.7079
-   -1.9519
-    3.1361
-    0.9306
-
- u = minus(lnshares,X*B2SLS)
- s2 = ((250-4)^-1)*u.'*u
- VB2ls = s2*inv(X.'*Z*inv(Z.'*Z)*Z.'*X)
-
-VB2ls =
-
-    0.3126   -0.0114   -0.0682   -0.0736
-   -0.0114    0.0017   -0.0012   -0.0009
-   -0.0682   -0.0012    0.0543   -0.0024
-   -0.0736   -0.0009   -0.0024    0.0573
-
-SE = diag(sqrt(VB2ls))
-
-SE =
-
-    0.5591
-    0.0416
-    0.2331
-    0.2394
-```
-
-There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity 
-
-Compare standard errors and coefficients. This model is correct cause of part 2. 
+Not surprisingly the coefficient on price decreases from -1.7586 to -1.9592 suggesting that the OLS coefficient was biased 
+towards zero.  The constant similarly increases in 2SLS, as well as the  coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine, and degree of roasting of the beans).  
 
 # 4.2 Random Coefficients Logit (BLP)
 

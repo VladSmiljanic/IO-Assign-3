@@ -11,7 +11,7 @@
 
 <meta name="author" content="Vladimir Smiljanic &amp; Juan David Rios" />
 
-<meta name="date" content="2017-03-19" />
+<meta name="date" content="2017-03-31" />
 
 <title>IO Assignment #3</title>
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">IO Assignment #3</h1>
 <h4 class="author"><em>Vladimir Smiljanic &amp; Juan David Rios</em></h4>
-<h4 class="date"><em>2017-03-19</em></h4>
+<h4 class="date"><em>2017-03-31</em></h4>
 
 </div>
 
@@ -131,12 +131,12 @@ We can define the mean utility for product j at time t that all consumers receiv
 \delta_{jt} = x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}
 \end{align*}\]</span>
 <p>Where <span class="math inline">\(u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}\)</span>.</p>
-From Berry (1994) we know that the variation in consumer tastes only enters through the error term <span class="math inline">\(\epsilon_{ijt}\)</span> which is assumed to be iid extreme value or logit distribution across all consumers and choices.
+From Berry (1994) we know that the variation in consumer tastes only enters through the error term <span class="math inline">\(\epsilon_{ijt}\)</span> which is assumed to be i.i.d extreme value or logit distribution across all consumers and choices.
 <span class="math display">\[\begin{align*}
 F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\\
 \end{align*}\]</span>
-<p>Where <span class="math inline">\(I\)</span> is inclusive value <span class="math inline">\(\ln \sum^J_{k=0}\exp(\delta_k)\)</span>. Can interpret <span class="math inline">\(I\)</span> as the expected value of the maximum over all utilities.</p>
-<p>As a result, all properties of market demand are determined by <span class="math inline">\(\delta_{jt}\)</span>, which includes market shares and elasticities. As a result, cross-price elasticities only depend on <span class="math inline">\(\delta_{jt}\)</span> with no additional effect from product charasteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.</p>
+<p>Where <span class="math inline">\(I\)</span> is inclusive value <span class="math inline">\(\ln \sum^J_{k=0}\exp(\delta_k)\)</span>. We can interpret <span class="math inline">\(I\)</span> as the expected value of the maximum over all utilities.</p>
+<p>As a result, all properties of market demand are determined by <span class="math inline">\(\delta_{jt}\)</span>, which includes market shares and elasticities. As a result, cross-price elasticities only depend on <span class="math inline">\(\delta_{jt}\)</span> with no additional effect from product characteristics and prices. Errors that are iid results in two pairs of goods (ie. cars) with the same market shares will have the same cross-price elasticity with a third good.</p>
 Individuals choose the product out of the total products available plus the outside good. The probability that individual i chooses product j takes the following form:
 <span class="math display">\[\begin{align*}
 s_{jt} &amp;= \frac{\exp(\delta_{j})}{\exp{I}}\\
@@ -151,7 +151,7 @@ s_{0t} &amp;= \frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}
 <span class="math display">\[\begin{align*}
 \frac{s_{jt}}{s_{0t}} &amp;=  \frac{\frac{\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}{\frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}}  \\
 \frac{s_{jt}}{s_{0t}} &amp;= \exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt})\\
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;= ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}))\\
+\ln(\frac{s_{jt}}{s_{0t}}) &amp;= \ln(\exp(x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}))\\
 \ln(\frac{s_{jt}}{s_{0t}}) &amp;= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}
 \end{align*}\]</span>
 <p>This is the specification that will be taken to the data using OLS and 2SLS.</p>
@@ -159,7 +159,8 @@ s_{0t} &amp;= \frac{1}{1 + \sum^{J}_{k=1} \exp(\delta_{kt})}
 <li><em>Discuss the endogeneity problem and how you are going to treat it. You can use the observed nonprice attributes as instruments under the assumption that they are exogeneous as in BLP(1995). You can use the sums and the count of characteristics by country and year , and by country year and firm.</em></li>
 </ol>
 <p>The endogeneity problem exists in that there is strong argument to be made that <span class="math inline">\(\xi\)</span> the econometric error term that contains all unobserved characteristics for product j is correlated with price. Thus <span class="math inline">\(E[\xi | X]= 0\)</span>. For example one could assume an unobserved characteristic could be the prestige associated with a brand. It would be reasonable to assume that a consumer would get more utility and be willing to pay more for a high prestige brand such as ferrari in comparison to a less prestigious car even holding observed characteristics constant.</p>
-<p>The OLS estimation uses observed nonprice attributes of all products in a given year. TALK ABOUT HOW THESE ARE UNCORRELATED WITH THE PRICE?..</p>
+<p>To address the endogeneity issue we will be using instruments for product j that are the sum of all other characteristics of products made by firms other than the one that produces product j as well as the sum of the characteristics of the other products made by firm j. The reasoning provided by Berry (1995) is that since the utility one gets from purchasing a car is uncorrelated with the characteristics of non-purchased cars but competitors must price based on their competition the sum of the characteristics of all other cars follows these properties <span class="math inline">\(E[P|Z] \ne 0\)</span> and <span class="math inline">\(E[\xi|z]= 0\)</span>. Thus the sum of other car characteristics are valid instruments if the previous assumptions hold.</p>
+
 <ol start="3" style="list-style-type: decimal">
 <li><em>Algebraically derive the own price and cross price elasticities in the logit model ( Show all steps)</em></li>
 </ol>
@@ -195,22 +196,11 @@ for own price elasticity and k = j :
 &amp;= L (-\alpha s_{j}\frac{q_j}{L})(1 - s_{j})\frac{p_j}{q_j}\\
 &amp;= -\alpha p_j(1-s_j)\\
 \end{align*}\]</span>
-<p>NEED TO CLEAN THIS UP , expand price elasticity copied directly out of rasmusen 07’</p>
 <ol start="4" style="list-style-type: decimal">
 <li><em>Estimate the logit using OLS and 2SLS with car model fixed effects, using the instruments discussed above. Report the coefficients and the standard errors for the product characteristics and price. How does the coefficient of price change when you use instruments?</em>.</li>
 </ol>
 <p>Estimating logit using OLS and 2SLS with car model fixed effects as well as instruments.</p>
-<pre><code>clear all
-capture log close
-
-cd &quot;/Users/David/GitHub/IO/ps2/IO-Assign-3&quot; //  WD
-use &quot;/Users/David/Downloads/HW3/cars1.dta&quot;
-
-summarize year country co segment domestic firm qu price horsepower fuel width height pop ngdp
-
-// Define panel 
-
-egen yearcountry=group(year country), label
+<pre><code>egen yearcountry=group(year country), label
 xtset co yearcountry
 
 // Defining outside good as MSIZE
@@ -221,13 +211,6 @@ gen MSIZE=pop/4
 
 local characteristics &quot;horsepower fuel width height domestic&quot;;
 
-* Sum of the characteristics of all competing products and competing products produced by other firms;
-
-
-***     i_hp= sum(hp)-hp                    sum of the characteristics of all competing products
-    if_hp= sum(hp of firm j) - hp           sum of the characteristics of all other makes of firm j
-    CFi_hp= sum(hp)- sum(hp of firm j)      sum of the characteristics of all other non-firm j makes;
-    
 foreach inst in `characteristics'{;
 qui{;
     egen i_`inst'=sum(`inst'), by (year country);
@@ -252,17 +235,13 @@ gen lni_num=ln(i_num);
 replace if_num=if_num-1;
 gen lnif_num=ln(if_num);
 
-*Code from page 55 of her session 3 notes. We solve for the dependent variables values using this method. This one is using characertistics by country and year. The ivreg uses characteristics for country, year and country, year and firm.
-
 gen rewr=ln(qu/(MSIZE-tot_sales));
 
 xtreg rewr price horsepower fuel width height domestic year country2-country5, fe;
 
 xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
-                            if_horsepower if_fuel if_width if_height if_domestic i_num)
-                            horsepower fuel width height domestic year country2-country5, fe;
-
-
+                if_horsepower if_fuel if_width if_height if_domestic i_num)
+                horsepower fuel width height domestic year country2-country5, fe;
     </code></pre>
 <p><em>Coefficients and standard errors for product charactersitics and price</em></p>
 <pre><code>
@@ -300,11 +279,10 @@ corr(u_i, Xb)  = -0.0355                        Prob &gt; F           =    0.000
 ------------------------------------------------------------------------------
 F test that all u_i=0:     F(350, 11121) =    28.23          Prob &gt; F = 0.0000
 
-. xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
-&gt;                                                         if_horsepower if_fuel if_width if_height if_domesti
-&gt; c i_num)
-&gt;                                                         horsepower fuel width height domestic year country2
-&gt; -country5, fe;
+xtivreg rewr (price =   i_horsepower i_fuel i_width i_height i_domestic i_num
+&gt;                       if_horsepower if_fuel if_width if_height if_domestic i_num)
+&gt;                       horsepower fuel width height domestic year country2-country5, fe;
+
 note: i_num omitted because of collinearity
 
 Fixed-effects (within) IV regression         Number of obs      =        11483
@@ -346,51 +324,48 @@ Instruments:    horsepower fuel width height domestic year country2 country3
                 if_domestic
 ------------------------------------------------------------------------------
 </code></pre>
-<p>We can see that the coefficient on price decreases as we include instruments.</p>
+<p>We can see that the coefficient on price decreases as we include instruments. The Instrumented coefficient on price -.1005664 is larger in absolute value to the coefficient calculated with out instruments -.050574.</p>
+<p>This confirms the suspicion that the non-instrumented results were biased downwards and it was necessary to use the following instruments.</p>
 <ol start="5" style="list-style-type: decimal">
 <li><em>Calculate the elasticities and report summary statistics</em>.</li>
 </ol>
-<p>From our summary table for coefficients and standards errors, we seee that our coefficient on prices for logit model with instrumental variables is -0.1005664. We can input that value into our price elasticity equation and summarize the results.</p>
+<p>From our summary table for coefficients and standards errors, we see that our coefficient on prices for logit model with instrumental variables is <span class="math inline">\(\alpha=0.1005664\)</span>. The regression notes that this coefficient is negative but our model setup the regression to have a negative sign in front of <span class="math inline">\(\alpha\)</span>. Hence <span class="math inline">\(\alpha\)</span> itself is positive. We can input that value into our price elasticity equation and summarize the results.</p>
 <p><em>Own price elasticities</em></p>
-<pre><code>
-. gen alp = -.1005664;
+<pre><code>gen alp = 0.1005664;
+gen sj = qu/MSIZE;
+gen oel=1alp*price*(1-sj);
 
-.  gen sj = qu/MSIZE;
-
-. gen oel=(alp)*price*(1-sj);
-
-. sum oel;
+sum oel;
 
     Variable |       Obs        Mean    Std. Dev.       Min        Max
 -------------+--------------------------------------------------------
          oel |     11483   -1.857588    .8975175  -15.11824  -.5274911
 </code></pre>
 <p><em>Cross-price elasticities</em></p>
-<pre><code>. gen cel = -(alp)*price*(sj);
+<pre><code>gen cel = alp*price*sj;
 
-. sum cel;
+sum cel;
 
     Variable |       Obs        Mean    Std. Dev.       Min        Max
 -------------+--------------------------------------------------------
          cel |     11483    .0025719    .0038055   .0000141    .035288
-
 </code></pre>
 </div>
-<div id="question-2" class="section level1">
-<h1>Question 2</h1>
+<div id="question-2" class="section level2">
+<h2>Question 2</h2>
 <ol style="list-style-type: decimal">
-<li>Deriving Berry-one-level nested logit begining from the utility following utility specification.
+<li>Deriving Berry-one-level nested logit begining from the utility following utility specification.</li>
+</ol>
 <span class="math display">\[\begin{align*}
 u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
-\end{align*}\]</span></li>
-</ol>
-<p>We than divide the products into mutually exclusive nests which we note by <span class="math inline">\(g = 0 \dots G\)</span> where <span class="math inline">\(g=0\)</span> is the nest that only contains the outside good.</p>
+\end{align*}\]</span>
+<p>We than divide the products into mutually exclusive nests which we note by <span class="math inline">\(g = 0 \dots G\)</span> where <span class="math inline">\(g=0\)</span> is the nest that only contains the outside good. In this case the products will be divided based on market segment, such as (compact, luxury , intermediate, … ect).</p>
 In the nested logiot the individual error term <span class="math inline">\(\epsilon_{ijt}\)</span> is composed of two parts
 <span class="math display">\[\begin{align*}
-\epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
+\epsilon_{ijt} = (1-\sigma_g)\epsilon_{igt} + \epsilon_{ijt}^1
 \end{align*}\]</span>
-<p>The first term <span class="math inline">\(\epsilon{igt}\)</span> is an error shared by all products in nest g. The second term <span class="math inline">\(\epsilon_{ijt}^1\)</span> is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term <span class="math inline">\((1-\sigma_g)\)</span> denotes how important the within nest shock in comparison to the extreme value shock. <span class="math inline">\(\epsilon{igt}\)</span> has the property that it is distributed in such a manner that it makes the whole term <span class="math inline">\((1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1\)</span> also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that <span class="math inline">\(\sigma_g = \sigma \textrm{ for all } g\)</span>.</p>
-<p>Since _{ijt} is extreme value distributed <span class="math inline">\(F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\)</span>.</p>
+<p>The first term <span class="math inline">\(\epsilon_{igt}\)</span> is an error shared by all products in nest g. The second term <span class="math inline">\(\epsilon_{ijt}^1\)</span> is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term <span class="math inline">\((1-\sigma_g)\)</span> denotes how important the within nest shock is in comparison to the extreme value shock. <span class="math inline">\(\epsilon_{igt}\)</span> has the property that it is distributed in such a manner that it makes the whole term <span class="math inline">\((1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1\)</span> also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that <span class="math inline">\(\sigma_g = \sigma \textrm{ for all } g\)</span>.</p>
+<p>Since <span class="math inline">\(\epsilon_{ijt}\)</span> is extreme value distributed <span class="math inline">\(F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\)</span>.</p>
 Following the same notation as Berry 1994:
 <span class="math display">\[\begin{align*}
 D_g &amp;= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
@@ -415,7 +390,7 @@ s_{0} &amp;= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \ln(s_{j}) - \ln(s_0) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \ln(D_g^\sigma)-ln(\sum^G_{g=0}D^{(1-\sigma)}_g) +\ln(\sum^G_{g=0}D^{(1-\sigma)}_g) \\
 \ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
 \end{align*}\]</span>
-<p>The market share of a certain segment g, <span class="math inline">\(s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}\)</span></p>
+<p>The market share of a certain segment g, <span class="math inline">\(s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}\)</span> taking the log of both sides.</p>
 <span class="math display">\[\begin{align*}
 \ln(s_g) &amp;= \ln(\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g})\\
 \ln(s_g) &amp;= (1-\sigma) \ln(D_g) - \ln(s_0)\\
@@ -426,26 +401,24 @@ s_{0} &amp;= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
 \ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \frac{\ln(s_g) - \ln(s_0)}{1-\sigma} \\
 (\ln(s_j) - \ln(s_0))(1-\sigma) &amp;= \delta_{j} -\sigma (\ln(s_g) - \ln(s_0))\\
-\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  &amp; + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j}
+\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j} \\
 \ln(\frac{s_{j}}{s_0}) -\sigma \ln(s_{j|g}) &amp;= \delta_{j} \\
 \ln(\frac{s_{j}}{s_0}) &amp;= \delta_{j} +\sigma \ln(s_{j|g}) \\
-\ln(\frac{s_{j}}{s_0}) &amp;= \delta_{j} +\sigma \ln(s_{j|g}) \\ 
  \ln(\frac{s_{j}}{s_0})  &amp;= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}  +\sigma \ln(s_{j|g})
 \end{align*}\]</span>
 <p>This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS.</p>
 <ol start="2" style="list-style-type: decimal">
-<li></li>
+<li>Discuss Endogeneity problem and how you will treat it.</li>
 </ol>
-<p>We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty</p>
-<p>Optimal pricing of firms will imply a correlation between prices and unobserved product characteristics as in the regular logit but we will require two instruments since changes in unobserved characteristics will also effect the relative marketshare within a segment <span class="math inline">\(\ln(s_{j|g})\)</span>. Once again we relly on within firm characteristics, the sum of within segment product characteristics and all other firm product characteristics.</p>
+<p>We continue to have an endogeneity problem with prices being correlated with our unobserved characteristics contained in the econometric error similar to Q1.2 In addition the term <span class="math inline">\(\ln(s_{j|g})\)</span> creates additional endogeneity issues. It is reasonable to assume that some of the unobserved characteristics of a car will lead to a higher share within the cars segment. One such example is if a compact car has a reputation for being reliable, we can not observed that trait but it stands to reason that this product would capture a larger share of the compact car segment. For this reason we need two instruments one for price and one for <span class="math inline">\(\ln(s_{j|g})\)</span>.</p>
+<p>We will relly once again on the sum of product charactersitic of other products within firm, within market segment and within market to address the endogeneity problem presented by poth price and <span class="math inline">\(\ln(s_{j|g})\)</span>.</p>
 <ol start="3" style="list-style-type: decimal">
-<li></li>
-</ol>
-<span class="math display">\[\begin{align*}
+<li><span class="math display">\[\begin{align*}
 s_{j} &amp;= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)} \\
 I&amp;=\ln(\sum^G_{g=0}\exp(I_g))\\  
 I_g&amp;=(1-\sigma_g)\ln(\sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
-\end{align*}\]</span>
+\end{align*}\]</span></li>
+</ol>
 <p>Using notation from Barry’s paper, we can simplify summations by:</p>
 <span class="math display">\[\begin{align*}
 D_g &amp;= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
@@ -468,22 +441,19 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 \end{align*}\]</span>
 <p>To find the own price elasticities, we will take the derivative of our product shares w.r.t. the products price. We can use the quotient rule to calculate the derivative:</p>
 <span class="math display">\[\begin{align*}
-\frac{\partial s_{j}}{\partial p_{j}} &amp;= (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2} \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &amp;-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-&amp;=-\frac{\alpha s_j}{(1-\sigma_g)} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
-
+\frac{\partial s_{j}}{\partial p_{j}} &amp;= (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2} \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\
+\dots &amp;-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\dots \\
+\dots &amp;+ \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+&amp;=-\frac{\alpha s_j}{(1-\sigma_g)} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) \dots \\ \dots&amp; -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
 &amp;=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
-
 &amp;=-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g})\\
 \end{align*}\]</span>
 <p>From this we can calculate our own price elasticities:</p>
 <span class="math display">\[\begin{align*}
 \frac{\partial q_j}{\partial p_j} \frac{p_j}{q_j}&amp;= L\frac{\partial s_j}{\partial p_j} \frac{p_j}{q_j}\\
 &amp;= L(-\frac{\alpha s_j}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
-
 &amp;= L(-\frac{\alpha}{(1-\sigma_g)}\frac{q_j}{L}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}) ) \frac{p_j}{q_j}\\
-
 &amp;=-\frac{\alpha}{(1-\sigma_g)}(1 -(1-\sigma_g)s_j -  \sigma s_{j|g}))p_j\\
-
 \end{align*}\]</span>
 <p>If product k falls within the same segment as j, then we can calculate <span class="math inline">\(\frac{\partial s_k}{\partial p_j}\)</span> as:</p>
 <span class="math display">\[\begin{align*}
@@ -500,10 +470,8 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 \end{align*}\]</span>
 <p>If product k falls outside the segment is in j, then we can calculate <span class="math inline">\(\frac{\partial s_k}{\partial p_j}\)</span> as:</p>
 <span class="math display">\[\begin{align*}
-\frac{\partial s_{k}}{\partial p_{j}} &amp;= 
-- \exp(\frac{\delta_k}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2}\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))\bigg)\\
+\frac{\partial s_{k}}{\partial p_{j}} &amp;= - \exp(\frac{\delta_k}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2}\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))\bigg)\\
 &amp;= \alpha s_k s_j\\
-
 \end{align*}\]</span>
 <p>From this we can calculate our cross price elasticities for products that are outside of segments:</p>
 <span class="math display">\[\begin{align*}
@@ -512,10 +480,9 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 &amp;= \alpha s_j p_j\\
 \end{align*}\]</span>
 <ol start="4" style="list-style-type: decimal">
-<li></li>
+<li>Estimate the logit model using OLS and 2SLS</li>
 </ol>
-<pre><code>* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-.                 foreach inst in `characteristics'{;
+<pre><code>foreach inst in `characteristics'{;
   2.         qui{;
   3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
   4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
@@ -525,30 +492,17 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
   8.         };
   9. };
 
-. egen seg_sales=sum(qu), by(year country segment);
-
-. egen is_num=count(qu), by(year country segment);
-
-. egen fs_sales=sum(qu), by(year country segment firm);
-
-. egen ifs_num=count (qu), by(year country segment firm);
-
-. qui gen CFis_num=is_num-ifs_num;
-
-. replace is_num=is_num-1;
-(11483 real changes made)
-
-. gen lnis_num=ln(is_num);
-(3 missing values generated)
-
-. replace ifs_num=ifs_num-1;
-(11483 real changes made)
-
-. gen lnifs_num=ln(ifs_num);
-(4662 missing values generated)
-
-. gen sigma=ln(qu/seg_sales);</code></pre>
-<pre><code>. xtreg rewr price sigma horsepower fuel width height domestic year country2-country5, fe;
+egen seg_sales=sum(qu), by(year country segment);
+egen is_num=count(qu), by(year country segment);
+egen fs_sales=sum(qu), by(year country segment firm);
+egen ifs_num=count (qu), by(year country segment firm);
+qui gen CFis_num=is_num-ifs_num;
+replace is_num=is_num-1;
+gen lnis_num=ln(is_num);
+replace ifs_num=ifs_num-1;
+gen lnifs_num=ln(ifs_num);
+gen sigma=ln(qu/seg_sales);</code></pre>
+<pre><code>xtreg rewr price sigma horsepower fuel width height domestic year country2-country5, fe;
 
 Fixed-effects (within) regression               Number of obs      =     11483
 Group variable: co                              Number of groups   =       351
@@ -583,15 +537,11 @@ corr(u_i, Xb)  = 0.0199                         Prob &gt; F           =    0.000
 ------------------------------------------------------------------------------
 F test that all u_i=0:     F(350, 11120) =    19.01          Prob &gt; F = 0.0000
 
-. xtivreg rewr (price sigma= i_horsepower i_fuel i_width i_height i_domestic
-&gt;                                                         if_horsepower if_fuel if_width if_height if_domesti
-&gt; c
-&gt;                                                         is_horsepower is_fuel is_width is_height is_domesti
-&gt; c
-&gt;                                                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_do
-&gt; mestic)
-&gt;                                                         horsepower fuel width height domestic year country2
-&gt; -country5, fe;
+xtivreg rewr (price sigma= i_horsepower i_fuel i_width i_height i_domestic
+&gt;                          if_horsepower if_fuel if_width if_height if_domestic
+&gt;                          is_horsepower is_fuel is_width is_height is_domestic
+&gt;                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+&gt;                         horsepower fuel width height domestic year country2-country5, fe;
 
 Fixed-effects (within) IV regression         Number of obs      =        11483
 Group variable: co                           Number of groups   =          351
@@ -634,19 +584,67 @@ Instruments:    horsepower fuel width height domestic year country2 country3
                 is_domestic ifs_horsepower ifs_fuel ifs_width ifs_height
                 ifs_domestic
 ------------------------------------------------------------------------------</code></pre>
-<p>The coefficent on prices is now -.1232378 and we have estimated <span class="math inline">\(\sigma_g\)</span> = .2110286 (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our <span class="math inline">\(\sigma_g\)</span> falls signfificantly. Without instruments, the model is approaching a logit model as <span class="math inline">\(\sigma_g\)</span> is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.</p>
+<p>The coefficent on prices is now <span class="math inline">\(\alpha=.1232378\)</span> and we have estimated <span class="math inline">\(\sigma_g = .2110286\)</span> (conditional market conditions). Note that the coefficient alpha is negative but our regression assumes there is a negative in front of alpha. Hence alpha itself will be positive according to our formulas. We can see that when instruments are used, our coefficients decrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our <span class="math inline">\(\sigma_g\)</span> falls significantly. Without instruments, the model is approaching a logit model as <span class="math inline">\(\sigma_g\)</span> is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.</p>
 <ol start="5" style="list-style-type: decimal">
 <li></li>
 </ol>
+<p>For own-price elasticities, we need to calculate <span class="math inline">\(s_g\)</span> to find share of each segment by country and year. We then input our estimated values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\sigma_g\)</span>.</p>
+<pre><code>gen alp = 0.1232378 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+egen ig=sum(qu), by(year country segment)
+gen sg = ig/MSIZE
+gen sjg= sj/sg
+
+gen op = (-alp)/(1-sigma)*(1-(1-sigma)*sj-sigma*sjg)*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483   -2.841739    1.363481  -23.39034    -.80102
+</code></pre>
+<p>For cross-price elasticities where product k is within the segment:</p>
+<pre><code>gen alp = 0.1232378 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+
+egen ig=sum(qu), by(year country segment)
+gen sk=(ig-qu)/MSIZE
+
+gen sg = ig/MSIZE
+gen skg= sk/sg
+
+gen op = ((alp)/(1-sigma))*((1-sigma)*sk+sigma*skg)*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483    .6190204    .2726837          0   4.891339
+</code></pre>
+<p>For cross-price elasticities where product k is outside of the segment:</p>
+<pre><code>gen alp = 0.1232378 
+gen sigma = 0.2110286
+gen sj = qu/MSIZE
+gen op = alp*sj*price
+
+sum op
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          op |     11483    .0031517    .0046634   .0000172   .0432432
+
+</code></pre>
+<p>We can see that the price elasticity within a segement is much higher then outside of the segment. Intuitively this makes sense as sales will be more sensitive to price changes to similar segment of cars instead of prices changes to other segments.</p>
 </div>
-<div id="merger-simulation" class="section level1">
-<h1>3) Merger Simulation</h1>
+<div id="merger-simulation" class="section level2">
+<h2>3 Merger Simulation</h2>
 <p>Estimating a merger between Volkswagen (VW) and Ford in Germany 1998</p>
-<p>Logit Specification w/ endogeneity taken into account. Note that firm varialbe = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit.</p>
+<p>Logit Specification w/ endogeneity taken into account. Note that firm variable = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit.</p>
 <p>Logit Specification:</p>
 <pre><code>
 quietly mergersim init,  price(price) quantity(qu) marketsize(MSIZE) firm(firm);
-
 
 quietly xtivreg M_ls (price =   i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_height if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe;
 
@@ -781,23 +779,8 @@ C8:                     86.21          88.79
 Consumer surplus:              -277,498
 Producer surplus:                30,470
 ----------------------------------------
-
 </code></pre>
-<p>Nested Logit Specification</p>
-<pre><code>mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
-
-xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
-                            if_horsepower if_fuel if_width if_height if_domestic
-                            is_horsepower is_fuel is_width is_height is_domestic
-                            ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
-                            horsepower fuel width height domestic year country2-country5, fe;
-
-                            
-mergersim market if year == 1998; 
-
-mergersim simulate if year == 1998 &amp; country == 3, seller(5) buyer(26) detail;
-</code></pre>
-<p>Nested Logit Specification:</p>
+<p><em>Nested Logit Specification </em></p>
 <pre><code>#delimit ;
 quietly mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
 
@@ -813,11 +796,7 @@ Supply: Bertrand competition
 Demand: Unit demand one-level nested logit
 --------------------------------------------------------------------------------
 Demand estimate
-xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                         
-&gt;                 if_horsepower if_fuel if_width if_height if_domestic                                              
-&gt;            is_horsepower is_fuel is_width is_height is_domestic                                                   
-&gt;       ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                                  
-&gt;        horsepower fuel width height domestic year country2-country5, fe
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                                      if_horsepower if_fuel if_width if_height if_domestic                                                 is_horsepower is_fuel is_width is_height is_domestic                                                ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                          horsepower fuel width height domestic year country2-country5, fe
 Dependent variable: M_ls
 --------------------------------------------------------------------------------
 
@@ -956,7 +935,7 @@ Nested Logit: decrease of 430,685$</code></pre>
 <li>Comment on the differences between the results delivered under each demand model.</li>
 </ol>
 <p>As we can see the logit produces smaller estimates for price changes than the nested logit which inturn results in a smaller reduction in consumer surplus incomparison to the nested logit.</p>
-<p>The reason driving this change is the substitution effects of the logit the nested logit. By imposing independence of <span class="math inline">\(\epsilon_{ijt}\)</span> across all produces it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error term is imposed within a segment it allows for correlation in tastes within a segment. In this merger example this means that the increase in price of products of a firm within a segment would be recaptured by the other products that the firm has in that segment.</p>
+<p>The reason driving this difference in the substitution effects and how they differ in the logit and the nested logit. By imposing independence of <span class="math inline">\(\epsilon_{ijt}\)</span> across all product it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error term is imposed within a segment it allows for correlation in tastes within a segment. In this merger example this means that the increase in price of products of a firm within a segment would be recaptured by the other products that the firm has in that segment.</p>
 <p>For example in Germany 1988 volkswagen golf and the ford escort were both compact cars. The nested logit takes in to account the fact that some of the reduced quantity of sales as a result of a VW Golf price increase would be recaptured by the sales in ford escort. This would result in the firms being more willing to raise prices and thus result in a reduction in Consumer surplus. This dynamic of within segment substitution is not captured by the standard logit.</p>
 </div>
 <div id="logit-estimation" class="section level1">
@@ -965,7 +944,11 @@ Nested Logit: decrease of 430,685$</code></pre>
 <span class="math display">\[\begin{align*}
 u_{ijt} = \beta_0 + \beta^f f_{jt} + \beta^d d_{jt} + \alpha p_{jt} + \xi_{jt} + \epsilon_{ijt}
 \end{align*}\]</span>
-<p>constant: vector of ones, f: amount of caffeine d: degrees of roasting Zopt : Instrument Matrix shares: Market Share</p>
+<p>constant: vector of ones,</p>
+<p>f: amount of caffeine</p>
+<p>d: degrees of roasting</p>
+<p>Zopt : Instrument Matrix</p>
+<p>shares: Market Share</p>
 <p>Estimating OLS and 2SLS model in MATlab</p>
 <pre><code>
 %BLP ESTIMATOR WITH SIMULATED DATA
@@ -1017,7 +1000,7 @@ Results of Logit
     'price'       [-1.7586]    [-1.9592]    [ 0.0334]
     'char1'       [ 3.0454]    [ 3.1826]    [ 0.2244]
     'char2'       [ 0.8432]    [ 0.9524]    [ 0.2306]</code></pre>
-<p>Not surprisingly the coefficient on price decreases from -1.7586 to -1.9592 suggesting that the OLS coefficient was biased towards zero. The constant similarly increases in 2SLS, as well as the coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine, and degree of roasting of the beans).</p>
+<p>Not surprisingly the coefficient on price decreases from -1.7586 to -1.9592 suggesting that the OLS coefficient was biased towards zero. The constant similarly increases in 2SLS, as well as the coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine and the degree of roasting of the beans).</p>
 </div>
 <div id="random-coefficients-logit-blp" class="section level1">
 <h1>4.2 Random Coefficients Logit (BLP)</h1>
@@ -1079,11 +1062,16 @@ Result of Random Coefficient Logit
     'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
     'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]</code></pre>
-<p>Interpretting the ratio between the mean and the standard deviation parameters. Since all the coefficients in the model are lognormal distributed than the log of the coefficient are normally distributed. Following the procedure in Train’s Discrete Choice Methods with Simulation we can derive estimates of mean, median and variance of the log coefficients.</p>
-<p>The log Coeffiecnets are as follows 0.96557601 0.68178285 0.79109025 -0.01116206 -0.08773891</p>
-<p>The standard erros 0.5650, 0.0401, 0.3225, 0.2285, 0.1311</p>
-<p>mean = exp(logcoef + s/2) 3.4836340 2.0174470 2.5917680 1.1085889 0.9780554</p>
-<p>Variance = exp(2m + s) [exp(s) â 1]. 9.2164351 0.1665273 2.5564209 0.3154930 0.1340012</p>
+<p>Comparing Coefficient between Random Coefficient Logit, OLS , and 2SLS</p>
+<pre><code>    'var'         'OLS'        '2SLS'       'Random Coefficients Logit '
+    'constant'    [ 0.4593]    [ 1.7797]    [ 2.6263] 
+    'price'       [-1.7586]    [-1.9592]    [-1.9774]
+    'char1'       [ 3.0454]    [ 3.1826]    [ 2.2058]
+    'char2'       [ 0.8432]    [ 0.9524]    [ 0.9889]
+</code></pre>
+<p>It is easy to see that the coefficient on the constant term is significantly larger in the Random Coefficients logit than in the other models. The coefficient on price in the Random Coefficients logit resembles the 2SLS value and is significantly larger in absolute value than the OLS coefficients reaffirming that the OLS regression is biased upwards towards 0. The coefficient on Char1, amount of caffeine, is larger in the OLS and 2SLS model than the Random Coefficients Logit. The estimation for Char2, degree of roasting of the beans is larger in the Random Coefficients Logit but not signifcantly so.</p>
+<p>Since in the random coefficients model the <span class="math inline">\(\beta\)</span> are lognormally distributed we can transform the estimates by taking the logs of them to get <span class="math inline">\(\ln(\beta))\)</span> that are normal distributed. We can than use the transformed variable to generate the mean and variance of <span class="math inline">\(\beta\)</span> where mean <span class="math inline">\(= \exp(\textrm{logcoef} + s/2)\)</span> and Variance <span class="math inline">\(= \exp( 2 \times \textrm{logcoeff} + s) \times ( \exp(s) -1)\)</span></p>
+<p>The ratio between an consumers Char1 mean coefficient and the mean price coefficient is the measure of how much a consumer would be willing to pay to increase the caffeine content of a coffee brand. Similarly The ratio between consumers Char2 coefficient and the price coefficient is a measure of how much a consumer would be willing to pay to increase the degree of roasting of a coffee brand.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Start by drawing 10 invdividuals, than 50 and than 100.</li>
 </ol>
@@ -1121,49 +1109,50 @@ Result of Random Coefficient Logit
 </code></pre>
 <p>As we can see the coefficient on price when we increase the simulation number of draws from 10,50,100 does not changed drastically hovering around -1.98. The values of sigmachar1 do vary ranging from -0.91 - 1.3902. The coefficient on constant remain similar through all 3 simulations andd the two charactersitics variables vary slightly across the three simulations. The most obvious change between 10 and 100 simulaitons is the value of sigmachar1.</p>
 <ol start="3" style="list-style-type: decimal">
-<li>Revisit the logit above and formally show that there is an analytical solution for $_{jt}. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.</li>
+<li>Revisit the logit above and formally show that there is an analytical solution for <span class="math inline">\(\delta_{jt}\)</span>. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.</li>
 </ol>
 <p>Finding an analytical solution for <span class="math inline">\(\delta_{jt}\)</span></p>
 <p>From previously since the error is type 1 extreme value that market shares for product j and the outside good are defined as</p>
 <span class="math display">\[\begin{align*}
-s_{j} &amp;= \frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)}\\
+s_{j} &amp;= \frac{\exp(\delta_j)}{1 + \sum^j_k \exp(\delta_k)}\\
 s_{0} &amp;= \frac{1}{1 + \sum^j_k \exp(\delta_k)}
 \end{align*}\]</span>
 Taking the logs of both of these equations
 <span class="math display">\[\begin{align*}
-\ln(s_{j}) &amp;= \ln(\frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)})\\
-\ln(s_{j}) &amp;=  \delta_j  - \sum^j_k \delta_k\\
+\ln(s_{j}) &amp;= \ln(\frac{\exp(\delta_j)}{1 + \sum^j_k \exp(\delta_k)})\\
+\ln(s_{j}) &amp;=  \delta_j  - \ln(\exp(\sum^j_k \delta_k))\\
 \ln(s_{0}) &amp;= \ln(\frac{1}{1 + \sum^j_k \exp(\delta_k)}) \\
-\ln(s_{0}) &amp;= - \sum^j_k \delta_k \\
+\ln(s_{0}) &amp;= - \ln(\exp(\sum^j_k \delta_k)) \\
 \end{align*}\]</span>
 Subtracting <span class="math inline">\(\ln(s_j) - \ln(s_0)\)</span>
 <span class="math display">\[\begin{align*}
-\ln(s_{j}) -  \ln(s_{0}) &amp; =  \delta_j  - \sum^j_k \delta_k +  \sum^j_k \delta_k \\
-\ln(\frac{s_{j}}{s_{0}}  &amp; =  \delta_j  \\
+\ln(s_{j}) -  \ln(s_{0}) &amp; =  \delta_j  - \ln(\exp(\sum^j_k \delta_k))  +  \ln(\exp(\sum^j_k \delta_k) \\
+\ln(\frac{s_{j}}{s_{0}}) &amp; =  \delta_j  \\
 \end{align*}\]</span>
 <p>Therefore we have an analytic solution for <span class="math inline">\(\delta_j\)</span>.</p>
 <p>It is not possible to attain this in the random coeffecients logit because we approximate market shares through a monte carlo simulation. Since the equation for marketshares is given by:</p>
 <p><span class="math inline">\(s_{jt} =\int \frac{\exp(\delta_{jt} + \mu_{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}dP_v(v)\)</span></p>
-<p>This integral grows in complexity the number of random coefficients to not having a closed form analytical solution and instead we approximate through simulation.</p>
+<p>This integral grows in complexity with the number of random coefficients and does not have a closed form analytical solution and instead we approximate through simulation.</p>
 <p>Contraction Mapping: The approximated market share is given by this equation:</p>
 <p><span class="math inline">\(s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) }\)</span></p>
-<p>At this point both <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\delta_j\)</span> are unknown. We than for a given <span class="math inline">\(\sigma\)</span> begin with <span class="math inline">\(\delta_j^0\)</span> and solve the marketshare function producing <span class="math inline">\(s_t(\delta_j^0)\)</span>. We than compare this value to our observed marketshare to come up with a new value for <span class="math inline">\(\delta_j\)</span> through contract mapping in each market.</p>
+<p>At this point both <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\delta_j\)</span> are unknown. Than for a given <span class="math inline">\(\sigma\)</span> begin with <span class="math inline">\(\delta_j^0\)</span> and solve the marketshare function producing <span class="math inline">\(s_t(\delta_j^0)\)</span>. We than compare this value to our observed marketshare to come up with a new value for <span class="math inline">\(\delta_j\)</span> through contract mapping in each market.</p>
 <p><span class="math inline">\(\delta^1_j = \delta^0_j + \ln(s_t) - \ln(s_t(\delta_j^0))\)</span></p>
-<p>We than get $^1_j $ recompute the market shares using this value to get <span class="math inline">\(s_t(\delta_j^1)\)</span> and revisit contract mapping to get <span class="math inline">\(\delta^2_j = \delta^1_j + \ln(s_t) - \ln(s_t(\delta_j^1))\)</span>. This iteration continous until the difference between $(s_t) - (s_t(_j)) $ is significantly small with a minimum tolerance of <span class="math inline">\(10^{-12}\)</span>.</p>
+<p>We than get <span class="math inline">\(\delta^1_j\)</span> recompute the market shares using this value to get <span class="math inline">\(s_t(\delta_j^1)\)</span> and revisit contract mapping to get <span class="math inline">\(\delta^2_j = \delta^1_j + \ln(s_t) - \ln(s_t(\delta_j^1))\)</span>. This iteration continous until the difference between <span class="math inline">\(\ln(s_t) - \ln(s_t(\delta_j))\)</span> is significantly small with a minimum tolerance of <span class="math inline">\(10^{-12}\)</span>.</p>
 <p>Once we have the delta produced by a certain <span class="math inline">\(\sigma\)</span> we use the matrix equation for 2SLS using W as the GMM weight matrix to solve for parameters. <span class="math inline">\(\hat\theta =[\beta , \alpha]\)</span></p>
 <p><span class="math inline">\(\hat \theta = (X'ZWZ'X)^{-1}X'ZWZ'\delta(\sigma)\)</span></p>
-<p>Using <span class="math inline">\(\hat \theta\)</span> we than can recover the econometric error term <span class="math inline">\(\xi\)</span>. Using the instruments we than find the that minimizes this expression.</p>
+<p>Using <span class="math inline">\(\hat \theta\)</span> we than can recover the econometric error term <span class="math inline">\(\xi\)</span>. Using the instruments we than find the <span class="math inline">\(\sigma\)</span> that minimizes this expression.</p>
 <p><span class="math inline">\(\min_{\sigma} \xi' ZWZ'\xi\)</span></p>
 <p>If the <span class="math inline">\(\sigma\)</span> that minimizes this expression is the same one we originally guessed in our contract mapping we are finished if not we than use this new estimate of sigma to restart our contract mapping until the <span class="math inline">\(\sigma\)</span> that minimizes the error term interacted with the instruments is the one that we used to generate our estimate of <span class="math inline">\(\delta_j\)</span>.</p>
 <ol start="4" style="list-style-type: decimal">
-<li>Derive the own price and cross price elasticities in the random coefficient logit model.</li>
+<li>Derive the own price and cross price elasticities in the random coefficient logit model. Estimating cross-price elasticities = <span class="math inline">\(\frac{\partial s_j}{\partial p_k}\)</span></li>
 </ol>
-<p>Estimating cross-price elasticities = <span class="math inline">\(\frac{\partial s_j}{\partial p_k}\)</span></p>
 <p><span class="math inline">\(s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}\)</span></p>
-<p>But since we can only approximate market shares through Monte Carlo simulation x_{kt}<em>{}v</em>{it})</p>
-<p><span class="math inline">\(s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) }\)</span></p>
+<p>But since we can only approximate market shares through Monte Carlo simulation</p>
 <span class="math display">\[\begin{align*}
-frac{\partial s_j}{\partial p_k}  = 
+s_{jt} &amp;= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) } \\
+\frac{\partial s_j}{\partial p_k}  &amp;=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}))^2 } \\
+\frac{\partial s_j}{\partial p_k} &amp;= (ND)^{-1}\sum^{ND}_i  - \alpha s_j \frac{(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it})}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it})) }\\
+\frac{\partial s_j}{\partial p_k} &amp;= (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
 \end{align*}\]</span>
 </div>
 

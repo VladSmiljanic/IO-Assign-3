@@ -1197,7 +1197,6 @@ $s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{
 But since we can only approximate market shares through Monte Carlo simulation 
 
 
-
 \begin{align*}
 s_{jt} &= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) } \\
 \frac{\partial s_j}{\partial p_k}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}))^2 } \\
@@ -1205,24 +1204,19 @@ s_{jt} &= (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )
 \frac{\partial s_j}{\partial p_k} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k 
 \end{align*}
 
+
 For elasticity multiply by $\frac{p_k}{s_j}$
 
 \begin{align*}
+\frac{\partial s_j}{\partial p_j}  &=  (ND)^{-1}\sum^{ND}_i \bigg( - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))} - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )*(\exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))}{(1 + \sum^J_k \exp(\delta_{jt} + x_{jt}\sigma_{\beta}v_{it}))^2}\bigg)\\
+
 \frac{\partial s_j}{\partial p_k} \frac{p_k}{s_j} &= \frac{p_k}{s_j} (ND)^{-1}\sum^{ND}_i  - \alpha s_j s_k \\
-&=\frac{p_k}{s_j}(-\alpha) s_j s_k (ND)^{-1}\sum^{ND}_i \\
-&=\frac{p_k}{s_j}(-\alpha) s_j s_k (ND)^{-1}ND \\
-&=-\alpha s_k p_k\\
 \end{align*}
 
-This ends up becoming the the logit cross-price elasticity.
-
-\newpage
-
 For own price elasticity:
+
 \begin{align*}
-\frac{\partial s_j}{\partial p_j}  &=  (ND)^{-1}\sum^{ND}_i  - \alpha \frac{(\exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{(1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}))} \\
-\frac{\partial s_j}{\partial p_j} &= (ND)^{-1}\sum^{ND}_i  - \alpha s_j\\
-\frac{\partial s_j}{\partial p_j} &= - \alpha s_j\\
+\frac{\partial s_j}{\partial p_j}  &=  (ND)^{-1}\sum^{ND}_i(-\alpha s_j-\alpha s_j^2)\\
 \end{align*}
 
 For elasticity multiply by $\frac{p_k}{s_j}$:

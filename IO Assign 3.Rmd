@@ -606,11 +606,11 @@ For cross-price elasticities where product k is within the segment, we need to s
 
 
 
-# 3) Merger Simulation 
+## 3 Merger Simulation 
 
 Estimating a merger between Volkswagen (VW) and Ford in Germany 1998
 
-Logit Specification  w/ endogeneity taken into account.  Note that firm varialbe = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit. 
+Logit Specification  w/ endogeneity taken into account.  Note that firm variable = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit. 
 
 Logit Specification:
 
@@ -757,24 +757,6 @@ Producer surplus:                30,470
 ```
 Nested Logit Specification 
 
-```{}
-mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
-
-xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
-							if_horsepower if_fuel if_width if_height if_domestic
-							is_horsepower is_fuel is_width is_height is_domestic
-							ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
-							horsepower fuel width height domestic year country2-country5, fe;
-
-							
-mergersim market if year == 1998; 
-
-mergersim simulate if year == 1998 & country == 3, seller(5) buyer(26) detail;
-
-```
-
-
-Nested Logit Specification:
 ```{}
 #delimit ;
 quietly mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
@@ -940,8 +922,8 @@ Merger effect on consumer welfare:
 As we can see the logit produces smaller estimates for price changes than the nested logit which inturn results in a smaller reduction 
 in consumer surplus incomparison to the nested logit. 
 
-The reason driving this change is the substitution effects of the logit the nested logit. By imposing independence of 
-$\epsilon_{ijt}$ across all produces it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error 
+The reason driving this difference in the substitution effects and how they differ in the logit and the nested logit. By imposing independence of 
+$\epsilon_{ijt}$ across all product it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error 
 term is imposed within a segment it allows for correlation in tastes within a segment. In this merger example this means that the 
 increase in price of products of a firm within a segment would be recaptured by the other products that the firm has in that segment. 
 
@@ -949,6 +931,7 @@ For example in Germany 1988 volkswagen golf and the ford escort were both compac
 fact that some of the reduced quantity of sales as a result of a VW Golf price increase would be recaptured by the sales in ford
 escort. This would result in the firms being more willing to raise prices and thus result in a reduction in Consumer surplus. This 
 dynamic of within segment substitution is not captured by the standard logit. 
+ 
 
 # 4.1 Logit Estimation 
 

@@ -1187,9 +1187,28 @@ Since the equation for marketshares is given by:
 
 $s_{jt} =\int \frac{\exp(\delta_{jt} + \mu_{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}dP_v(v)$
 
-This integral grows in complexity the number of random coefficients to not having a closed form analytical solution and instead we approximate through simulation.
+This integral grows in complexity the number of random coefficients to not having a closed form analytical solution and instead we approximate through simulation. 
 
+Contraction Mapping:
+The approximated market share is given by this equation:
 
+$s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta_{jt} +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma_{\beta}v_{it}) }$
+
+At this point both $\sigma$ and $\delta_j$ are unknown. We than for a given $\sigma$ begin with $\delta_j^0$ and solve the marketshare function producing $s_t(\delta_j^0)$. We than compare this value to our observed marketshare to come up with a new value for $\delta_j$ through contract mapping in each market.
+
+$\delta^1_j = \delta^0_j + \ln(s_t) -  \ln(s_t(\delta_j^0))$
+
+We than get $\delta^1_j $ recompute the market shares using this value to get $s_t(\delta_j^1)$ and revisit contract mapping to get $\delta^2_j = \delta^1_j + \ln(s_t) -  \ln(s_t(\delta_j^1))$. This iteration continous until the difference between  $\ln(s_t) -  \ln(s_t(\delta_j)) $ is significantly small with a minimum tolerance of  $10^{-12}$.
+
+Once we have the delta produced by a certain $\sigma$ we use the matrix equation for 2SLS using W as the GMM weight matrix to solve for parameters. $\hat\theta =[\beta , \alpha]$ 
+
+$\hat \theta = (X'ZWZ'X)^{-1}X'ZWZ'\delta(\sigma)$ 
+
+Using $\hat \theta$ we than can recover the econometric error term $\xi$. Using the instruments we than find the \sigma that minimizes this expression.
+
+$\min_{\sigma} \xi' ZWZ'\xi$
+
+If the $\sigma$ that minimizes this expression is the same one we originally guessed in our contract mapping we are finished if not we than use this new estimate of sigma to restart our contract mapping until the $\sigma$ that minimizes the error term interacted with the instruments is the one that we used to generate our estimate of $\delta_j$. 
 
 4. Derive the own price and cross price elasticities in the random coefficient logit model.
 

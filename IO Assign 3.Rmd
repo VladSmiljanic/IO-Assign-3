@@ -976,9 +976,13 @@ u_{ijt} = \beta_0 + \beta^f f_{jt} + \beta^d d_{jt} + \alpha p_{jt} + \xi_{jt} +
 \end{align*}
 
 constant: vector of ones,
+
 f: amount of caffeine 
+
 d: degrees of roasting
+
 Zopt : Instrument Matrix 
+
 shares: Market Share 
 
 Estimating OLS and 2SLS model in MATlab 
@@ -1037,7 +1041,9 @@ Results of Logit
 ```
 
 Not surprisingly the coefficient on price decreases from -1.7586 to -1.9592 suggesting that the OLS coefficient was biased 
-towards zero.  The constant similarly increases in 2SLS, as well as the  coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine, and degree of roasting of the beans).  
+towards zero.  The constant similarly increases in 2SLS, as well as the coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine, and degree of roasting of the beans).  
+
+ 
 
 # 4.2 Random Coefficients Logit (BLP)
 

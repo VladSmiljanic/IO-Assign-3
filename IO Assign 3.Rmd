@@ -1157,7 +1157,39 @@ As we can see the coefficient on price when we increase the simulation number of
 
 3. Revisit the logit above and formally show that there is an analytical solution for $\delta_{jt}. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.
 
-The reason we do not have an analytical solution is that in the Random Coefficient logit we do not solve for market shares as a function of parameters through a berry inversion as we woul do in a logit. Rather instead we approximate market shares through monte-carlo simulation.
+Finding an analytical solution for $\delta_{jt}$
+
+From previously since the error is type 1 extreme value that market shares for product j and the outside good are defined as 
+
+\begin{align*}
+s_{j} &= \frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)}\\
+s_{0} &= \frac{1}{1 + \sum^j_k \exp(\delta_k)}
+\end{align*}
+
+Taking the logs of both of these equations
+\begin{align*}
+\ln(s_{j}) &= \ln(\frac{\exp(\delta_j}{1 + \sum^j_k \exp(\delta_k)})\\
+\ln(s_{j}) &=  \delta_j  - \sum^j_k \delta_k\\
+\ln(s_{0}) &= \ln(\frac{1}{1 + \sum^j_k \exp(\delta_k)}) \\
+\ln(s_{0}) &= - \sum^j_k \delta_k \\
+\end{align*}
+
+Subtracting $\ln(s_j) - \ln(s_0)$
+\begin{align*}
+\ln(s_{j}) -  \ln(s_{0}) & =  \delta_j  - \sum^j_k \delta_k +  \sum^j_k \delta_k \\
+\ln(\frac{s_{j}}{s_{0}}  & =  \delta_j  \\
+\end{align*}
+
+Therefore we have an analytic solution for $\delta_j$. 
+
+It is not possible to attain this in the random coeffecients logit because we approximate market shares through a monte carlo simulation. 
+Since the equation for marketshares is given by: 
+
+$s_{jt} =\int \frac{\exp(\delta_{jt} + \mu_{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}dP_v(v)$
+
+This integral grows in complexity the number of random coefficients to not having a closed form analytical solution and instead we approximate through simulation.
+
+
 
 4. Derive the own price and cross price elasticities in the random coefficient logit model.
 

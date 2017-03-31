@@ -379,53 +379,66 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 <div id="question-2" class="section level1">
 <h1>Question 2</h1>
 <ol style="list-style-type: decimal">
-<li>Deriving Berry-one-level nested logit begining from the utility following utility specification.</li>
-</ol>
+<li>Deriving Berry-one-level nested logit begining from the utility following utility specification.
 <span class="math display">\[\begin{align*}
 u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
-\end{align*}\]</span>
+\end{align*}\]</span></li>
+</ol>
 <p>We than divide the products into mutually exclusive nests which we note by <span class="math inline">\(g = 0 \dots G\)</span> where <span class="math inline">\(g=0\)</span> is the nest that only contains the outside good.</p>
 In the nested logiot the individual error term <span class="math inline">\(\epsilon_{ijt}\)</span> is composed of two parts
 <span class="math display">\[\begin{align*}
 \epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
 \end{align*}\]</span>
-<p>The first term <span class="math inline">\(\epsilon{igt}\)</span> is an error shared by all products in nest g. The second term <span class="math inline">\(\epsilon_{ijt}^1\)</span> is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term <span class="math inline">\((1-\sigma_g)\)</span> denotes how important the within nest shock in comparison to the extreme value shock. <span class="math inline">\(\epsilon{igt}\)</span> has the property that it is distributed in such a manner that it makes the whole term <span class="math inline">\((1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1\)</span> also type one i.i.d extreme value distributed. Since we assume that heterogeneity across clusters we can assume that <span class="math inline">\(\sigma_g = \sigma \textrm{ for all } g\)</span>.</p>
-Since _{ijt} is extreme value distributed <span class="math inline">\(F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\)</span>.
+<p>The first term <span class="math inline">\(\epsilon{igt}\)</span> is an error shared by all products in nest g. The second term <span class="math inline">\(\epsilon_{ijt}^1\)</span> is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term <span class="math inline">\((1-\sigma_g)\)</span> denotes how important the within nest shock in comparison to the extreme value shock. <span class="math inline">\(\epsilon{igt}\)</span> has the property that it is distributed in such a manner that it makes the whole term <span class="math inline">\((1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1\)</span> also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that <span class="math inline">\(\sigma_g = \sigma \textrm{ for all } g\)</span>.</p>
+<p>Since _{ijt} is extreme value distributed <span class="math inline">\(F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))\)</span>.</p>
+Following the same notation as Berry 1994:
 <span class="math display">\[\begin{align*}
-I&amp;=\ln(\sum^G_{g=0}\exp(I_g))\\  
-I_g&amp;=(1-\sigma_g)\ln(\sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
-s_{jt} &amp;= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}\\
-s_{0t} &amp;= \frac{1}{\exp(I)}\\
-\ln(s_{jt}) &amp;= \ln( \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}) \\
-\ln(s_{jt}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I\\
-\ln(s_{0t}) &amp;= \ln(\frac{1}{\exp(I)}) \\ 
-\ln(s_{0t}) &amp;= -I\\ 
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;=\frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I + I \\
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)} + \frac{I_g - I_g\sigma_g - I_g}{1-\sigma_g} \\ 
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
-\textrm{Using Berry's notation for } &amp;D_g &amp;= \\
-&amp;= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
-\textrm{and } I_g&amp;=(1-\sigma_g)\ln(D_g)\\
+D_g &amp;= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+I_g&amp;=(1-\sigma_g)\ln(D_g)\\
+I&amp;=\ln(\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\  
 \end{align*}\]</span>
-By the fact that we can express a segments portion of market share:
+Our market share equations become
 <span class="math display">\[\begin{align*}
-\bar{s_g} &amp;= \frac{D_g^{(1-\sigma)}}{\sum_g D_g^{(1-\sigma)}}\\
-\ln(\bar{s_g}) &amp;= (1-\sigma) \ln(D_g) - \ln(s_0) \\
-\ln(D_g) &amp;= \frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\
+s_{j} &amp;= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp((1-\sigma_g)\ln(D_g))}{(D_g)(\sum^G_{g=0}D^{(1-\sigma_g)}_g)} \\
+s_{j} &amp;= \frac{\exp(\delta_{j}/(1-\sigma_g))}{D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g}\\
+s_{0} &amp;= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \end{align*}\]</span>
-Pluggin this expression into <span class="math inline">\(I_g\)</span>
 <span class="math display">\[\begin{align*}
-I_g &amp;= (1-\sigma_g)\ln(D_g)\\ 
-I_g &amp;= (1-\sigma_g)\frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\ 
-I_g &amp;= \ln(\bar{s_g}) - \ln(s_0) \\
+\ln(s_{j}) &amp;= \frac{\exp(\delta_{j}/(1-\sigma_g))}{D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g}) \\
+\ln(s_{j}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)}  - \ln(D_g^\sigma)-ln(\sum^G_{g=0}D^{(1-\sigma_g)}_g)
 \end{align*}\]</span>
-Plugging this in back to our expression for <span class="math inline">\(\ln(s_{jt}) - \ln(s_{0t})\)</span>
 <span class="math display">\[\begin{align*}
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
-\ln(\frac{s_{jt}}{s_{0t}}) &amp;= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{\ln(\bar{s_g}) - \ln(s_0)\sigma_g}{1-\sigma_g} \\
+\ln(s_0) &amp;= \ln(\frac{1}{\sum^G_{g=0}D^{(1-\sigma)}_g}) \\
+\ln(s_0) &amp;= -\ln(\sum^G_{g=0}D^{(1-\sigma)}_g) 
 \end{align*}\]</span>
+<span class="math display">\[\begin{align*}
+\ln(s_{j}) - \ln(s_0) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \ln(D_g^\sigma)-ln(\sum^G_{g=0}D^{(1-\sigma)}_g) +\ln(\sum^G_{g=0}D^{(1-\sigma)}_g) \\
+\ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
+\end{align*}\]</span>
+<p>The market share of a certain segment g, <span class="math inline">\(s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}\)</span></p>
+<span class="math display">\[\begin{align*}
+\ln(s_g) &amp;= \ln(\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g})\\
+\ln(s_g) &amp;= (1-\sigma) \ln(D_g) - \ln(s_0)\\
+\ln(D_g) &amp;= \frac{\ln(s_g) - \ln(s_0)}{1-\sigma}
+\end{align*}\]</span>
+<p>Defining <span class="math inline">\(s_{j|g} = \frac{s_j}{s_k}\)</span> and subsituting expression for <span class="math inline">\(\ln(D_g)\)</span> into <span class="math inline">\(\ln(\frac{s_{j}}{s_0})\)</span></p>
+<span class="math display">\[\begin{align*}
+\ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
+\ln(\frac{s_{j}}{s_0}) &amp;= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \frac{\ln(s_g) - \ln(s_0)}{1-\sigma} \\
+(\ln(s_j) - \ln(s_0))(1-\sigma) &amp;= \delta_{j} -\sigma (\ln(s_g) - \ln(s_0))\\
+\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  &amp; + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j}
+\ln(\frac{s_{j}}{s_0}) -\sigma \ln(s_{j|g}) &amp;= \delta_{j} \\
+\ln(\frac{s_{j}}{s_0}) &amp;= \delta_{j} +\sigma \ln(s_{j|g}) \\
+\ln(\frac{s_{j}}{s_0}) &amp;= \delta_{j} +\sigma \ln(s_{j|g}) \\ 
+ \ln(\frac{s_{j}}{s_0})  &amp;= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}  +\sigma \ln(s_{j|g})
+\end{align*}\]</span>
+<p>This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS.</p>
 <ol start="2" style="list-style-type: decimal">
-<li><p>We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty</p></li>
+<li></li>
+</ol>
+<p>We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty</p>
+<p>Optimal pricing of firms will imply a correlation between prices and unobserved product characteristics as in the regular logit but we will require two instruments since changes in unobserved characteristics will also effect the relative marketshare within a segment <span class="math inline">\(\ln(s_{j|g})\)</span>. Once again we relly on within firm characteristics, the sum of within segment product characteristics and all other firm product characteristics.</p>
+<ol start="3" style="list-style-type: decimal">
 <li></li>
 </ol>
 <span class="math display">\[\begin{align*}
@@ -455,10 +468,8 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 \end{align*}\]</span>
 <p>To find the own price elasticities, we will take the derivative of our product shares w.r.t. the products price. We can use the quotient rule to calculate the derivative:</p>
 <span class="math display">\[\begin{align*}
-\frac{\partial s_{j}}{\partial p_{j}} &amp;= \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &amp;-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-&amp;\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^2\\
-&amp;=-\alpha\exp(\frac{\delta_j}{(1-\sigma_g)})\frac{1}{(1-\sigma_g)}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
-&amp;\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\
+\frac{\partial s_{j}}{\partial p_{j}} &amp;= (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2} \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &amp;-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+&amp;=-\frac{\alpha s_j}{(1-\sigma_g)} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
 
 &amp;=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
 
@@ -504,41 +515,6 @@ s_{j|g} &amp;= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 <li></li>
 </ol>
 <pre><code>* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-.                 foreach inst in `characteristics'{;
-  2.         qui{;
-  3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
-  4.                 egen ifs_`inst'=sum(`inst'), by (year country segment firm);
-  5.                 gen CFis_`inst'=is_`inst'-ifs_`inst';
-  6.                 replace is_`inst'=is_`inst'-`inst';
-  7.                 replace ifs_`inst'=ifs_`inst'-`inst';
-  8.         };
-  9. };
-
-. egen seg_sales=sum(qu), by(year country segment);
-
-. egen is_num=count(qu), by(year country segment);
-
-. egen fs_sales=sum(qu), by(year country segment firm);
-
-. egen ifs_num=count (qu), by(year country segment firm);
-
-. qui gen CFis_num=is_num-ifs_num;
-
-. replace is_num=is_num-1;
-(11483 real changes made)
-
-. gen lnis_num=ln(is_num);
-(3 missing values generated)
-
-. replace ifs_num=ifs_num-1;
-(11483 real changes made)
-
-. gen lnifs_num=ln(ifs_num);
-(4662 missing values generated)
-
-. gen sigma=ln(qu/seg_sales);
-
-* PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
 .                 foreach inst in `characteristics'{;
   2.         qui{;
   3.                 egen is_`inst'=sum(`inst'),  by (year country segment);
@@ -660,6 +636,326 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------</code></pre>
 <p>The coefficent on prices is now -.1232378 and we have estimated <span class="math inline">\(\sigma_g\)</span> = .2110286. We can input these values with the known values for shares to find our own- and cross-price elasticities.</p>
 </div>
+<div id="merger-simulation" class="section level1">
+<h1>3 Merger Simulation</h1>
+<p>Estimating a merger between Volkswagen (VW) and Ford in Germany 1998</p>
+<p>Logit Specification w/ endogeneity taken into account. Note that firm varialbe = 5 for ford and 26 for VW. Similarly country = 3 for Germany. We are running this code after Q2 and have already generated instruments for logit and Nested logit.</p>
+<p>Logit Specification:</p>
+<pre><code>
+quietly mergersim init,  price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+
+quietly xtivreg M_ls (price =   i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_height if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe;
+
+ mergersim market if year == 1998;
+---------------------------------------------------------------------------------
+Supply: Bertrand competition
+Demand: Unit demand unnested logit
+--------------------------------------------------------------------------------
+Demand estimate
+xtivreg M_ls (price =   i_horsepower i_fuel i_width i_height i_domestic i_num if_horsepower if_fuel if_width if_heig
+&gt; ht if_domestic i_num) horsepower fuel width height domestic year country2-country5, fe
+Dependent variable: M_ls
+--------------------------------------------------------------------------------
+
+Parameters
+
+alpha = -0.101
+----------------------------------------------------------------
+Own- and Cross-Price Elasticities:  unweighted market averages
+
+    variable |      mean        sd       min       max
+-------------+----------------------------------------
+       M_ejj |    -1.686     0.836    -6.328    -0.629
+       M_ejk |     0.002     0.003     0.000     0.023
+------------------------------------------------------
+Observations: 449
+----------------------------------------------------------------
+
+Pre-merger Market Conditions 
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |              price      Marginal costs   Pre-merger Lerner
+---------------------+-----------------------------------------------------------
+                 BMW |             20.194              10.166               0.573
+                Fiat |             15.277               5.136               0.804
+                Ford |             14.557               4.462               0.789
+               Honda |             20.094              10.132               0.595
+             Hyundai |             12.915               2.959               0.862
+                 Kia |             10.814               0.867               1.010
+               Mazda |             14.651               4.687               0.746
+            Mercedes |             25.598              15.587               0.462
+          Mitsubishi |             15.955               5.993               0.679
+              Nissan |             15.438               5.452               0.737
+                  GM |             21.054              10.939               0.561
+                 PSA |             16.243               6.117               0.725
+             Renault |             15.518               5.404               0.753
+              Suzuki |              9.289              -0.662               1.128
+              Toyota |             14.560               4.571               0.808
+                  VW |             18.990               8.791               0.705
+               Volvo |             23.167              13.202               0.441
+              Daewoo |             13.871               3.912               0.814
+---------------------------------------------------------------------------------
+Variables generated: M_costs M_delta 
+---------------------------------------------------------------------------------
+
+. mergersim simulate if year == 1998 &amp; country == 3, seller(5) buyer(26) detail;
+
+---------------------------------------------------------------------------------
+Merger Simulation
+
+                                            Simulation method: Newton
+                        Buyer     Seller    Periods/markets: 1
+Firm                    26        5         Number of iterations: 4
+Marginal cost savings                       Max price change in last it: .000044  
+---------------------------------------------------------------------------------
+
+Prices
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger     Relative change
+---------------------+-----------------------------------------------------------
+                 BMW |             17.946              17.946               0.000
+                Fiat |             15.338              15.338               0.000
+                Ford |             13.093              13.571               0.040
+               Honda |             15.778              15.778               0.000
+             Hyundai |             12.912              12.912               0.000
+                 Kia |             11.276              11.276               0.000
+               Mazda |             14.229              14.229               0.000
+            Mercedes |             20.114              20.115               0.000
+          Mitsubishi |             15.832              15.832               0.000
+              Nissan |             15.101              15.101               0.000
+                  GM |             19.921              19.921               0.000
+                 PSA |             16.397              16.397               0.000
+             Renault |             15.292              15.292               0.000
+              Suzuki |              9.225               9.225               0.000
+              Toyota |             13.019              13.019               0.000
+                  VW |             17.182              17.329               0.011
+               Volvo |             22.149              22.149               0.000
+              Daewoo |             13.483              13.483               0.000
+---------------------------------------------------------------------------------
+Variables generated: M_price2 M_quantity2 M_price_ch (Other M_ variables dropped)
+---------------------------------------------------------------------------------
+
+Market shares by quantity
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger          Difference
+---------------------+-----------------------------------------------------------
+                 BMW |              0.074               0.075               0.001
+                Fiat |              0.043               0.043               0.000
+                Ford |              0.095               0.092              -0.004
+               Honda |              0.012               0.012               0.000
+             Hyundai |              0.006               0.006               0.000
+                 Kia |              0.003               0.003               0.000
+               Mazda |              0.025               0.025               0.000
+            Mercedes |              0.100               0.100               0.001
+          Mitsubishi |              0.015               0.015               0.000
+              Nissan |              0.025               0.026               0.000
+                  GM |              0.166               0.168               0.001
+                 PSA |              0.034               0.035               0.000
+             Renault |              0.051               0.051               0.000
+              Suzuki |              0.006               0.006               0.000
+              Toyota |              0.027               0.027               0.000
+                  VW |              0.300               0.298              -0.002
+               Volvo |              0.012               0.012               0.000
+              Daewoo |              0.006               0.006               0.000
+---------------------------------------------------------------------------------
+
+--------------------------------------------------
+                        Pre-merger     Post-merger
+--------------------------------------------------
+HHS:                     1501           2038
+C4:                     66.07          73.22
+C8:                     86.21          88.79
+--------------------------------------------------
+----------------------------------------
+                                 Change
+----------------------------------------
+Consumer surplus:              -277,498
+Producer surplus:                30,470
+----------------------------------------
+
+</code></pre>
+<p>Nested Logit Specification</p>
+<pre><code>mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
+                            if_horsepower if_fuel if_width if_height if_domestic
+                            is_horsepower is_fuel is_width is_height is_domestic
+                            ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+                            horsepower fuel width height domestic year country2-country5, fe;
+
+                            
+mergersim market if year == 1998; 
+
+mergersim simulate if year == 1998 &amp; country == 3, seller(5) buyer(26) detail;
+</code></pre>
+<p>Nested Logit Specification:</p>
+<pre><code>#delimit ;
+quietly mergersim init, nests(segment) price(price) quantity(qu) marketsize(MSIZE) firm(firm);
+
+quietly xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic
+            if_horsepower if_fuel if_width if_height if_domestic
+            is_horsepower is_fuel is_width is_height is_domestic
+            ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
+            horsepower fuel width height domestic year country2-country5, fe;
+            
+  mergersim market if year == 1998;
+---------------------------------------------------------------------------------
+Supply: Bertrand competition
+Demand: Unit demand one-level nested logit
+--------------------------------------------------------------------------------
+Demand estimate
+xtivreg M_ls (price M_lsjg= i_horsepower i_fuel i_width i_height i_domestic                                         
+&gt;                 if_horsepower if_fuel if_width if_height if_domestic                                              
+&gt;            is_horsepower is_fuel is_width is_height is_domestic                                                   
+&gt;       ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)                                                  
+&gt;        horsepower fuel width height domestic year country2-country5, fe
+Dependent variable: M_ls
+--------------------------------------------------------------------------------
+
+Parameters
+
+alpha = -0.123
+sigma1 = 0.211 
+----------------------------------------------------------------
+Own- and Cross-Price Elasticities:  unweighted market averages
+
+    variable |      mean        sd       min       max
+-------------+----------------------------------------
+       M_ejj |    -2.584     1.272    -9.798    -0.975
+       M_ejk |     0.039     0.066     0.000     0.417
+       M_ejl |     0.003     0.004     0.000     0.028
+------------------------------------------------------
+Observations: 449
+----------------------------------------------------------------
+
+Pre-merger Market Conditions 
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |              price      Marginal costs   Pre-merger Lerner
+---------------------+-----------------------------------------------------------
+                 BMW |             20.194              13.474               0.381
+                Fiat |             15.277               8.562               0.534
+                Ford |             14.557               7.910               0.520
+               Honda |             20.094              13.638               0.385
+             Hyundai |             12.915               6.492               0.556
+                 Kia |             10.814               4.407               0.650
+               Mazda |             14.651               8.217               0.481
+            Mercedes |             25.598              18.497               0.320
+          Mitsubishi |             15.955               9.503               0.439
+              Nissan |             15.438               8.972               0.477
+                  GM |             21.054              14.413               0.368
+                 PSA |             16.243               9.528               0.481
+             Renault |             15.518               8.839               0.499
+              Suzuki |              9.289               2.870               0.728
+              Toyota |             14.560               8.093               0.523
+                  VW |             18.990              12.197               0.470
+               Volvo |             23.167              16.676               0.287
+              Daewoo |             13.871               7.440               0.526
+---------------------------------------------------------------------------------
+Variables generated: M_costs M_delta 
+---------------------------------------------------------------------------------
+
+.  mergersim simulate if year == 1998 &amp; country == 3, seller(5) buyer(26) detail;
+
+---------------------------------------------------------------------------------
+Merger Simulation
+
+                                            Simulation method: Newton
+                        Buyer     Seller    Periods/markets: 1
+Firm                    26        5         Number of iterations: 5
+Marginal cost savings                       Max price change in last it: 2.7e-07  
+---------------------------------------------------------------------------------
+
+Prices
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger     Relative change
+---------------------+-----------------------------------------------------------
+                 BMW |             17.946              17.947               0.000
+                Fiat |             15.338              15.340               0.000
+                Ford |             13.093              13.830               0.058
+               Honda |             15.778              15.779               0.000
+             Hyundai |             12.912              12.912               0.000
+                 Kia |             11.276              11.276               0.000
+               Mazda |             14.229              14.230               0.000
+            Mercedes |             20.114              20.116               0.000
+          Mitsubishi |             15.832              15.834               0.000
+              Nissan |             15.101              15.102               0.000
+                  GM |             19.921              19.926               0.000
+                 PSA |             16.397              16.399               0.000
+             Renault |             15.292              15.295               0.000
+              Suzuki |              9.225               9.225               0.000
+              Toyota |             13.019              13.020               0.000
+                  VW |             17.182              17.427               0.020
+               Volvo |             22.149              22.150               0.000
+              Daewoo |             13.483              13.484               0.000
+---------------------------------------------------------------------------------
+Variables generated: M_price2 M_quantity2 M_price_ch (Other M_ variables dropped)
+---------------------------------------------------------------------------------
+
+Market shares by quantity
+Unweighted averages by firm
+
+---------------------------------------------------------------------------------
+           firm code |         Pre-merger         Post-merger          Difference
+---------------------+-----------------------------------------------------------
+                 BMW |              0.074               0.075               0.001
+                Fiat |              0.043               0.044               0.001
+                Ford |              0.095               0.087              -0.009
+               Honda |              0.012               0.012               0.000
+             Hyundai |              0.006               0.006               0.000
+                 Kia |              0.003               0.003               0.000
+               Mazda |              0.025               0.026               0.001
+            Mercedes |              0.100               0.101               0.002
+          Mitsubishi |              0.015               0.016               0.000
+              Nissan |              0.025               0.026               0.001
+                  GM |              0.166               0.170               0.004
+                 PSA |              0.034               0.035               0.001
+             Renault |              0.051               0.052               0.001
+              Suzuki |              0.006               0.006               0.000
+              Toyota |              0.027               0.027               0.001
+                  VW |              0.300               0.296              -0.004
+               Volvo |              0.012               0.013               0.000
+              Daewoo |              0.006               0.006               0.000
+---------------------------------------------------------------------------------
+
+--------------------------------------------------
+                        Pre-merger     Post-merger
+--------------------------------------------------
+HHS:                     1501           1995
+C4:                     66.07          72.86
+C8:                     86.21          88.64
+--------------------------------------------------
+----------------------------------------
+                                 Change
+----------------------------------------
+Consumer surplus:              -430,685
+Producer surplus:               102,669
+----------------------------------------</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Report the effect of the merger on prices and consumer welfare in each demand model.</li>
+</ol>
+<p>Merger effect on prices:</p>
+<pre><code>Logit: Ford: 4% increase , VW: 1.1% increase 
+Nested Logit: Ford: 5.8% increase , VW: 2% increase</code></pre>
+<p>Merger effect on consumer welfare:</p>
+<pre><code>Logit: decrease of 277,498$
+Nested Logit: decrease of 430,685$</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Comment on the differences between the results delivered under each demand model.</li>
+</ol>
+<p>As we can see the logit produces smaller estimates for price changes than the nested logit which inturn results in a smaller reduction in consumer surplus incomparison to the nested logit.</p>
+<p>The reason driving this change is the substitution effects of the logit the nested logit. By imposing independence of <span class="math inline">\(\epsilon_{ijt}\)</span> across all produces it results in unrealistic substitution estimates in the logit model. In the Nested Logit the error term is imposed within a segment it allows for correlation in tastes within a segment. In this merger example this means that the increase in price of products of a firm within a segment would be recaptured by the other products that the firm has in that segment.</p>
+<p>For example in Germany 1988 volkswagen golf and the ford escort were both compact cars. The nested logit takes in to account the fact that some of the reduced quantity of sales as a result of a VW Golf price increase would be recaptured by the sales in ford escort. This would result in the firms being more willing to raise prices and thus result in a reduction in Consumer surplus. This dynamic of within segment substitution is not captured by the standard logit.</p>
+</div>
 <div id="logit-estimation" class="section level1">
 <h1>4.1 Logit Estimation</h1>
 <p>Model:</p>
@@ -667,207 +963,112 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 u_{ijt} = \beta_0 + \beta^f f_{jt} + \beta^d d_{jt} + \alpha p_{jt} + \xi_{jt} + \epsilon_{ijt}
 \end{align*}\]</span>
 <p>constant: vector of ones, f: amount of caffeine d: degrees of roasting Zopt : Instrument Matrix shares: Market Share</p>
-<p>Estimating model using ols in MATLAB, must have data.mat in memory. I don’t include constant in 1 since Lfit already includes constant.</p>
-<pre><code>lnshares = log(shares)
-X = [constant,p,f,d]
-mdl = fitlm(X,lnshares)
-mdl.Coefficients
+<p>Estimating OLS and 2SLS model in MATlab</p>
+<pre><code>
+%BLP ESTIMATOR WITH SIMULATED DATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 1. Give the Structure of the Data 
+%SET GLOBALs
+clear;
+clear global all;
+global ns n cdid cdindex v x2 sj bet W Z x1 nmkt nbrn
 
-ans = 
-                   Estimate       SE        tStat       pValue   
-                   ________    ________    _______    ___________
+% INITIAL SETTING COFFEE DATA
+load data
+ns          = 100;                          % number of simulated &quot;indviduals&quot; per market 
+nmkt        = 25;                           % number of markets = (# of cities)*(# of quarters)  
+nbrn        = 10;                           % number of brands per market
+n=nmkt*nbrn;  % number of observations    
+cdid        = kron((1:nmkt)',ones(nbrn,1)); % vector with marketnumber for each obs
+cdindex     = (nbrn:nbrn:nbrn*nmkt)';       % vector with last obs per market 4-8-12
+dummarket   = dummyvar(cdid);               % dummies for each market
 
-    (Intercept)          0            0        NaN            NaN
-    x1             0.39685      0.50184    0.79079        0.42983
-    x2             -1.7528     0.032324    -54.225    1.8198e-138
-    x3              2.9999       0.2169     13.831     1.5287e-32
-    x4             0.82219      0.22297     3.6875     0.00027893</code></pre>
-<p>Using Matrix notation found in Cameron Trivendi because I couldn’t find 2SLS function.</p>
-<pre><code>X = [constant,p,f,d]
-Z = instrument
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 2. Define Matrix Structures for the Estimation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Definitions of matrices%
+x1 = [constant p f d];    % x1 matrix for the linear part
+x2 = [f];                   % x2 matrix for the nonlinear part  
+X = x1;
 
-B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*lnshares
+% Shares
+sj      = shares;
+sumsj   = dummarket'* sj;               %outside good
+sumsj   = sumsj(cdid,:);
+s0      = 1 - sumsj;
+y       =  log(sj) - log(s0);
 
-ans = 
+Z= instrument
 
-B2SLS =
+BOLS = inv(X.'*X)*X.'*y
+B2SLS = inv(X.'*Z*inv(Z.'*Z)*Z.'*X)*X.'*Z*inv(Z.'*Z)*Z.'*y
+ u         = y-X*B2SLS;
+dgf         = (250-4);
+ser         = (u'*u)./dgf;
+sst         = (X'*X)\eye(size(X,2));
+sterrLogit  = sqrt(ser*diag(sst));
 
-    1.7079
-   -1.9519
-    3.1361
-    0.9306
-
- u = minus(lnshares,X*B2SLS)
- s2 = ((250-4)^-1)*u.'*u
- VB2ls = s2*inv(X.'*Z*inv(Z.'*Z)*Z.'*X)
-
-VB2ls =
-
-    0.3126   -0.0114   -0.0682   -0.0736
-   -0.0114    0.0017   -0.0012   -0.0009
-   -0.0682   -0.0012    0.0543   -0.0024
-   -0.0736   -0.0009   -0.0024    0.0573
-
-SE = diag(sqrt(VB2ls))
-
-SE =
-
-    0.5591
-    0.0416
-    0.2331
-    0.2394</code></pre>
-<p>There must be a better way to do Varinace. Here i get the projection matrix , generate residuals, calculate variance under homoskedasticity</p>
-<p>Compare standard errors and coefficients. This model is correct cause of part 2.</p>
+Results of Logit
+    'var'         'OLS'        '2SLS'       'st.err.'
+    'constant'    [ 0.4593]    [ 1.7797]    [ 0.5191]
+    'price'       [-1.7586]    [-1.9592]    [ 0.0334]
+    'char1'       [ 3.0454]    [ 3.1826]    [ 0.2244]
+    'char2'       [ 0.8432]    [ 0.9524]    [ 0.2306]</code></pre>
+<p>Not surprisingly the coefficient on price decreases from -1.7586 to -1.9592 suggesting that the OLS coefficient was biased towards zero. The constant similarly increases in 2SLS, as well as the coefficient associated with the two characsteristics of the coffee brands ( amount of caffeine, and degree of roasting of the beans).</p>
 </div>
 <div id="random-coefficients-logit-blp" class="section level1">
 <h1>4.2 Random Coefficients Logit (BLP)</h1>
 <ol style="list-style-type: decimal">
-<li></li>
-<li></li>
+<li>Estimate using Zopt and interpret the ration between the mean and the standard deviation paramters obtained in estimation. Compare with Logit estimates.</li>
 </ol>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre><code>    * PART 2. ONE LEVEL NESTED LOGIT INSTRUMENTS;
-    
-    
-foreach inst in `characteristics'{;
-    qui{;
-        egen is_`inst'=sum(`inst'),  by (year country segment);
-        egen ifs_`inst'=sum(`inst'), by (year country segment firm);
-        gen CFis_`inst'=is_`inst'-ifs_`inst';
-        replace is_`inst'=is_`inst'-`inst';
-        replace ifs_`inst'=ifs_`inst'-`inst';
-    };
-};
+<pre><code>%% Random Coefficients Logit
 
-egen seg_sales=sum(qu), by(year country segment);
-egen is_num=count(qu), by(year country segment);
+%Starting Values
+rc_sigma0 = 0;      % Gives initial guess for sigma's  
+deltastart = ones(n,1);   % Gives initial guess for delta
 
-egen fs_sales=sum(qu), by(year country segment firm);
-egen ifs_num=count (qu), by(year country segment firm);
+% rc_sigma0   = 0;                        % Gives initial guess for sigma's  
+% deltastart  = y;                        % Gives initial guess for delta from Logit
+oldsigma    = zeros(size(rc_sigma0));   % Zero out old theta2
+save mvalold deltastart oldsigma        % saves deltastart and oldsigma in mvalold
+clear deltastart oldsigma
 
-qui gen CFis_num=is_num-ifs_num;
+%OPTIMIZATION
+% First define options for optimization
+options = optimset('Display','iter-detailed','TolX',1e-6,'TolFun',1e-6);
+tic;  %Starts a timer
+[rc_sigma,fval,exitflag,output]=fminsearch(@objective,rc_sigma0,options);
+timetorun=toc/60;     %Stops the timer and gives minutes to compute
 
-replace is_num=is_num-1;
-gen lnis_num=ln(is_num);
-replace ifs_num=ifs_num-1;
-gen lnifs_num=ln(ifs_num);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 4. Standard Errors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Computing the Standard Errors
+load mvalold                            % get estimated delta and sigma
+beth   = [bet;rc_sigma];                % vector of all parameters
+load xi                                 % get the residuals obtained in function objective
+derdel  = numgrad('delta',rc_sigma);    % Computes the derivative of delta wrt sigma
+a       = [-x1 derdel]'*Z;
+dgf     = (size(X,1)-size(X,2));
+varcov  = (xi'*xi/dgf)*inv(a*W*a');
+stheta  = sqrt(diag(varcov));
+ttheta  = beth./stheta;
 
-gen rewr2=ln(qu/seg_sales);
-xtreg rewr price rewr2 horsepower fuel width height domestic year country2-country5, fe;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 5. Reporting Results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+vars = {'constant', 'price', 'char1', 'char2','sigmachar1'};
+title={'var','coef','std.err.','tvalue'};
+results=[beth stheta ttheta];
+disp('Result of Random Coefficient Logit')
+disp([title;vars.',num2cell(results)])
 
-xtivreg rewr (price rewr2= i_horsepower i_fuel i_width i_height i_domestic
-                            if_horsepower if_fuel if_width if_height if_domestic
-                            is_horsepower is_fuel is_width is_height is_domestic
-                            ifs_horsepower ifs_fuel ifs_width ifs_height ifs_domestic)
-                            horsepower fuel width height domestic year country2-country5, fe;</code></pre>
-<pre><code>. xtreg rewr price rewr2 horsepower fuel width height domestic year country2-country5, fe;
+Optimization terminated:
+ the current x satisfies the termination criteria using OPTIONS.TolX of 1.000000e-06 
+ and F(X) satisfies the convergence criteria using OPTIONS.TolFun of 1.000000e-06 
 
-Fixed-effects (within) regression               Number of obs      =     11483
-Group variable: co                              Number of groups   =       351
-
-R-sq:  within  = 0.8796                         Obs per group: min =         1
-       between = 0.7876                                        avg =      32.7
-       overall = 0.8453                                        max =       146
-
-                                                F(12,11120)        =   6767.52
-corr(u_i, Xb)  = 0.0199                         Prob &gt; F           =    0.0000
-
-------------------------------------------------------------------------------
-        rewr |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       price |  -.0491036   .0013895   -35.34   0.000    -.0518273   -.0463799
-       rewr2 |   .8677908    .004327   200.55   0.000     .8593091    .8762725
-  horsepower |   .0031765   .0006332     5.02   0.000     .0019354    .0044176
-        fuel |  -.0255906   .0048552    -5.27   0.000    -.0351077   -.0160735
-       width |   .0112444   .0017935     6.27   0.000     .0077288      .01476
-      height |   .0012653   .0023704     0.53   0.593    -.0033811    .0059118
-    domestic |   .3883771   .0127901    30.37   0.000     .3633063    .4134479
-        year |  -.0025221    .001281    -1.97   0.049    -.0050331   -.0000111
-    country2 |  -.3304413   .0120622   -27.39   0.000    -.3540853   -.3067972
-    country3 |  -.2093509   .0120898   -17.32   0.000    -.2330489   -.1856528
-    country4 |  -.4288399   .0126037   -34.02   0.000    -.4535454   -.4041344
-    country5 |   -.104273   .0158302    -6.59   0.000     -.135303    -.073243
-       _cons |  -.0712408   2.393163    -0.03   0.976    -4.762264    4.619783
--------------+----------------------------------------------------------------
-     sigma_u |  .48769407
-     sigma_e |  .38909072
-         rho |   .6110556   (fraction of variance due to u_i)
-------------------------------------------------------------------------------
-F test that all u_i=0:     F(350, 11120) =    19.01          Prob &gt; F = 0.0000
-
-. xtivreg rewr (price rewr2= i_horsepower i_fuel i_width i_height i_domestic
-&gt;                                                         if_horsepower if_fuel if_width if_height if_domesti
-&gt; c
-&gt;                                                         is_horsepower is_fuel is_width is_height is_domesti
-&gt; c
-&gt;                                                         ifs_horsepower ifs_fuel ifs_width ifs_height ifs_do
-&gt; mestic)
-&gt;                                                         horsepower fuel width height domestic year country2
-&gt; -country5, fe;
-
-Fixed-effects (within) IV regression         Number of obs      =        11483
-Group variable: co                           Number of groups   =          351
-
-R-sq:  within  = 0.6001                      Obs per group: min =            1
-       between = 0.3725                                     avg =         32.7
-       overall = 0.5520                                     max =          146
-
-                                             Wald chi2(12)      =     1.21e+06
-corr(u_i, Xb)  = 0.0068                      Prob &gt; chi2        =       0.0000
-
-------------------------------------------------------------------------------
-        rewr |      Coef.   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
--------------+----------------------------------------------------------------
-       price |  -.1232378   .0109746   -11.23   0.000    -.1447476    -.101728
-       rewr2 |   .2110286   .0293953     7.18   0.000     .1534147    .2686424
-  horsepower |   .0044865    .002236     2.01   0.045     .0001041    .0088689
-        fuel |  -.0541376   .0089089    -6.08   0.000    -.0715987   -.0366766
-       width |   .0551482   .0036227    15.22   0.000     .0480478    .0622486
-      height |   .0255373   .0044086     5.79   0.000     .0168965    .0341781
-    domestic |   1.469756   .0545059    26.97   0.000     1.362926    1.576585
-        year |  -.0491546   .0031366   -15.67   0.000    -.0553022   -.0430071
-    country2 |  -.7585582   .0326599   -23.23   0.000    -.8225704   -.6945461
-    country3 |  -.7591188   .0294356   -25.79   0.000    -.8168116    -.701426
-    country4 |  -.5304193   .0382404   -13.87   0.000    -.6053692   -.4554694
-    country5 |    .142352   .0919044     1.55   0.121    -.0377774    .3224814
-       _cons |   80.93904   5.890503    13.74   0.000     69.39387    92.48422
--------------+----------------------------------------------------------------
-     sigma_u |  .88552239
-     sigma_e |  .70896758
-         rho |  .60938692   (fraction of variance due to u_i)
-------------------------------------------------------------------------------
-F  test that all u_i=0:     F(350,11120) =     7.38       Prob &gt; F    = 0.0000
-------------------------------------------------------------------------------
-Instrumented:   price rewr2
-Instruments:    horsepower fuel width height domestic year country2 country3
-                country4 country5 i_horsepower i_fuel i_width i_height
-                i_domestic if_horsepower if_fuel if_width if_height
-                if_domestic is_horsepower is_fuel is_width is_height
-                is_domestic ifs_horsepower ifs_fuel ifs_width ifs_height
-                ifs_domestic
-------------------------------------------------------------------------------
-
-. 
-</code></pre>
-<p>======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/master</p>
-<p>Results with 10 draws</p>
-<pre><code>Result of Random Coefficient Logit
-    'var'           'coef'       'std.err.'    'tvalue'  
-    'constant'      [ 2.6810]    [  0.6540]    [  4.0992]
-    'price'         [-1.9808]    [  0.0466]    [-42.5372]
-    'char1'         [ 1.9077]    [  0.4342]    [  4.3936]
-    'char2'         [ 0.9549]    [  0.2648]    [  3.6067]
-    'sigmachar1'    [ 1.3902]    [  0.2849]    [  4.8790]</code></pre>
-<p>Results with 50 draws</p>
-<pre><code>Result of Random Coefficient Logit
-    'var'           'coef'       'std.err.'    'tvalue'  
-    'constant'      [ 2.6029]    [  0.5835]    [  4.4607]
-    'price'         [-1.9815]    [  0.0408]    [-48.5259]
-    'char1'         [ 2.3482]    [  0.3197]    [  7.3458]
-    'char2'         [ 0.8895]    [  0.2338]    [  3.8048]
-    'sigmachar1'    [ 0.9038]    [  0.1400]    [  6.4537]</code></pre>
-<p>Results with 100 draws</p>
-<pre><code>
+# of iterations for delta convergence:  1
+# of iterations for delta convergence:  15
 Result of Random Coefficient Logit
     'var'           'coef'       'std.err.'    'tvalue'  
     'constant'      [ 2.6263]    [  0.5650]    [  4.6486]
@@ -875,7 +1076,61 @@ Result of Random Coefficient Logit
     'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
     'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
     'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]</code></pre>
-<p>As we can</p>
+<p>Interpretting the ratio between the mean and the standard deviation parameters. Since all the coefficients in the model are lognormal distributed than the log of the coefficient are normally distributed. Following the procedure in Train’s Discrete Choice Methods with Simulation we can derive estimates of mean, median and variance of the log coefficients.</p>
+<p>The log Coeffiecnets are as follows 0.96557601 0.68178285 0.79109025 -0.01116206 -0.08773891</p>
+<p>The standard erros 0.5650, 0.0401, 0.3225, 0.2285, 0.1311</p>
+<p>mean = exp(logcoef + s/2) 3.4836340 2.0174470 2.5917680 1.1085889 0.9780554</p>
+<p>Variance = exp(2m + s) [exp(s) − 1]. 9.2164351 0.1665273 2.5564209 0.3154930 0.1340012</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Start by drawing 10 invdividuals, than 50 and than 100.</li>
+</ol>
+<p>Results with 10 draws</p>
+<pre><code># of iterations for delta convergence:  1
+# of iterations for delta convergence:  18
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6810]    [  0.6540]    [  4.0992]
+    'price'         [-1.9808]    [  0.0466]    [-42.5372]
+    'char1'         [ 1.9077]    [  0.4342]    [  4.3936]
+    'char2'         [ 0.9549]    [  0.2648]    [  3.6067]
+    'sigmachar1'    [ 1.3902]    [  0.2849]    [  4.8790]</code></pre>
+<p>Results with 50 draws</p>
+<pre><code># of iterations for delta convergence:  1
+# of iterations for delta convergence:  12
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6029]    [  0.5835]    [  4.4607]
+    3.
+    'price'         [-1.9815]    [  0.0408]    [-48.5259]
+    'char1'         [ 2.3482]    [  0.3197]    [  7.3458]
+    'char2'         [ 0.8895]    [  0.2338]    [  3.8048]
+    'sigmachar1'    [ 0.9038]    [  0.1400]    [  6.4537]</code></pre>
+<p>Results with 100 draws</p>
+<pre><code># of iterations for delta convergence:  1
+# of iterations for delta convergence:  15
+Result of Random Coefficient Logit
+    'var'           'coef'       'std.err.'    'tvalue'  
+    'constant'      [ 2.6263]    [  0.5650]    [  4.6486]
+    'price'         [-1.9774]    [  0.0401]    [-49.3514]
+    'char1'         [ 2.2058]    [  0.3225]    [  6.8401]
+    'char2'         [ 0.9889]    [  0.2285]    [  4.3273]
+    'sigmachar1'    [-0.9160]    [  0.1311]    [ -6.9849]
+</code></pre>
+<p>As we can see the coefficient on price when we increase the simulation number of draws from 10,50,100 does not changed drastically hovering around -1.98. The values of sigmachar1 do vary ranging from -0.91 - 1.3902. The coefficient on constant remain similar through all 3 simulations andd the two charactersitics variables vary slightly across the three simulations. The most obvious change between 10 and 100 simulaitons is the value of sigmachar1.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Revisit the logit above and formally show that there is an analytical solution for $_{jt}. Explain why this solution is not possible in a random coefficent model. Describe how contraction mapping works.</li>
+</ol>
+<p>The reason we do not have an analytical solution is that in the Random Coefficient logit we do not solve for market shares as a function of parameters through a berry inversion as we woul do in a logit. Rather instead we approximate market shares through monte-carlo simulation.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Derive the own price and cross price elasticities in the random coefficient logit model.</li>
+</ol>
+<p>Estimating cross-price elasticities = <span class="math inline">\(\frac{\partial s_j}{\partial p_k}\)</span></p>
+<p><span class="math inline">\(s_{jt} =\int \frac{\exp(\delta _jt + \mu _{ijt}(v))}{1 + \sum^J_k \exp(\delta_{kt} + \mu_{ikt}(v))}\)</span></p>
+<p>But since we can only approximate market shares through Monte Carlo simulation x_{kt}<em>{}v</em>{it})</p>
+<p><span class="math inline">\(s_{jt} = (ND)^{-1}\sum^{ND}_i \frac{exp(\delta _jt +\sigma_\beta v_\beta x_j )}{1 + \sum^J_k \exp(\delta_{kt} + x_{kt}\sigma _{\beta}v_{it}) }\)</span></p>
+<span class="math display">\[\begin{align*}
+frac{\partial s_j}{\partial p_k}  = 
+\end{align*}\]</span>
 </div>
 
 

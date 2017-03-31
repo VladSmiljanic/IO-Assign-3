@@ -339,7 +339,7 @@ s_{0} &= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
 \end{align*}
 
-The market share of a certain segment g $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}$
+The market share of a certain segment g, $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}$
 
 \begin{align*}
 \ln(s_g) &= \ln(\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g})\\
@@ -365,7 +365,9 @@ This is the specification for a Berry-one-level nested logit which we will estim
 
 
  
-2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
+2. 
+
+We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
 
 Optimal pricing of firms will imply a correlation between prices and unobserved product characteristics as in the regular logit but we will require two instruments since changes in unobserved characteristics will also effect the relative marketshare within a segment $\ln(s_{j|g})$. Once again we relly on within firm  characteristics, the sum of within segment product characteristics and all other firm product characteristics.  
 
@@ -408,10 +410,8 @@ s_{j|g} &= \frac{s_j}{s_g}=\frac{\exp(\delta_j/(1-\sigma_g))}{D_g} \\
 To find the own price elasticities, we will take the derivative of our product shares w.r.t. the products price. We can use the quotient rule to calculate the derivative:
 
 \begin{align*}
-\frac{\partial s_{j}}{\partial p_{j}} &= \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-&\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^2\\
-&=-\alpha\exp(\frac{\delta_j}{(1-\sigma_g)})\frac{1}{(1-\sigma_g)}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
-&\div (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\
+\frac{\partial s_{j}}{\partial p_{j}} &= (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2} \bigg(\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) - \dots\\ \dots &-\exp(\frac{\delta_j}{(1-\sigma_g)})\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+&=-\frac{\alpha s_j}{(1-\sigma_g)} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g) -(1-\sigma_g)D_g^\sigma\sum^G_{g=0}D_g^{-\sigma}(\exp(\frac{\delta_j}{(1-\sigma_g)})) - \sigma D_g^{\sigma-1}\exp(\frac{\delta_j}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\\
 
 &=-\frac{\alpha s_j}{(1-\sigma_g)}\bigg(1 -(1-\sigma_g)s_j -  \frac{\sigma D_g^{\sigma}s_{j|g}\sum^G_{g=0}D^{(1-\sigma_g)}_g}{(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)}\bigg) )\\
 
@@ -435,15 +435,15 @@ If product k falls within the same segment as j, then we can calculate $\frac{\p
 \begin{align*}
 \frac{\partial s_{k}}{\partial p_{j}} &= - \exp(\frac{\delta_k}{(1-\sigma_g)})(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-2}\dots\\
 &\dots\bigg(D_g^\sigma\sum^G_{g=0}((1-\sigma_g)D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)}))+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})(\frac{-\alpha}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-&=\frac{\alpha}{1-\sigma_g} s_k(D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((1-\sigma_g)D_g^\sigma\sum^G_{g=0}(D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
-\frac{\partial s_{k}}{\partial p_{j}}&=\frac{\alpha}{1-\sigma_g} s_k((1-\sigma_g)s_k+\sigma s_{k|g})\\
+&=\frac{\alpha s_k}{1-\sigma_g} (D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g)^{-1}\bigg((1-\sigma_g)D_g^\sigma\sum^G_{g=0}(D_g^{-\sigma}\exp(\frac{\delta_k}{(1-\sigma_g)})+\sigma D_g^{\sigma-1}\exp(\frac{\delta_k}{(1-\sigma_g)})\sum^G_{g=0}D^{(1-\sigma_g)}_g\bigg)\bigg)\\
+\frac{\partial s_{k}}{\partial p_{j}}&=\frac{\alpha s_k}{1-\sigma_g} ((1-\sigma_g)s_k+\sigma s_{k|g})\\
 \end{align*}
 
-rom this we can calculate our cross price elasticities for products that are in the same segement:
+From this we can calculate our cross price elasticities for products that are in the same segement:
 
 \begin{align*}
 \frac{\partial q_k}{\partial p_j} \frac{p_j}{q_k}&= L\frac{\partial s_k}{\partial p_j} \frac{p_j}{q_k}\\
-&= L(\frac{\alpha}{1-\sigma_g} s_k((1-\sigma_g)s_k+\sigma_g s_{k|g}) ) \frac{p_j}{q_k}\\
+&= L(\frac{\alpha s_k}{1-\sigma_g} ((1-\sigma_g)s_k+\sigma_g s_{k|g}) ) \frac{p_j}{q_k}\\
 &= (\frac{\alpha}{1-\sigma_g}((1-\sigma_g)s_k+\sigma_g s_{k|g}))p_j\\
 \end{align*}
 
@@ -592,9 +592,12 @@ Instruments:    horsepower fuel width height domestic year country2 country3
 ------------------------------------------------------------------------------
 ```
 
-The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .2110286. We can input these values with the known values for shares to find our own- and cross-price elasticities.
+The coefficent on prices is now -.1232378 and we have estimated $\sigma_g$ = .2110286 (conditional market conditions). We can see that when instruments are used, our coefficients descrease by a large number relative to original values. Specifically, price coefficients doubles in the negative direction and our $\sigma_g$ falls signfificantly. Without instruments, the model is approaching a logit model as $\sigma_g$ is much closer to 1 then when instruments are used. We can input these values with the known values for shares to find our own- and cross-price elasticities.
 
-# 3 Merger Simulation 
+5.
+
+
+# 3) Merger Simulation 
 
 Estimating a merger between Volkswagen (VW) and Ford in Germany 1998
 

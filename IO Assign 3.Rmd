@@ -289,24 +289,24 @@ From our summary table for coefficients and standards errors, we seee that our c
 
 ```
 
-
-#Question 2
+## Question 2
 
 1. Deriving Berry-one-level nested logit begining from the utility following utility specification. 
+
 \begin{align*}
 u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
 \end{align*}
 
-We than divide the products into mutually exclusive nests which we note by $g = 0 \dots G$ where $g=0$ is the nest that only contains the outside good. 
+We than divide the products into mutually exclusive nests which we note by $g = 0 \dots G$ where $g=0$ is the nest that only contains the outside good. In this case the products will be divided based on market segment, such as (compact, luxury , intermediate ... and a nest for the outside good). 
 
 In the nested logiot the individual error term $\epsilon_{ijt}$ is composed of two parts
 \begin{align*}
 \epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
 \end{align*}
 
-The first term $\epsilon{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
+The first term $\epsilon_{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
 
-Since \epsilon_{ijt} is extreme value distributed $F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))$. 
+Since $\epsilon_{ijt}$ is extreme value distributed $F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))$. 
 
 Following the same notation as Berry 1994: 
 \begin{align*}
@@ -337,7 +337,7 @@ s_{0} &= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
 \end{align*}
 
-The market share of a certain segment g, $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}$
+The market share of a certain segment g, $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}$ taking the log of both sides. 
 
 \begin{align*}
 \ln(s_g) &= \ln(\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g})\\
@@ -351,17 +351,13 @@ Defining $s_{j|g} = \frac{s_j}{s_k}$ and subsituting expression for $\ln(D_g)$ i
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
 \ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \frac{\ln(s_g) - \ln(s_0)}{1-\sigma} \\
 (\ln(s_j) - \ln(s_0))(1-\sigma) &= \delta_{j} -\sigma (\ln(s_g) - \ln(s_0))\\
-\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  & + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j}
+\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j} \\
 \ln(\frac{s_{j}}{s_0}) -\sigma \ln(s_{j|g}) &= \delta_{j} \\
 \ln(\frac{s_{j}}{s_0}) &= \delta_{j} +\sigma \ln(s_{j|g}) \\
-\ln(\frac{s_{j}}{s_0}) &= \delta_{j} +\sigma \ln(s_{j|g}) \\ 
  \ln(\frac{s_{j}}{s_0})  &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}  +\sigma \ln(s_{j|g})
 \end{align*}
 
 This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS. 
-
-
-
  
 2. 
 

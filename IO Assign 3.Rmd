@@ -362,8 +362,12 @@ Defining $s_{j|g} = \frac{s_j}{s_k}$ and subsituting expression for $\ln(D_g)$ i
 
 This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS. 
 
+
+
  
 2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
+
+Optimal pricing of firms will imply a correlation between prices and unobserved product characteristics as in the regular logit but we will require two instruments since changes in unobserved characteristics will also effect the relative marketshare within a segment $\ln(s_{j|g})$. Once again we relly on within firm  characteristics, the sum of within segment product characteristics and all other firm product characteristics.  
 
 3.
 

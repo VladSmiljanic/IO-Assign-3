@@ -295,7 +295,6 @@ From our summary table for coefficients and standards errors, we seee that our c
 #Question 2
 
 1. Deriving Berry-one-level nested logit begining from the utility following utility specification. 
-
 \begin{align*}
 u_{ijt} = \delta_{jt}(x_{jt}, p_{jt},m_j,\xi;\beta,\alpha) + \lambda c_t + \epsilon_{ijt}
 \end{align*}
@@ -307,42 +306,61 @@ In the nested logiot the individual error term $\epsilon_{ijt}$ is composed of t
 \epsilon_{ijt} = (1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1
 \end{align*}
 
-The first term $\epsilon{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one i.i.d  extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
+The first term $\epsilon{igt}$ is an error shared by all products in nest g. The second term $\epsilon_{ijt}^1$ is an i.i.d extreme value shock similar to the one seen in the logit in question 1. The term $(1-\sigma_g)$ denotes how important the within nest shock in comparison to the extreme value shock.  $\epsilon{igt}$ has the property that it is distributed in such a manner that it makes the whole term $(1-\sigma_g)\epsilon{igt} + \epsilon_{ijt}^1$ also type one extreme value distributed. Since we assume that heterogeneity across clusters we can assume that $\sigma_g = \sigma \textrm{ for all } g$. 
 
 Since \epsilon_{ijt} is extreme value distributed $F(\delta_{0t}\dots\delta_{Jt}) = \exp(-\exp(-I))$. 
+
+Following the same notation as Berry 1994: 
 \begin{align*}
-I&=\ln(\sum^G_{g=0}\exp(I_g))\\  
-I_g&=(1-\sigma_g)\ln(\sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
-s_{jt} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}\\
-s_{0t} &= \frac{1}{\exp(I)}\\
-\ln(s_{jt}) &= \ln( \frac{\exp(\delta_{j}/(1-\sigma_g))\exp(I_g)}{\exp(I_g/(1-\sigma_g))\exp(I)}) \\
-\ln(s_{jt}) &= \frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I\\
-\ln(s_{0t}) &= \ln(\frac{1}{\exp(I)}) \\ 
-\ln(s_{0t}) &= -I\\ 
-\ln(\frac{s_{jt}}{s_{0t}}) &=\frac{\delta_{j}}{(1-\sigma_g)} + I_g - \frac{I_g}{1-\sigma_g} - I + I \\
-\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} + \frac{I_g - I_g\sigma_g - I_g}{1-\sigma_g} \\ 
-\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
-\textrm{Using Berry's notation for } &D_g &= \\
-&= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
-\textrm{and } I_g&=(1-\sigma_g)\ln(D_g)\\
+D_g &= \sum^{J_g}_{j=1}\exp(\delta_j/(1-\sigma_g)))\\
+I_g&=(1-\sigma_g)\ln(D_g)\\
+I&=\ln(\sum^G_{g=0}D^{(1-\sigma_g)}_g)\\  
 \end{align*}
-By the fact that we can express a segments portion of market share:
+
+Our market share equations become
 \begin{align*}
-\bar{s_g} &= \frac{D_g^{(1-\sigma)}}{\sum_g D_g^{(1-\sigma)}}\\
-\ln(\bar{s_g}) &= (1-\sigma) \ln(D_g) - \ln(s_0) \\
-\ln(D_g) &= \frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\
+s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))\exp((1-\sigma_g)\ln(D_g))}{(D_g)(\sum^G_{g=0}D^{(1-\sigma_g)}_g)} \\
+s_{j} &= \frac{\exp(\delta_{j}/(1-\sigma_g))}{D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g}\\
+s_{0} &= \frac{1}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}
 \end{align*}
-Pluggin this expression into $I_g$
+
 \begin{align*}
-I_g &= (1-\sigma_g)\ln(D_g)\\ 
-I_g &= (1-\sigma_g)\frac{ \ln(\bar{s_g}) - \ln(s_0)}{(1-\sigma)}\\ 
-I_g &= \ln(\bar{s_g}) - \ln(s_0) \\
+\ln(s_{j}) &= \frac{\exp(\delta_{j}/(1-\sigma_g))}{D_g^\sigma\sum^G_{g=0}D^{(1-\sigma_g)}_g}) \\
+\ln(s_{j}) &= \frac{\delta_{j}}{(1-\sigma_g)}  - \ln(D_g^\sigma)-ln(\sum^G_{g=0}D^{(1-\sigma_g)}_g)
 \end{align*}
-Plugging this in back to our expression for $\ln(s_{jt}) - \ln(s_{0t})$
+
 \begin{align*}
-\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{I_g\sigma_g}{1-\sigma_g} \\
-\ln(\frac{s_{jt}}{s_{0t}}) &= \frac{\delta_{j}}{(1-\sigma_g)} - \frac{\ln(\bar{s_g}) - \ln(s_0)\sigma_g}{1-\sigma_g} \\
+\ln(s_0) &= \ln(\frac{1}{\sum^G_{g=0}D^{(1-\sigma)}_g}) \\
+\ln(s_0) &= -\ln(\sum^G_{g=0}D^{(1-\sigma)}_g) 
 \end{align*}
+
+\begin{align*}
+\ln(s_{j}) - \ln(s_0) &= \frac{\delta_{j}}{(1-\sigma)}  - \ln(D_g^\sigma)-ln(\sum^G_{g=0}D^{(1-\sigma)}_g) +\ln(\sum^G_{g=0}D^{(1-\sigma)}_g) \\
+\ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
+\end{align*}
+
+The market share of a certain segment g $s_g =\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g}$
+
+\begin{align*}
+\ln(s_g) &= \ln(\frac{D_g^{(1-\sigma_g)}}{\sum^G_{g=0}D^{(1-\sigma_g)}_g})\\
+\ln(s_g) &= (1-\sigma) \ln(D_g) - \ln(s_0)\\
+\ln(D_g) &= \frac{\ln(s_g) - \ln(s_0)}{1-\sigma}
+\end{align*}
+
+Defining $s_{j|g} = \frac{s_j}{s_k}$ and subsituting expression for $\ln(D_g)$ into $\ln(\frac{s_{j}}{s_0})$
+
+\begin{align*}
+\ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \ln(D_g) \\
+\ln(\frac{s_{j}}{s_0}) &= \frac{\delta_{j}}{(1-\sigma)}  - \sigma \frac{\ln(s_g) - \ln(s_0)}{1-\sigma} \\
+(\ln(s_j) - \ln(s_0))(1-\sigma) &= \delta_{j} -\sigma (\ln(s_g) - \ln(s_0))\\
+\ln(s_j) - \ln(s_0) -\ln(s_j)\sigma  & + \ln(s_0) \sigma + \sigma \ln(s_g)  + \sigma \ln(s_0) = \delta_{j}
+\ln(\frac{s_{j}}{s_0}) -\sigma \ln(s_{j|g}) &= \delta_{j} \\
+\ln(\frac{s_{j}}{s_0}) &= \delta_{j} +\sigma \ln(s_{j|g}) \\
+\ln(\frac{s_{j}}{s_0}) &= \delta_{j} +\sigma \ln(s_{j|g}) \\ 
+ \ln(\frac{s_{j}}{s_0})  &= x_{jt}\beta - \alpha p_{jt} + \gamma m_j + \xi_{jt}  +\sigma \ln(s_{j|g})
+\end{align*}
+
+This is the specification for a Berry-one-level nested logit which we will estimate using OLS and 2SLS. 
 
  
 2. We continue to have an endogeinty problem with prices being correlated with our unobserved characteristics. In addition, now that were are clustering the products into groups according to segments, we will have endogeinty 
